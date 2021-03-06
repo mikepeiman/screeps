@@ -9,52 +9,11 @@ let creepTally = {
     'explorers': 0,
     'warriors': 0
 }
-let creepsList = {
-    'harvesters': 0,
-    'builders': 0,
-    'upgraders': 0,
-    'explorers': 0,
-    'warriors': 0
-}
 
 let home = Game.spawns['Spawn1']
 let roles = ['harvester', 'upgrader', 'builder', 'explorer', 'warrior']
 
 module.exports.loop = function () {
-
-
-    // for(var name in Game.creeps) {
-    //     console.log('The creep names are: ' + name)
-    // }
-
-    // var tower = Game.getObjectById('185239c5665481ddb49c5019')
-    // if(tower) {
-    //     var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-    //         filter: (structure) => structure.hits < structure.hitsMax
-    //     })
-    //     if(closestDamagedStructure){
-    //         tower.repair(closestDamagedStructure)
-    //     }
-
-
-    //     var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
-    //     if(closestHostile){
-    //         tower.attack(closestHostile)
-    //     }
-    // }
-
-    // consider a loop to tally number of each type of creep, to manage respawning
-
-    // for (idx in roles) {
-    //     let creepRole = creepTally[idx]
-    //     console.log(`in roles loop, current idx is ${idx}, creepTally[${roles[idx]}] is ${creepTally[`${roles[idx]}`]}`)
-    //     if (creepsList.creepRole.length) { console.log('in roles loop, creepTally value is ' + creepsList.creepRole.length) }
-    //     console.log('in roles loop, creepTally value is 0')
-    //     creepsList.creepRole = _.filter(Game.creeps, { memory: { role: creepRole } })
-    // }
-
-    // console.log(_.filter(Game.creeps, {memory: {role: 'upgrader'}}))
-
 
     creepTally['harvesters'] = _.filter(Game.creeps, {memory: {role: 'harvester'}})
     creepTally['upgraders'] = _.filter(Game.creeps, {memory: {role: 'upgrader'}})
@@ -85,13 +44,13 @@ module.exports.loop = function () {
 
     console.log(`Tally creeps values: harvester ${creepTally.harvesters.length}, builders ${creepTally.builders.length}, upgraders ${creepTally.upgraders.length}, explorers ${creepTally.explorers.length}`)
 
-    if (creepTally.builders.length < 2) {
-        console.log(`Time to spawn a builder`)
-        home.spawnCreep([WORK, CARRY, MOVE], 'builder-' + Game.time, { memory: { role: 'builder' } })
-    }
-    if (creepTally.harvesters.length < 2) {
-        console.log(`Time to spawn a harvester`)
+    if (creepTally.harvesters.length < 4) {
+        console.log(`Time to spawn a harvester, tally is ${creepTally.harvesters.length}`)
         home.spawnCreep([WORK, CARRY, MOVE], 'harvester-' + Game.time, { memory: { role: 'harvester' } })
+    }
+    if (creepTally.builders.length < 4) {
+        console.log(`Time to spawn a builder, tally is ${creepTally.builders.length}`)
+        home.spawnCreep([WORK, CARRY, MOVE], 'builder-' + Game.time, { memory: { role: 'builder' } })
     }
     if (creepTally.upgraders.length < 4) {
         console.log(`Time to spawn an upgrader`)
