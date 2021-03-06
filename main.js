@@ -1,7 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
-
+// let p = require('pathfinder')
 let creepTally = {
     'harvesters': 0,
     'builders': 0,
@@ -26,6 +26,7 @@ module.exports.loop = function () {
         if (creep.memory.role == 'harvester') {
             // creepTally.harvesters++
             roleHarvester.run(creep);
+            // pathfinder.run(creep)
 
         }
         if (creep.memory.role == 'upgrader') {
@@ -44,16 +45,16 @@ module.exports.loop = function () {
 
     console.log(`Tally creeps values: harvester ${creepTally.harvesters.length}, builders ${creepTally.builders.length}, upgraders ${creepTally.upgraders.length}, explorers ${creepTally.explorers.length}`)
 
-    if (creepTally.harvesters.length < 4) {
-        console.log(`Time to spawn a harvester, tally is ${creepTally.harvesters.length}`)
+    if (creepTally.harvesters.length < 6) {
+        // console.log(`Time to spawn a harvester, tally is ${creepTally.harvesters.length}`)
         home.spawnCreep([WORK, CARRY, MOVE], 'harvester-' + Game.time, { memory: { role: 'harvester' } })
     }
-    if (creepTally.builders.length < 4) {
-        console.log(`Time to spawn a builder, tally is ${creepTally.builders.length}`)
+    if (creepTally.builders.length < 6) {
+        // console.log(`Time to spawn a builder, tally is ${creepTally.builders.length}`)
         home.spawnCreep([WORK, CARRY, MOVE], 'builder-' + Game.time, { memory: { role: 'builder' } })
     }
     if (creepTally.upgraders.length < 4) {
-        console.log(`Time to spawn an upgrader`)
+        // console.log(`Time to spawn an upgrader`)
         home.spawnCreep([WORK, CARRY, MOVE], 'upgrader-' + Game.time, { memory: { role: 'upgrader' } })
     }
 
