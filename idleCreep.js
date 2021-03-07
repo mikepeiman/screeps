@@ -1,4 +1,5 @@
-var roleHarvester = {
+let dests = [[26,34], [25,34],[24,34],[23,34]]
+var idleCreep = {
 
     /** @param {Creep} creep **/
 
@@ -7,7 +8,7 @@ var roleHarvester = {
 
         if (creep.store.getFreeCapacity() > 0) {
             // if (Math.random() < 0.5) {
-            //     console.log(`In the roleHarvester module, random <0.5`)
+            //     console.log(`In the idleCreep module, random <0.5`)
             //     // pathfinder.run(creep)
             // }
             var sources = creep.room.find(FIND_SOURCES);
@@ -23,15 +24,11 @@ var roleHarvester = {
                 }
             });
             if (targets.length > 0) {
-                console.log(`targets available for harvester creep ${creep}`)
                 if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
-                } else {
-                    return 'idle2'
                 }
             } else {
-                console.log(`No targets available for harvester creep ${creep}`)
-                return 'idle'
+
                 // for (dest in dests) {
                 //     let x = creep.moveTo(dest)
                 //     if(x != 0){console.log(`This creep ${creep} cannot get to ${dest}`)} else {return}
@@ -42,4 +39,4 @@ var roleHarvester = {
     }
 };
 
-module.exports = roleHarvester;
+module.exports = idleCreep;

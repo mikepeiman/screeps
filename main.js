@@ -6,12 +6,12 @@ var roleBuilder = require('role.builder');
 let creepGroups = {
     'harvester': {
         has: 0,
-        wants: 3,
+        wants: 4,
         composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE]
     },
     'builder': {
         has: 0,
-        wants: 2,
+        wants: 0,
         composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE]
     },
     'upgrader': {
@@ -47,7 +47,8 @@ module.exports.loop = function () {
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
         if (creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
+            let working = roleHarvester.run(creep);
+            console.log(`harvester creep ${creep} working? ${working}`)
         }
         if (creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);
@@ -63,12 +64,10 @@ module.exports.loop = function () {
             let comp = creepGroups[groupName].composition
             let name = groupName + Game.time
             let mem = { memory: { role: groupName } }
-            console.log(creepGroups[groupName].composition, groupName+Game.time, JSON.stringify(mem))
-            console.log(comp, name, mem)
             let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
             console.log('spawn as var: ', x)
         }
     }
 
-    // console.log(`Tally creeps values: harvester ${creepGroups.harvester.has}, builders ${creepGroups.builder.has}, upgraders ${creepGroups.upgrader.has}`)
+    console.log(`Tally creeps values: harvester ${creepGroups.harvester.has}, builders ${creepGroups.builder.has}, upgraders ${creepGroups.upgrader.has}`)
 }
