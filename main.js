@@ -5,18 +5,18 @@ var roleBuilder = require('role.builder');
 let creepGroups = {
     'harvester': {
         has: 0,
-        wants: 5,
-        composition: "WORK, WORK, CARRY, MOVE, MOVE"
+        wants: 3,
+        composition: `[WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE]`
     },
     'builder': {
         has: 0,
-        wants: 3,
-        composition: "WORK, WORK, CARRY, MOVE, MOVE"
+        wants: 0,
+        composition: `WORK, WORK, CARRY, MOVE, MOVE`
     },
     'upgrader': {
         has: 0,
-        wants: 1,
-        composition: "WORK, WORK, CARRY, MOVE, MOVE"
+        wants: 0,
+        composition: `WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE`
     },
 
 }
@@ -33,6 +33,7 @@ let creepsTally = 0
 
 
 module.exports.loop = function () {
+    console.log('tick')
     let home = Game.spawns['Spawn1']
 
     // Uncomment this block to see current and max energy available in spawn and structures
@@ -43,9 +44,9 @@ module.exports.loop = function () {
     //     console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energycap}`)
     // }
 
-    creepGroups['harvester'].has = _.sum(Game.creeps, { memory: { role: 'harvester' }})
-    creepGroups['upgrader'].has = _.sum(Game.creeps, { memory: { role: 'upgrader' }})
-    creepGroups['builder'].has = _.sum(Game.creeps, { memory: { role: 'builder' }})
+    creepGroups['harvester'].has = _.sum(Game.creeps, { memory: { role: 'harvester' } })
+    creepGroups['upgrader'].has = _.sum(Game.creeps, { memory: { role: 'upgrader' } })
+    creepGroups['builder'].has = _.sum(Game.creeps, { memory: { role: 'builder' } })
     // creepGroups['explorers'] = _.sum(Game.creeps, { memory: { role: 'explorer' } })
     // creepGroups['warriors'] = _.sum(Game.creeps, { memory: { role: 'warrior' } })
 
@@ -65,11 +66,18 @@ module.exports.loop = function () {
         }
     }
 
-    for(const groupName in creepGroups) {
+    for (const groupName in creepGroups) {
         // console.log(`checking new creepGroup objects loop: groupName ${groupName} has ${creepGroups[groupName].has} and wants ${creepGroups[groupName].wants}`)
-        if(creepGroups[groupName].has < creepGroups[groupName].wants){
+        if (creepGroups[groupName].has < creepGroups[groupName].wants) {
             console.log(`Time to spawn a ${groupName}, tally is ${creepGroups[groupName].has}`)
-            home.spawnCreep([`${groupName.composition}`, `${groupName}${Game.time}`, {memory: {role: `${groupName}`}}])
+            let comp = creepGroups[groupName].composition
+            let name = groupName+Game.time
+            let mem = `{memory: {role: {${groupName}}}`
+            console.log(`comp ${comp} name ${name} mem ${mem}`)
+            let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
+            // console.log(`groundName.composion: ${creepGroups[groupName].composition}`)
+            console.log('spawn as var: ', x)
+            console.log(`${creepGroups[groupName].composition}, '${groupName}${Game.time}', {memory: {role: '${groupName}'}}`)
         }
     }
 
