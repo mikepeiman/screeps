@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var idleCreep = require('idleCreep')
 // let p = require('pathfinder')
 // let WORK = 'WORK', CARRY = 'CARRY', MOVE = 'MOVE'
 let creepGroups = {
@@ -16,7 +17,7 @@ let creepGroups = {
     },
     'upgrader': {
         has: 0,
-        wants: 4,
+        wants: 6,
         composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE]
     },
 }
@@ -48,7 +49,12 @@ module.exports.loop = function () {
         var creep = Game.creeps[name];
         if (creep.memory.role == 'harvester') {
             let working = roleHarvester.run(creep);
-            console.log(`harvester creep ${creep} working? ${working}`)
+            if(working == 'idle'){
+                idleCreep.run(creep)
+            } else {
+                working = 'working'
+            }
+            // console.log(`harvester creep ${creep} working? ${working}`)
         }
         if (creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);

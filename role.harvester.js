@@ -23,20 +23,15 @@ var roleHarvester = {
                 }
             });
             if (targets.length > 0) {
+          
                 console.log(`targets available for harvester creep ${creep}`)
                 if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
-                } else {
-                    return 'idle2'
-                }
+                    return 'working'
+                } 
             } else {
                 console.log(`No targets available for harvester creep ${creep}`)
                 return 'idle'
-                // for (dest in dests) {
-                //     let x = creep.moveTo(dest)
-                //     if(x != 0){console.log(`This creep ${creep} cannot get to ${dest}`)} else {return}
-                // }
-
             }
         }
     }
