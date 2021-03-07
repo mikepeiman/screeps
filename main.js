@@ -10,7 +10,7 @@ let creepGroups = {
     'warriors': 0
 }
 
-let home = Game.spawns['Spawn1']
+
 let roles = ['harvester', 'upgrader', 'builder', 'explorer', 'warrior']
 let creepsTally = 0
 
@@ -22,7 +22,7 @@ let creepsTally = 0
 
 
 module.exports.loop = function () {
-
+    let home = Game.spawns['Spawn1']
 
     // Uncomment this block to see current and max energy available in spawn and structures
     // for (let i in Game.spawns) {
@@ -56,19 +56,19 @@ module.exports.loop = function () {
     }
 
 
-    if (creepGroups.builders < 4) {
+    if (creepGroups.builders < 6) {
         console.log(`Time to spawn a builder, tally is ${creepGroups.builders}`)
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], 'builder-' + Game.time, { memory: { role: 'builder' } })
     }
 
-    if (creepGroups.harvesters < 1) {
+    if (creepGroups.harvesters < 2) {
         console.log(`Time to spawn a harvester, tally is ${creepGroups.harvesters}`)
         home.spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], 'harvester-' + Game.time, { memory: { role: 'harvester' } })
-        console.log(`Tried spawning harvester [WORK, WORK, CARRY, MOVE, MOVE], error: ${error}`)
+        // console.log(`Tried spawning harvester [WORK, WORK, CARRY, MOVE, MOVE], error: ${error}`)
     }
     if (creepGroups.upgraders < 1) {
         console.log(`Time to spawn an upgrader, tally is ${creepGroups.upgraders}`)
-        let x =home.spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], 'upgrader-' + Game.time, { memory: { role: 'upgrader' } })
+        let x = home.spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], 'upgrader-' + Game.time, { memory: { role: 'upgrader' } })
         console.log('Checking return value of spawn attempt: ', x)
     }
     console.log(`Tally creeps values: harvester ${creepGroups.harvesters}, builders ${creepGroups.builders}, upgraders ${creepGroups.upgraders}, explorers ${creepGroups.explorers}`)
