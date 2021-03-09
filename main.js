@@ -5,87 +5,104 @@ var roleBuilder = require('role.builder');
 // let roleClaimer = require('role.claimer')
 // let p = require('pathfinder')
 // Room #1: Game.rooms['W14N43']
+let creepsFullPopulation = false
 
-let partsCost = {
-    WORK: 100,
-    MOVE: 50,
-    CARRY: 50,
-    ATTACK: 80,
-    RANGED_ATTACK: 150,
-    HEAL: 250,
-    CLAIM: 600,
-    TOUGH: 10
-}
-let creepGroups = {
-    'harvester': {
-        has: 0,
-        wants: 5,
-        level: 1,
-        composition: [WORK, CARRY, CARRY, MOVE, MOVE],
-        cost: 0
-    },
-    'harvester': {
-        has: 0,
-        wants: 4,
-        level: 2,
-        composition: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-        cost: 0
-    },
-    'builder': {
-        has: 0,
-        wants: 6,
-        level: 1,
-        composition: [WORK, CARRY, CARRY, MOVE, MOVE],
-        cost: 0
-    },
-    'builder': {
-        has: 0,
-        wants: 7,
-        level: 2,
-        composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
-        cost: 0
-    },
-    'upgrader': {
-        has: 0,
-        wants: 6,
-        level: 1,
-        composition: [WORK, CARRY, CARRY, MOVE, MOVE],
-        cost: 0
-    },
-    'upgrader': {
-        has: 0,
-        wants: 1,
-        level: 2,
-        composition: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-        cost: 0
-    },
-    'claimer': {
-        has: 0,
-        wants: 0,
-        level: 3,
-        composition: [CLAIM, MOVE],
-        cost: 0
-    },
-}
 
-// figure out how to automatically sum the energy cost of building any given creep composition
-for (const groupName in creepGroups) {
-    let creepCost = 0
-    for (let part in creepGroups[groupName].composition) {
-        let c = creepGroups[groupName].composition[part]
-        let comp = JSON.stringify(c).toUpperCase()
-        let component = comp.replace(/['"]+/g, '')
-        let val = partsCost[component]
-        creepCost += val
+let creepLevelGroups = [
+    {
+        'harvester': {
+            has: 0,
+            wants: 5,
+            level: 1,
+            composition: [WORK, CARRY, CARRY, MOVE, MOVE],
+            cost: 0
+        },
+        'builder': {
+            has: 0,
+            wants: 6,
+            level: 1,
+            composition: [WORK, CARRY, CARRY, MOVE, MOVE],
+            cost: 0
+        },
+        'upgrader': {
+            has: 0,
+            wants: 6,
+            level: 1,
+            composition: [WORK, CARRY, CARRY, MOVE, MOVE],
+            cost: 0
+        },
+    },
+    {
+        'harvester': {
+            has: 0,
+            wants: 4,
+            level: 2,
+            composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            cost: 0
+        },
+        'builder': {
+            has: 0,
+            wants: 7,
+            level: 2,
+            composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+            cost: 0
+        },
+        'upgrader': {
+            has: 0,
+            wants: 1,
+            level: 2,
+            composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            cost: 0
+        },
+    },
+    {
+
     }
-    console.log(`this creep ${groupName} total cost ${creepCost}`)
-    creepGroups[groupName].cost = creepCost
-}
-// using @qnz suggestion
-const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
+]
+// let creepGroups = {
+//     'harvester': {
+//         has: 0,
+//         wants: 4,
+//         level: 2,
+//         composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+//         cost: 0
+//     },
+//     'builder': {
+//         has: 0,
+//         wants: 7,
+//         level: 2,
+//         composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+//         cost: 0
+//     },
+//     'upgrader': {
+//         has: 0,
+//         wants: 1,
+//         level: 2,
+//         composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+//         cost: 0
+//     },
+//     'claimer': {
+//         has: 0,
+//         wants: 0,
+//         level: 3,
+//         composition: [CLAIM, MOVE],
+//         cost: 0
+//     },
+// }
 
-let x = getBodyCost(creepGroups['harvester'].composition)
-console.log(`returning getBodyCost harvester: ${x}`)
+// Get total energy cost per creep model - using Slack @qnz suggestion
+
+let spawn = Game.spawns['Spawn1']
+let homeRoom = spawn.room
+let rc = homeRoom.controller
+let rcl = rc.level
+let creepGroups = creepLevelGroups[rcl-1]
+
+const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
+for (let groupName in creepGroups) {
+    creepGroups[groupName].cost = getBodyCost(creepGroups[groupName].composition)
+    console.log(`Final check calculating cost of each creep ${groupName}, cost ${creepGroups[groupName].cost}`)
+}
 
 // Uncomment to see the current number of my creeps in this game
 // let creepsTally = 0
@@ -98,10 +115,11 @@ module.exports.loop = function () {
 
     // let reserve = Game.creeps['claimer-level-3-26194173'].reserveController(Game.creeps['claimer-level-3-26194173'].room.controller)
     // console.log(`return value from reserve room controller: `, reserve)
-    let spawn = Game.spawns['Spawn1']
-    let homeRoom = spawn.room
-    let rc = homeRoom.controller
-    let rcl = rc.level
+     spawn = Game.spawns['Spawn1']
+     homeRoom = spawn.room
+     rc = homeRoom.controller
+     rcl = rc.level
+    // console.log(`rclevel ${rcl}`)
     let energy = spawn.room.energyAvailable;
     let energyCapacity = spawn.room.energyCapacityAvailable;
     // let unusedEnergyCapacity = energyCapacity - energy
@@ -155,7 +173,8 @@ module.exports.loop = function () {
 
     for (const groupName in creepGroups) {
         if (creepGroups[groupName].has < creepGroups[groupName].wants) {
-            console.log(`Time to spawn a ${groupName}, tally is ${creepGroups[groupName].has}`)
+            // creepsFullPopulation = false
+            // console.log(`Time to spawn a ${groupName}, tally is ${creepGroups[groupName].has}`)
             let comp = creepGroups[groupName].composition
             let name = `${groupName}-level-${rcl}-${Game.time}`
             let mem = { memory: { role: groupName, level: rcl, working: false } }
