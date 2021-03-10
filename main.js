@@ -3,6 +3,7 @@ let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
+let newComp = require('newComposition')
 // const towerProto = require('prototype.tower.js')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
@@ -76,13 +77,6 @@ let creepLevelGroups = [
         },
     },
     {
-        // 'harvester': {
-        //     has: 0,
-        //     wants: 0,
-        //     level: 2,
-        //     composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-        //     cost: 0
-        // },
         'harvester': {
             has: 0,
             wants: 4,
@@ -90,13 +84,7 @@ let creepLevelGroups = [
             composition: [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
             cost: 0
         },
-        // 'harvester-longrange': {
-        //     has: 0,
-        //     wants: 0,
-        //     level: 3,
-        //     composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
-        //     cost: 0
-        // },
+
         'builder': {
             has: 0,
             wants: 8,
@@ -125,6 +113,13 @@ let creepLevelGroups = [
             composition: [MOVE],
             cost: 0
         },
+        'repairer': {
+            has: 0,
+            wants: 1,
+            level: 3,
+            composition: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            cost: 0
+        },
     },
 ]
 
@@ -133,10 +128,12 @@ let home = spawn.room
 let rc = home.controller
 let rcl = rc.level
 let creepGroups = creepLevelGroups[rcl - 2]
-
+newComp(rcl)
 const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
 for (let creepType in creepGroups) {
-    creepGroups[creepType].cost = getBodyCost(creepGroups[creepType].composition)
+    let c = creepGroups[creepType]
+    c.cost = getBodyCost(c.composition)
+    // console.log(`Checking body composition ${creepType} --- ${c.composition}`)
     // console.log(`Final check calculating cost of each creep ${creepType}, cost ${creepGroups[creepType].cost}`)
 }
 
@@ -173,7 +170,7 @@ module.exports.loop = function () {
 
     // console.log(`tick: controller level ${rcl}, ${RCLprogressRemains} remains`)
     // Uncomment this to see current and max energy available in spawn and structures
-    // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+    console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
 
 
     if (everyFiveCounter == 5) {
@@ -199,8 +196,8 @@ module.exports.loop = function () {
         if (creep.memory.role == 'harvester') {
 
             // harvester-level-4-26252887
-            // 6048f18e8fd0e9e2e57cc722
-            // Game.creeps['harvester-level-4-26252887'].pickup('6048f18e8fd0e9e2e57cc722')
+            // 6048f7e3d624363c203c22f9
+            // Game.creeps['harvester-level-4-26253336'].pickup('6048f7e3d624363c203c22f9')
 
             roleHarvester.run(creep);
             if (unusedEnergyCapacity < 1) {
@@ -228,14 +225,18 @@ module.exports.loop = function () {
                 roleHarvester.run(creep)
             }
             else {
-                if (repairTarget != undefined) {
-                    roleRepairer.run(creep)
-                } else if (targets.length) {
+                // if (repairTarget != undefined) {
+                //     roleRepairer.run(creep)
+                // } else 
+                if (targets.length) {
                     roleBuilder.run(creep);
                 } else {
                     roleUpgrader.run(creep);
                 }
             }
+        }
+        if (creep.memory.role == 'repairer') {
+            roleRepairer.run(creep)
         }
         if (creep.memory.role == 'scout') {
             // creep.memory.target = Game.rooms['W6N54']
@@ -267,8 +268,6 @@ module.exports.loop = function () {
                     console.log(`Spawning a ${creepGroups[creepType]}`)
                 } else {
                     console.log(`Error in spawning: ${x}`)
-                    // let y = Object.keys(Game.Constants).find(key => Constants[key] == x) 
-                    // console.log(`That error message is: ${y}`)
                 }
             } else {
                 let comp = creepGroups['harvester'].composition
@@ -276,18 +275,7 @@ module.exports.loop = function () {
                 let mem = { memory: { role: 'harvester', home: home, level: rcl, working: false } }
                 let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
             }
-
-            // console.log('spawn result: ', x)
-        } else {
-            // console.log(`${creepType} has full inventory of creeps currently`)
-            // if (creepType] == 'harvester') {
-            //     console.log(`My name is ${creep} harvester and I have full capacity`)
-            //     for (let name in Game.creeps) {
-            //         let creep = Game.creeps[name];
-            //         roleUpgrader.run(creep);
-            //     }
-            // }
-        }
+        } 
     }
 
 

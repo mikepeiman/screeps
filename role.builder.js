@@ -28,7 +28,7 @@ var roleBuilder = {
 			if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
 				// move towards the source
 				creep.say('🔄 harvest');
-				creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' }, range: 1 })
+				creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' }, range: 1, ignoreCreeps: true, rusePath: 25})
 			} else {
 				creep.say('⚡🍓');
 			}

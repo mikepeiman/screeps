@@ -14,6 +14,7 @@ module.exports = {
             filter: ruin => ruin.store.energy > 0
         })
         let takeEnergyTargets = [...takeEnergyTombstones, ...takeEnergyDroppedResources, ...takeEnergyRuins]
+        // takeEnergyTargets = creep.pos.findClosestByPath(takeEnergyTargets)
         // console.log(`takeEnergyTargets: `, takeEnergyTargets)
 
         // if creep is bringing energy to a structure but has no energy left
@@ -42,7 +43,7 @@ module.exports = {
             });
 
             // if we found one
-            console.log(`role.harvester.js: ${creep}::ROLE::${creep.memory.role}::TASK::${creep.memory.task} Found a structure to receive energy: ${structure}`, structure)
+            // console.log(`role.harvester.js: ${creep}::ROLE::${creep.memory.role}::TASK::${creep.memory.task} Found a structure to receive energy: ${structure}`, structure)
             if (structure != undefined) {
                 // try to transfer energy, if it is not in range
                 if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -61,7 +62,7 @@ module.exports = {
             let pickupResult = creep.pickup(nearestTarget)
             let harvestResult = creep.harvest(nearestSource)
             if (nearestTarget) {
-                console.log(`nearestTarget for energy pickup: `, nearestTarget)
+                // console.log(`nearestTarget for energy pickup: `, nearestTarget)
                 creep.memory.currentTask = '⚡ harvest 🎁 pickup'
                 if (creep.pickup(nearestTarget) == ERR_NOT_IN_RANGE) {
                     // move towards the source
@@ -82,7 +83,7 @@ module.exports = {
                     creep.say('🔄 harvest');
                     creep.moveTo(nearestSource, { visualizePathStyle: { stroke: '#ffaa00' } });
                 } else {
-                    console.log(`${creep} harvestResult ${harvestResult}`)
+                    // console.log(`${creep} harvestResult ${harvestResult}`)
                     if(harvestResult == 0){
                         creep.say('⚡🍓');
                     } else {

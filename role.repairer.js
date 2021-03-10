@@ -23,7 +23,7 @@ var roleRepairer = {
 
 		if (creep.memory.repairing) {
 			if (structureToRepair != 'undefined') {
-				console.log(`structureToRepair ${structureToRepair} exists! We should be working ${creep}`)
+				// console.log(`structureToRepair ${structureToRepair} exists! We should be working ${creep}`)
 				if (creep.repair(structureToRepair) == ERR_NOT_IN_RANGE) {
 					// move towards it
 					creep.say('🔨 repair');
