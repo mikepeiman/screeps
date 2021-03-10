@@ -11,11 +11,11 @@ var roleBuilder = {
 			creep.memory.building = true;
 			creep.say('🚧 build');
 		}
-
 		if (creep.memory.building) {
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			if (targets.length) {
 				if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+					creep.say('🚧 build');
 					creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
 				}
 			} else {
@@ -24,32 +24,14 @@ var roleBuilder = {
 			}
 		}
 		else {
-			// now harvest:
-
-			// console.log(`What are my energy sources? `, source)
-			// // try to harvest energy, if the source is not in range
-			// if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-			//     // move towards the source
-			//     creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
-			// 	creep.moveTo(Game.getObjectById(creep.memory.pathToSource))
-			// 	// , { visualizePathStyle: { stroke: '#ffaa00' } });
-			// }
-
-			var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-			// if (source) { creep.memory.pathToSource = source.id }
-
-
-			// if (creep.memory.pathToSource) {
-			// 	target = Game.getObjectById(creep.memory.pathToSource)
-			// }
-			// if (!target) {
-			// 	delete creep.memory.pathToSource
-			// } else {
-				if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-					// move towards the source
-					creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' }, range: 1 })
-				}
-			// }
+			var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+			if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+				// move towards the source
+				creep.say('🔄 harvest');
+				creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' }, range: 1 })
+			} else {
+				creep.say('⚡🍓');
+			}
 		}
 	}
 };

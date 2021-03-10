@@ -2,6 +2,7 @@ var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+        // console.log('CPU used enter upgrader.run(): ', Game.cpu.getUsed())
         creep.memory.currentTask = '⚡ upgrade room controller'
         if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.upgrading = false;
@@ -14,6 +15,7 @@ var roleUpgrader = {
 
 	    if(creep.memory.upgrading) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                creep.say('⚡ upgrade');
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         }
@@ -26,7 +28,7 @@ var roleUpgrader = {
             //     delete creep.memory.source
             // }
             // else {
-            //     target = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+            //     target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
             //     creep.memory.source = target
             //     if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
             //         // move towards the source
@@ -34,9 +36,10 @@ var roleUpgrader = {
             //     }
             // }
 
-            target = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+            target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
             if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
                 // move towards the source
+                creep.say('🔄 harvest');
                 creep.moveTo(target, { visualizePathStyle: { stroke: '#ffaa00' } });
             }
 
@@ -59,8 +62,10 @@ var roleUpgrader = {
             //     }
             // }
 
-        }
+        }   
+        // console.log('CPU used end upgrader.run(): ', Game.cpu.getUsed())
 	}
+    
 };
 
 module.exports = roleUpgrader;
