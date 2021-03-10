@@ -1,4 +1,3 @@
-// let _ = require('lodash')
 let creepSpecs = (rcl) => {
 
     /* 
@@ -139,8 +138,6 @@ let creepSpecs = (rcl) => {
         }
         c.cost = getBodyCost(c.composition)
     }
-
-    // console.log('CPU used end newComposition.js: ', Game.cpu.getUsed())
     return creepLevelGroups
 }
 
