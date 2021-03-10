@@ -1,5 +1,5 @@
 // let _ = require('lodash')
-let newComp = (rcl) => {
+let creepSpecs = (rcl) => {
 
     /* 
     parts costs for reference:
@@ -23,9 +23,9 @@ let newComp = (rcl) => {
                 wants: 4,
                 level: rcl,
                 recipe: {
-                    WORK: 3,
-                    CARRY: 7,
-                    MOVE: 5,
+                    WORK: 5,
+                    CARRY: 9,
+                    MOVE: 7,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
@@ -39,8 +39,8 @@ let newComp = (rcl) => {
                 wants: 4,
                 level: rcl,
                 recipe: {
-                    WORK: 4,
-                    CARRY: 4,
+                    WORK: 6,
+                    CARRY: 10,
                     MOVE: 4,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
@@ -55,9 +55,9 @@ let newComp = (rcl) => {
                 wants: 1,
                 level: rcl,
                 recipe: {
-                    WORK: 4,
-                    CARRY: 4,
-                    MOVE: 4,
+                    WORK: 5,
+                    CARRY: 9,
+                    MOVE: 7,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
@@ -71,9 +71,9 @@ let newComp = (rcl) => {
                 wants: 1,
                 level: rcl,
                 recipe: {
-                    WORK: 4,
-                    CARRY: 4,
-                    MOVE: 4,
+                    WORK: 5,
+                    CARRY: 9,
+                    MOVE: 7,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
@@ -84,17 +84,17 @@ let newComp = (rcl) => {
             },
             'warrior': {
                 has: 0,
-                wants: 0,
+                wants: 8,
                 level: rcl,
                 recipe: {
                     WORK: 0,
                     CARRY: 0,
-                    MOVE: 6,
-                    ATTACK: 5,
+                    MOVE: 8,
+                    ATTACK: 8,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
                     CLAIM: 0,
-                    TOUGH: 18
+                    TOUGH: 24
                 },
                 cost: 0
             },
@@ -113,7 +113,6 @@ let newComp = (rcl) => {
         let counter = 0
         let buildComp = []
         if (c.recipe['TOUGH'] > 0) {
-            console.log(`YEEEEEEES tough parts`)
             for (let z = 0; z < c.recipe['TOUGH']; z++) {
                 buildComp.push('tough')
             }
@@ -141,20 +140,8 @@ let newComp = (rcl) => {
         c.cost = getBodyCost(c.composition)
     }
 
-    let spawn = Game.spawns['Spawn1']
-    let comp = creepGroups["warrior"].composition
-    let test = spawn.spawnCreep(comp, 'TESSSSTY', {dryRun: true})
-    let cost = getBodyCost(comp)
-    console.log(`++++++++++++++++++++ new creep spawn test result ${test} and cost ${cost} and composition ${comp}`)
-
-    for (let creepType in creepGroups) {
-        let t = creepType
-        let c = creepGroups[t]
-        let cost = c.cost
-        console.log(`🚀 ~ file: newComposition.js ~ creepType{${creepType}} ~ creepGroups[t]{${creepGroups[t].composition}}  newComp ~ cost: `, cost)
-    }
-    console.log('CPU used end newComposition.js: ', Game.cpu.getUsed())
+    // console.log('CPU used end newComposition.js: ', Game.cpu.getUsed())
     return creepLevelGroups
 }
 
-module.exports = newComp
+module.exports = creepSpecs

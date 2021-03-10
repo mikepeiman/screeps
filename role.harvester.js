@@ -69,7 +69,7 @@ module.exports = {
                     creep.say('🎁 pickup');
                     creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#ffaa00' } });
                 } else {
-                    console.log(`${creep} pickupResult ${pickupResult}`)
+                    // console.log(`${creep} pickupResult ${pickupResult}`)
                     if(pickupResult == 0){
                         creep.say('🎁🍓');
                     } else {

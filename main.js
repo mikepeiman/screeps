@@ -3,7 +3,7 @@ let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
-let newComp = require('newComposition')
+let creepSpecs = require('creep.specs')
 // const towerProto = require('prototype.tower.js')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
@@ -29,113 +29,27 @@ let creepsFullPopulation = false
 //  console.log(`:::---:::   explore Traveler.js: source keeper ${JSON.stringify(tp)}`)
 
 
-let creepLevelGroups = [
-    {
-        'harvester': {
-            has: 0,
-            wants: 5,
-            level: 1,
-            composition: [WORK, CARRY, CARRY, MOVE, MOVE],
-            cost: 0
-        },
-        'builder': {
-            has: 0,
-            wants: 6,
-            level: 1,
-            composition: [WORK, CARRY, CARRY, MOVE, MOVE],
-            cost: 0
-        },
-        'upgrader': {
-            has: 0,
-            wants: 6,
-            level: 1,
-            composition: [WORK, CARRY, CARRY, MOVE, MOVE],
-            cost: 0
-        },
-    },
-    {
-        'harvester': {
-            has: 0,
-            wants: 4,
-            level: 2,
-            composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-        'builder': {
-            has: 0,
-            wants: 4,
-            level: 2,
-            composition: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-        'upgrader': {
-            has: 0,
-            wants: 1,
-            level: 2,
-            composition: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-    },
-    {
-        'harvester': {
-            has: 0,
-            wants: 4,
-            level: 3,
-            composition: [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-
-        'builder': {
-            has: 0,
-            wants: 8,
-            level: 3,
-            composition: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-        'upgrader': {
-            has: 0,
-            wants: 0,
-            level: 3,
-            composition: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-        'warrior-1': {
-            has: 0,
-            wants: 0,
-            level: 3,
-            composition: [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-        'scout': {
-            has: 0,
-            wants: 0,
-            level: 3,
-            composition: [MOVE],
-            cost: 0
-        },
-        'repairer': {
-            has: 0,
-            wants: 1,
-            level: 3,
-            composition: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            cost: 0
-        },
-    },
-]
-
 let spawn = Game.spawns['Spawn1']
 let home = spawn.room
 let rc = home.controller
 let rcl = rc.level
-let creepGroups = creepLevelGroups[rcl - 2]
-newComp(rcl)
-const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
+
+let creepLevelGroups = creepSpecs(rcl)
+let creepGroups = creepLevelGroups[rcl - 1]
+let warrior = creepGroups['warrior'].cost
+console.log("🚀 ~ file: main.js ~ line 40 ~ warrior", warrior)
 for (let creepType in creepGroups) {
     let c = creepGroups[creepType]
-    c.cost = getBodyCost(c.composition)
-    // console.log(`Checking body composition ${creepType} --- ${c.composition}`)
-    // console.log(`Final check calculating cost of each creep ${creepType}, cost ${creepGroups[creepType].cost}`)
+    console.log(`${creepType} costs: ${c.cost}`)
 }
+
+// const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
+// for (let creepType in creepGroups) {
+//     let c = creepGroups[creepType]
+//     c.cost = getBodyCost(c.composition)
+//     // console.log(`Checking body composition ${creepType} --- ${c.composition}`)
+//     // console.log(`Final check calculating cost of each creep ${creepType}, cost ${creepGroups[creepType].cost}`)
+// }
 
 let everyFiveCounter = 5
 
@@ -170,7 +84,7 @@ module.exports.loop = function () {
 
     // console.log(`tick: controller level ${rcl}, ${RCLprogressRemains} remains`)
     // Uncomment this to see current and max energy available in spawn and structures
-    console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+    // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
 
 
     if (everyFiveCounter == 5) {
@@ -179,7 +93,7 @@ module.exports.loop = function () {
             // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         }
     }
-    everyFiveCounter--
+
     let checkRepairTargets = true
     let repairTarget
     let targets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
@@ -256,16 +170,18 @@ module.exports.loop = function () {
     }
 
     for (let creepType in creepGroups) {
-        if (creepGroups[creepType].has < creepGroups[creepType].wants) {
+        let c = creepGroups[creepType]
+        if (c.has < c.wants) {
             // creepsFullPopulation = false
             if (!creepGroups['harvester'].has < creepGroups['harvester'].wants) {
-                console.log(`Time to spawn a ${creepType}, tally is ${creepGroups[creepType].has}`)
-                let comp = creepGroups[creepType].composition
+                console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
+                console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+                let comp = c.composition
                 let name = `${creepType}-level-${rcl}-${Game.time}`
                 let mem = { memory: { role: creepType, home: home, level: rcl, working: false } }
                 let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
                 if (x == 0) {
-                    console.log(`Spawning a ${creepGroups[creepType]}`)
+                    console.log(`Spawning a ${c}`)
                 } else {
                     console.log(`Error in spawning: ${x}`)
                 }
@@ -275,13 +191,15 @@ module.exports.loop = function () {
                 let mem = { memory: { role: 'harvester', home: home, level: rcl, working: false } }
                 let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
             }
-        } 
+        }
     }
 
 
-    if (everyFiveCounter == 0) {
-        console.log('CPU used end main loop: ', Game.cpu.getUsed())
-        everyFiveCounter = 5
+    if (everyFiveCounter == 5) {
+        console.log('CPU used end main loop (checking once every five ticks): ', Game.cpu.getUsed())
+
     }
+    everyFiveCounter--
+    if (everyFiveCounter == 0) { everyFiveCounter = 5 }
 
 }
