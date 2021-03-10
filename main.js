@@ -4,7 +4,7 @@ let roleBuilder = require('role.builder');
 let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
 let creepSpecs = require('creep.specs')
-// const towerProto = require('prototype.tower.js')
+let roleTower = require('role.tower')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
 const roleRepairer = require('./role.repairer');
@@ -33,27 +33,20 @@ let spawn = Game.spawns['Spawn1']
 let home = spawn.room
 let rc = home.controller
 let rcl = rc.level
-
 let creepLevelGroups = creepSpecs(rcl)
 let creepGroups = creepLevelGroups[rcl - 1]
-let warrior = creepGroups['warrior'].cost
-console.log("🚀 ~ file: main.js ~ line 40 ~ warrior", warrior)
+// roleTower.run(home)
 for (let creepType in creepGroups) {
     let c = creepGroups[creepType]
     console.log(`${creepType} costs: ${c.cost}`)
 }
 
-// const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
-// for (let creepType in creepGroups) {
-//     let c = creepGroups[creepType]
-//     c.cost = getBodyCost(c.composition)
-//     // console.log(`Checking body composition ${creepType} --- ${c.composition}`)
-//     // console.log(`Final check calculating cost of each creep ${creepType}, cost ${creepGroups[creepType].cost}`)
-// }
-
 let everyFiveCounter = 5
-
 module.exports.loop = function () {
+    let towers = home.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
+    for(let tower in towers) {
+        roleTower.run(towers[tower], Game.spawns['Spawn1'].room)
+    }
     for (let name in Memory.creeps) {
         if (!Game.creeps[name]) {
             delete Memory.creeps[name];
@@ -108,11 +101,6 @@ module.exports.loop = function () {
         }
 
         if (creep.memory.role == 'harvester') {
-
-            // harvester-level-4-26252887
-            // 6048f7e3d624363c203c22f9
-            // Game.creeps['harvester-level-4-26253336'].pickup('6048f7e3d624363c203c22f9')
-
             roleHarvester.run(creep);
             if (unusedEnergyCapacity < 1) {
                 if (targets.length) {
@@ -120,9 +108,17 @@ module.exports.loop = function () {
                 } else {
                     roleUpgrader.run(creep);
                 }
-            } else {
-                // roleHarvester.run(creep);
-            }
+            } 
+        }
+        if (creep.memory.role == 'hauler') {
+            roleHarvester.run(creep);
+            if (unusedEnergyCapacity < 1) {
+                if (targets.length) {
+                    roleBuilder.run(creep);
+                } else {
+                    roleUpgrader.run(creep);
+                }
+            } 
         }
         if (creep.memory.role == 'upgrader') {
             if (targets.length) {
@@ -157,16 +153,14 @@ module.exports.loop = function () {
             // console.log(`checking scout creeps, current room name ${creep.room.name} and target ${creep.room.target}`)
             roleScout.run(creep)
         }
-        if (creep.memory.role == 'warrior-1') {
+        if (creep.memory.role == 'warrior') {
             // nearest SK thug: 9,45,W6N54
-            // let target = new RoomPosition(12,1,'W6N53')
-            let target = new RoomPosition(9, 45, 'W6N54')
-            roleWarrior.run(creep, target);
+            let t1 = new RoomPosition(9,45,'W6N54')
+            let t2 = new RoomPosition(9,45,'W6N54')
+            // let target = new RoomPosition(9, 45, 'W6N54')
+            roleWarrior.move(creep, spawn);
+            // roleWarrior.attack(creep, t2);
         }
-        // if (creep.memory.role == 'claimer') {
-        //     console.log(`we have a claimer`)
-        //     roleClaimer(name, 'W14N42')
-        // }
     }
 
     for (let creepType in creepGroups) {
@@ -197,7 +191,6 @@ module.exports.loop = function () {
 
     if (everyFiveCounter == 5) {
         console.log('CPU used end main loop (checking once every five ticks): ', Game.cpu.getUsed())
-
     }
     everyFiveCounter--
     if (everyFiveCounter == 0) { everyFiveCounter = 5 }

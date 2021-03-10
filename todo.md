@@ -9,3 +9,4 @@ TASKS
 * implement smarter pathing, and path caching, using moveByPath()
 * determine how many instances of a given task there are (eg. structures to repair) and assign that many creeps
     * seeing how repairs are currently working in game, I think it best if I make a "repairer" role and have that creep repair-first, and upgrade in its spare time. It's likely that it might even be a fulltime role for a single creep to repair roads
+* get tower coded for both defense and repair, and creep healing

@@ -74,6 +74,7 @@ module.exports = {
                         creep.say('🎁🍓');
                     } else {
                         creep.say('🎁???');
+                        console.log(`^^^^^^^^^^^^^^^^^    ${creep} can't understand pickupResult ${pickupResult}, nearestTarget ${nearestTarget}`)
                     }
                 }
             } else {
