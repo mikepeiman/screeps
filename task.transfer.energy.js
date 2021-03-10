@@ -1,19 +1,21 @@
-let gatherEnergy = (creep, takeEnergyTargets, takeEnergySources) => {
-    let nearestTarget = creep.pos.findClosestByPath(takeEnergyTargets);
-    let nearestSource = creep.pos.findClosestByPath(takeEnergySources);
-    if (nearestTarget) {
-        console.log(`nearestTarget for energy pickup: `, nearestTarget)
-        if (creep.pickup(nearestTarget) == ERR_NOT_IN_RANGE) {
-            // move towards the source
-            creep.say('⚡🎁');
-            creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#00aaff' } });
-        }
-    } else {
-        if (creep.harvest(nearestSource) == ERR_NOT_IN_RANGE) {
-            // move towards the source
-            creep.say('⚡🌻');
-            creep.moveTo(nearestSource, { visualizePathStyle: { stroke: '#ffaa00' } });
-        }
-    }
-}
+        // if creep is supposed to transfer energy to a structure
+        if (creep.memory.working == true) {
+            // find closest spawn, extension or tower which is not full
+            let structure = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: (s) => (s.structureType == STRUCTURE_SPAWN
+                    || s.structureType == STRUCTURE_EXTENSION
+                    || s.structureType == STRUCTURE_TOWER)
+                    && s.energy < s.energyCapacity
+            });
 
+            // if we found one
+            console.log(`role.harvester.js: ${creep}::ROLE::${creep.memory.role}::TASK::${creep.memory.task} Found a structure to receive energy: ${structure}`, structure)
+            if (structure != undefined) {
+                // try to transfer energy, if it is not in range
+                if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.memory.currentTask = '⚡🔄 transfer'
+                    creep.say('⚡🔄');
+                    // move towards it
+                    creep.moveTo(structure, { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 25 });
+                }
+            }

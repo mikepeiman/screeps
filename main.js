@@ -197,6 +197,11 @@ module.exports.loop = function () {
         }
 
         if (creep.memory.role == 'harvester') {
+
+            // harvester-level-4-26252887
+            // 6048f18e8fd0e9e2e57cc722
+            // Game.creeps['harvester-level-4-26252887'].pickup('6048f18e8fd0e9e2e57cc722')
+
             roleHarvester.run(creep);
             if (unusedEnergyCapacity < 1) {
                 if (targets.length) {
