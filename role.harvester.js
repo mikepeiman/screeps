@@ -1,4 +1,4 @@
-// let energySources = require('energySources')
+let roleUpgrader = require('role.upgrader');
 module.exports = {
     // a function to run the logic for this role
     run: function (creep) {
@@ -74,22 +74,18 @@ module.exports = {
                 // console.log("🚀 ~ file: role.harvester.js ~ line 75 ~ takeEnergyTargets", takeEnergyTargets)
                 // console.log(`nearestTarget for energy pickup: `, nearestTarget)
                 creep.memory.currentTask = '⚡ harvest 🎁 pickup'
-                if (creep.withdraw(nearestTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                if (creep.withdraw(nearestTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE || creep.pickup(nearestTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     // move towards the source
                     creep.say('🎁 pickup');
                     creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#ffaa00' } });
-                }/* else {
-                    // console.log(`${creep} pickupResult ${pickupResult}`)
-                    if (creep.pickup(nearestTarget) == 0) {
-                        creep.say('🎁🍓');
-                    } else {
-                        creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#ffaa00' } });
-                        creep.say('🎁???');
-                        creep.pickup(nearestTarget)
-                        // console.log(`^^^^^^^^^^^^^^^^^    ${creep} can't understand pickupResult ${pickupResult}, nearestTarget ${nearestTarget}`)
-                    }
-*/
-
+                } else if (creep.pickup(nearestTarget) == 0) {
+                    creep.say('🎁🍓');
+                } else {
+                    creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#ffaa00' } });
+                    creep.say('🎁???');
+                    creep.pickup(nearestTarget)
+                    // console.log(`^^^^^^^^^^^^^^^^^    ${creep} can't understand pickupResult ${pickupResult}, nearestTarget ${nearestTarget}`)
+                }
             } else {
                 let nearestSource = creep.pos.findClosestByPath(takeEnergySources);
                 let harvestResult = creep.harvest(nearestSource)

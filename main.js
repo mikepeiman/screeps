@@ -89,7 +89,18 @@ module.exports.loop = function () {
 
     let checkRepairTargets = true
     let repairTarget
+
+    // Automatically set whether we want to have any builders. This variable 'buildTargets' is also used
+    // to determine work priorities for other creep types.
+    // This approach seems terribly inefficient; it would be better to simply reassign the appropriate number of creeps
+    // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
+    if(buildTargets.length){
+        creepGroups['builder'].wants = 3
+    } else {
+        creepGroups['builder'].wants = 0
+    }
+
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
 
@@ -109,11 +120,12 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } 
-            creep.moveTo(spawn)
-            if (spawn.pos.inRangeTo(creep.pos.x, creep.pos.y, 1)) {
-                creep.say("Here!")
-                spawn.recycleCreep(creep)
-            }
+            // SUICIDE CODE! works great
+            // creep.moveTo(spawn)
+            // if (spawn.pos.inRangeTo(creep.pos.x, creep.pos.y, 1)) {
+            //     creep.say("Here!")
+            //     spawn.recycleCreep(creep)
+            // }
         }
         if (creep.memory.role == 'hauler') {
             roleHarvester.run(creep);
@@ -123,6 +135,8 @@ module.exports.loop = function () {
                 } else {
                     roleUpgrader.run(creep);
                 }
+            } else {
+                roleHarvester.run(creep);
             }
         }
         if (creep.memory.role == 'upgrader') {
@@ -136,18 +150,13 @@ module.exports.loop = function () {
             }
         }
         if (creep.memory.role == 'builder') {
-            if (creepGroups['harvester'].has < 2) {
-                roleHarvester.run(creep)
-            }
-            else {
-                // if (repairTarget != undefined) {
-                //     roleRepairer.run(creep)
-                // } else 
-                if (buildTargets.length) {
-                    roleBuilder.run(creep);
-                } else {
-                    roleUpgrader.run(creep);
-                }
+            // if (repairTarget != undefined) {
+            //     roleRepairer.run(creep)
+            // } else 
+            if (buildTargets.length) {
+                roleBuilder.run(creep);
+            } else {
+                roleUpgrader.run(creep);
             }
         }
         if (creep.memory.role == 'repairer') {

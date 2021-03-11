@@ -35,7 +35,7 @@ let creepSpecs = (rcl) => {
             },
             'builder': {
                 has: 0,
-                wants: 3,
+                wants: 0,
                 level: rcl,
                 recipe: {
                     WORK: 6,
@@ -67,7 +67,7 @@ let creepSpecs = (rcl) => {
             },
             'upgrader': {
                 has: 0,
-                wants: 1,
+                wants: 0,
                 level: rcl,
                 recipe: {
                     WORK: 5,
@@ -118,8 +118,8 @@ let creepSpecs = (rcl) => {
                 wants: 4,
                 level: rcl,
                 recipe: {
-                    WORK: 4,
-                    CARRY: 11,
+                    WORK: 3,
+                    CARRY: 13,
                     MOVE: 7,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
