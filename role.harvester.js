@@ -7,12 +7,15 @@ module.exports = {
         let takeEnergyTombstones = creep.room.find(FIND_TOMBSTONES, {
             filter: tombstone => tombstone.store.energy > 0
         })
+        // console.log("🚀 ~ file: role.harvester.js ~ line 10 ~ takeEnergyTombstones", takeEnergyTombstones)
         let takeEnergyDroppedResources = creep.room.find(FIND_DROPPED_RESOURCES, {
             filter: resource => resource.resourceType === RESOURCE_ENERGY
         })
+        // console.log("🚀 ~ file: role.harvester.js ~ line 14 ~ takeEnergyDroppedResources", takeEnergyDroppedResources)
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {
             filter: ruin => ruin.store.energy > 0
         })
+        // console.log("🚀 ~ file: role.harvester.js ~ line 17 ~ takeEnergyRuins", takeEnergyRuins)
         let takeEnergyTargets = [...takeEnergyTombstones, ...takeEnergyDroppedResources, ...takeEnergyRuins]
         // takeEnergyTargets = creep.pos.findClosestByPath(takeEnergyTargets)
         // console.log(`takeEnergyTargets: `, takeEnergyTargets)
@@ -57,40 +60,50 @@ module.exports = {
         // if creep is supposed to harvest energy
         else {
             // find closest source, preference for dropped resources
+
+            for (let i in takeEnergyTargets) {
+                // console.log("🚀 ~ file: role.harvester.js ~ line 64 ~ takeEnergyTargets[i]", takeEnergyTargets[i])
+            }
+
+            // console.log("🚀 ~ file: role.harvester.js ~ line 61 ~ nearestTarget", nearestTarget.id)
+            // let obj = Game.getObjectById(nearestTarget.id)
+            // console.log("🚀 ~ file: role.harvester.js ~ line 63 ~ obj", obj)
+
             let nearestTarget = creep.pos.findClosestByPath(takeEnergyTargets);
-            let nearestSource = creep.pos.findClosestByPath(takeEnergySources);
-            let pickupResult = creep.pickup(nearestTarget)
-            let harvestResult = creep.harvest(nearestSource)
             if (nearestTarget) {
+                // console.log("🚀 ~ file: role.harvester.js ~ line 75 ~ takeEnergyTargets", takeEnergyTargets)
                 // console.log(`nearestTarget for energy pickup: `, nearestTarget)
                 creep.memory.currentTask = '⚡ harvest 🎁 pickup'
-                if (creep.pickup(nearestTarget) == ERR_NOT_IN_RANGE) {
+                if (creep.withdraw(nearestTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     // move towards the source
                     creep.say('🎁 pickup');
                     creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#ffaa00' } });
-                } else {
+                }/* else {
                     // console.log(`${creep} pickupResult ${pickupResult}`)
-                    if(pickupResult == 0){
+                    if (creep.pickup(nearestTarget) == 0) {
                         creep.say('🎁🍓');
                     } else {
+                        creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#ffaa00' } });
                         creep.say('🎁???');
-                        console.log(`^^^^^^^^^^^^^^^^^    ${creep} can't understand pickupResult ${pickupResult}, nearestTarget ${nearestTarget}`)
+                        creep.pickup(nearestTarget)
+                        // console.log(`^^^^^^^^^^^^^^^^^    ${creep} can't understand pickupResult ${pickupResult}, nearestTarget ${nearestTarget}`)
                     }
-                }
+*/
+
             } else {
+                let nearestSource = creep.pos.findClosestByPath(takeEnergySources);
                 let harvestResult = creep.harvest(nearestSource)
                 if (harvestResult == ERR_NOT_IN_RANGE) {
                     // move towards the source
-                    creep.say('🔄 harvest');
+                    // creep.say('🔄 harvest');
                     creep.moveTo(nearestSource, { visualizePathStyle: { stroke: '#ffaa00' } });
                 } else {
                     // console.log(`${creep} harvestResult ${harvestResult}`)
-                    if(harvestResult == 0){
-                        creep.say('⚡🍓');
+                    if (harvestResult == 0) {
+                        creep.say('⚡✅');
                     } else {
                         creep.say('⚡???');
                     }
-
                 }
             }
         }

@@ -44,7 +44,7 @@ for (let creepType in creepGroups) {
 let everyFiveCounter = 5
 module.exports.loop = function () {
     let towers = home.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
-    for(let tower in towers) {
+    for (let tower in towers) {
         roleTower.run(towers[tower], Game.spawns['Spawn1'].room)
     }
     for (let name in Memory.creeps) {
@@ -83,13 +83,13 @@ module.exports.loop = function () {
     if (everyFiveCounter == 5) {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-            // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+            console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         }
     }
 
     let checkRepairTargets = true
     let repairTarget
-    let targets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
+    let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
 
@@ -101,27 +101,32 @@ module.exports.loop = function () {
         }
 
         if (creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
-            if (unusedEnergyCapacity < 1) {
-                if (targets.length) {
-                    roleBuilder.run(creep);
-                } else {
-                    roleUpgrader.run(creep);
-                }
-            } 
+            // roleHarvester.run(creep);
+            // if (unusedEnergyCapacity < 1) {
+            //     if (buildTargets.length) {
+            //         roleBuilder.run(creep);
+            //     } else {
+            //         roleUpgrader.run(creep);
+            //     }
+            // } 
+            creep.moveTo(spawn)
+            if (spawn.pos.inRangeTo(creep.pos.x, creep.pos.y, 1)) {
+                creep.say("Here!")
+                spawn.recycleCreep(creep)
+            }
         }
         if (creep.memory.role == 'hauler') {
             roleHarvester.run(creep);
             if (unusedEnergyCapacity < 1) {
-                if (targets.length) {
+                if (buildTargets.length) {
                     roleBuilder.run(creep);
                 } else {
                     roleUpgrader.run(creep);
                 }
-            } 
+            }
         }
         if (creep.memory.role == 'upgrader') {
-            if (targets.length) {
+            if (buildTargets.length) {
                 roleBuilder.run(creep);
                 // } else if (repairTarget != undefined) {
                 //     creep.memory.repairing = false
@@ -138,7 +143,7 @@ module.exports.loop = function () {
                 // if (repairTarget != undefined) {
                 //     roleRepairer.run(creep)
                 // } else 
-                if (targets.length) {
+                if (buildTargets.length) {
                     roleBuilder.run(creep);
                 } else {
                     roleUpgrader.run(creep);
@@ -155,8 +160,8 @@ module.exports.loop = function () {
         }
         if (creep.memory.role == 'warrior') {
             // nearest SK thug: 9,45,W6N54
-            let t1 = new RoomPosition(9,45,'W6N54')
-            let t2 = new RoomPosition(9,45,'W6N54')
+            let t1 = new RoomPosition(9, 45, 'W6N54')
+            let t2 = new RoomPosition(9, 45, 'W6N54')
             // let target = new RoomPosition(9, 45, 'W6N54')
             roleWarrior.move(creep, spawn);
             // roleWarrior.attack(creep, t2);
@@ -167,24 +172,24 @@ module.exports.loop = function () {
         let c = creepGroups[creepType]
         if (c.has < c.wants) {
             // creepsFullPopulation = false
-            if (!creepGroups['harvester'].has < creepGroups['harvester'].wants) {
-                console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
-                console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
-                let comp = c.composition
-                let name = `${creepType}-level-${rcl}-${Game.time}`
-                let mem = { memory: { role: creepType, home: home, level: rcl, working: false } }
-                let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
-                if (x == 0) {
-                    console.log(`Spawning a ${c}`)
-                } else {
-                    console.log(`Error in spawning: ${x}`)
-                }
+            // if (!creepGroups['harvester'].has < creepGroups['harvester'].wants) {
+            console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
+            console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+            let comp = c.composition
+            let name = `${creepType}-level-${rcl}-${Game.time}`
+            let mem = { memory: { role: creepType, home: home, level: rcl, working: false } }
+            let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
+            if (x == 0) {
+                console.log(`Spawning a ${c}`)
             } else {
-                let comp = creepGroups['harvester'].composition
-                let name = `${creepType}-level-${rcl}-${Game.time}`
-                let mem = { memory: { role: 'harvester', home: home, level: rcl, working: false } }
-                let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
+                console.log(`Error in spawning: ${x}`)
             }
+            // } else {
+            //     let comp = creepGroups['harvester'].composition
+            //     let name = `${creepType}-level-${rcl}-${Game.time}`
+            //     let mem = { memory: { role: 'harvester', home: home, level: rcl, working: false } }
+            //     let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
+            // }
         }
     }
 

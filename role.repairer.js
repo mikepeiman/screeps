@@ -14,9 +14,6 @@ var roleRepairer = {
 		}
 
 		let structureToRepair = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-			// the second argument for findClosestByPath is an object which takes
-			// a property called filter which can be a function
-			// we use the arrow operator to define it
 			filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
 		});
 		// console.log(`repairer module --- structureToRepair: `, structureToRepair)
