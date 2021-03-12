@@ -84,11 +84,12 @@ module.exports.loop = function () {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
             console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+            console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
         }
     }
 
-    let checkRepairTargets = true
-    let repairTarget
+    // let checkRepairTargets = true
+    // let repairTarget
 
     // Automatically set whether we want to have any builders. This variable 'buildTargets' is also used
     // to determine work priorities for other creep types.
@@ -101,15 +102,29 @@ module.exports.loop = function () {
         creepGroups['builder'].wants = 0
     }
 
+    // PROSPECTIVE CODE not using yet
+    // let roles = [
+    //     "harvester",
+    //     "upgrader",
+    //     "repairer",
+    //     "builder"
+    // ]
+
+    // function setCurrentRole(creep, newRole) {
+    //     roles.forEach(role => {
+    //         delete creep.memory.currentRole
+    //     })
+    //     creep.memory.currentRole = newRole
+    // }
+
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
-
-        if (checkRepairTargets) {
-            repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
-            });
-            checkRepairTargets = false
-        }
+        // if (checkRepairTargets) {
+        //     repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+        //         filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+        //     });
+        //     checkRepairTargets = false
+        // }
 
         if (creep.memory.role == 'harvester') {
             // roleHarvester.run(creep);
@@ -127,7 +142,7 @@ module.exports.loop = function () {
             //     spawn.recycleCreep(creep)
             // }
         }
-        if (creep.memory.role == 'hauler') {
+        if (creep.memory.role == 'hauler') {        
             roleHarvester.run(creep);
             if (unusedEnergyCapacity < 1) {
                 if (buildTargets.length) {
@@ -180,8 +195,6 @@ module.exports.loop = function () {
     for (let creepType in creepGroups) {
         let c = creepGroups[creepType]
         if (c.has < c.wants) {
-            // creepsFullPopulation = false
-            // if (!creepGroups['harvester'].has < creepGroups['harvester'].wants) {
             console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
             console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
             let comp = c.composition
@@ -193,12 +206,6 @@ module.exports.loop = function () {
             } else {
                 console.log(`Error in spawning: ${x}`)
             }
-            // } else {
-            //     let comp = creepGroups['harvester'].composition
-            //     let name = `${creepType}-level-${rcl}-${Game.time}`
-            //     let mem = { memory: { role: 'harvester', home: home, level: rcl, working: false } }
-            //     let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
-            // }
         }
     }
 

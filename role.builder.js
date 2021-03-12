@@ -3,6 +3,7 @@ var roleBuilder = {
 	/** @param {Creep} creep **/
 	run: function (creep) {
 		creep.memory.currentTask = 'build'
+		creep.memory.currentRole = 'builder'
 		if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
 			creep.memory.building = false;
 			// creep.say('🔄 harvest');

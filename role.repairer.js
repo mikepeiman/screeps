@@ -2,8 +2,8 @@ var roleRepairer = {
 
 	/** @param {Creep} creep **/
 	run: function (creep) {
-		// creep.memory.repairing = false;
-		creep.memory.currentTask = 'repair'
+		// creep.memory.currentTask = 'repair'
+		creep.memory.currentRole = 'repairer'
 		if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
 			creep.memory.repairing = false;
 			creep.say('🔄 harvest');

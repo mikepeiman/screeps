@@ -16,6 +16,7 @@ const roleTower = {
         if (hostiles.length > 0) {
             let username = hostiles[0].owner.username;
             Game.notify(`User ${username} spotted in room ${room}`);
+            // tower.say('😈🔥')
             tower.attack(hostiles[0])
         } else if (wounded.length > 0) {
             // HEAL code
@@ -23,7 +24,8 @@ const roleTower = {
             tower.heal(wounded[0])
         } else if (structuresToRepair.length > 0) {
             // REPAIR code
-            tower.repair(structuresToRepair[0]);
+            // tower.say('🔧')
+            // tower.repair(structuresToRepair[0]);
         }
     }
 }

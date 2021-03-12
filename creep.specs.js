@@ -51,12 +51,12 @@ let creepSpecs = (rcl) => {
             },
             'repairer': {
                 has: 0,
-                wants: 0,
+                wants: 1,
                 level: rcl,
                 recipe: {
-                    WORK: 5,
-                    CARRY: 9,
-                    MOVE: 7,
+                    WORK: 4,
+                    CARRY: 11,
+                    MOVE: 6,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
@@ -115,12 +115,12 @@ let creepSpecs = (rcl) => {
             },
             'hauler': {
                 has: 0,
-                wants: 4,
+                wants: 8,
                 level: rcl,
                 recipe: {
-                    WORK: 3,
-                    CARRY: 13,
-                    MOVE: 7,
+                    WORK: 5,
+                    CARRY: 10,
+                    MOVE: 6,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,

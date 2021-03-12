@@ -1,6 +1,6 @@
 let transferEnergy = (creep) => {
     // if creep is supposed to transfer energy to a structure
-    if (creep.memory.working == true) {
+    if (creep.memory.transfering == true) {
         // find closest spawn, extension or tower which is not full
         let structure = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_SPAWN

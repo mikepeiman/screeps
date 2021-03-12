@@ -2,71 +2,51 @@ var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        // console.log('CPU used enter upgrader.run(): ', Game.cpu.getUsed())
+        creep.memory.currentRole = 'upgrader'
+
         creep.memory.currentTask = '⚡ upgrade room controller'
+
+        // was busy upgrading, but ran out of energy
         if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.upgrading = false;
             // creep.say('🔄 harvest');
 	    }
+
+        // was not upgrading, but has reached full energy capacity - time to upgrade
 	    if(!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
 	        creep.memory.upgrading = true;
 	        creep.say('⚡ upgrade');
 	    }
-
+        let rc = creep.room.controller
+        let upgrade = creep.upgradeController(rc)
 	    if(creep.memory.upgrading) {
-            if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                creep.say('⚡ upgrade');
-                creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+            if(upgrade == ERR_NOT_IN_RANGE) {
+                creep.say('⚡!');
+                creep.moveTo(rc, {visualizePathStyle: {stroke: '#ffffff'}});
             } else {
-                creep.upgradeController(creep.room.controller)
+                upgrade
                 creep.say('⚡⚡');
             }
         }
         else {
-            let source, target
-            // if(creep.memory.source){
-            //     target = Game.getObjectById[creep.memory.source.id]
-            // }
-            // if(!target) {
-            //     delete creep.memory.source
-            // }
-            // else {
-            //     target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-            //     creep.memory.source = target
-            //     if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
-            //         // move towards the source
-            //         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffaa00' } });
-            //     }
-            // }
-
-            target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-            if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
-                // move towards the source
-                creep.say('🔄 harvest');
-                creep.moveTo(target, { visualizePathStyle: { stroke: '#ffaa00' } });
+            let sources = creep.room.find(FIND_SOURCES_ACTIVE);
+            let targetSource
+            for(source in sources) {
+            console.log("🚀 ~ file: role.upgrader.js ~ line 29 ~ source in sources", source, sources)
+                if(source.energy == source.energyCapacity) {
+                    console.log("🚀 ~ file: role.upgrader.js ~ line 32 ~ source.energy == source.energyCapacity", source.energy == source.energyCapacity)
+                    targetSource = source
+                } else {
+                    targetSource = creep.pos.findClosestByPath(sources);
+                }
             }
-
-            // console.log(`creep.memory.source ${creep.memory.source}`)
-            // console.log(`creep.memory.source target ${target}`)
-
-
-            // // let s = Game.rooms['W6N53'](FIND_SOURCES_ACTIVE)
-            // // console.log(`What are my energy sources? `, source)
-            // // try to harvest energy, if the source is not in range
-            // if(target) {
-            //     if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
-            //         // move towards the source
-            //         creep.moveTo(target, { visualizePathStyle: { stroke: '#ffaa00' } });
-            //     }
-            // } else {
-            //     if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-            //         // move towards the source
-            //         creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
-            //     }
-            // }
-
+ 
+            if (creep.harvest(targetSource) == ERR_NOT_IN_RANGE) {
+                // move towards the targetSource
+                creep.say('🔄 harvest');
+                creep.moveTo(targetSource, { visualizePathStyle: { stroke: '#ffaa00' } });
+            }
         }   
-        // console.log('CPU used end upgrader.run(): ', Game.cpu.getUsed())
 	}
     
 };
