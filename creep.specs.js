@@ -115,7 +115,153 @@ let creepSpecs = (rcl) => {
             },
             'hauler': {
                 has: 0,
-                wants: 8,
+                wants: 5,
+                level: rcl,
+                recipe: {
+                    WORK: 5,
+                    CARRY: 9,
+                    MOVE: 7,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'salvager': {
+                has: 0,
+                wants: 2,
+                level: rcl,
+                recipe: {
+                    WORK: 5,
+                    CARRY: 10,
+                    MOVE: 6,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+        },
+        {
+            'harvester': {
+                has: 0,
+                wants: 0,
+                level: rcl,
+                recipe: {
+                    WORK: 5,
+                    CARRY: 9,
+                    MOVE: 7,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'builder': {
+                has: 0,
+                wants: 0,
+                level: rcl,
+                recipe: {
+                    WORK: 6,
+                    CARRY: 9,
+                    MOVE: 4,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'repairer': {
+                has: 0,
+                wants: 1,
+                level: rcl,
+                recipe: {
+                    WORK: 4,
+                    CARRY: 11,
+                    MOVE: 6,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'upgrader': {
+                has: 0,
+                wants: 0,
+                level: rcl,
+                recipe: {
+                    WORK: 5,
+                    CARRY: 9,
+                    MOVE: 7,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'warrior': {
+                has: 0,
+                wants: 0,
+                level: rcl,
+                recipe: {
+                    WORK: 0,
+                    CARRY: 0,
+                    MOVE: 8,
+                    ATTACK: 8,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 24
+                },
+                cost: 0
+            },
+            'scout': {
+                has: 0,
+                wants: 0,
+                level: rcl,
+                recipe: {
+                    WORK: 0,
+                    CARRY: 0,
+                    MOVE: 3,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'hauler': {
+                has: 0,
+                wants: 5,
+                level: rcl,
+                recipe: {
+                    WORK: 5,
+                    CARRY: 8,
+                    MOVE: 7,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'salvager': {
+                has: 0,
+                wants: 2,
                 level: rcl,
                 recipe: {
                     WORK: 5,

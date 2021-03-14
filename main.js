@@ -1,4 +1,5 @@
 let roleHarvester = require('role.harvester');
+let roleSalvager = require('role.salvager');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleWarrior = require('role.warrior');
@@ -34,6 +35,8 @@ let home = spawn.room
 let rc = home.controller
 let rcl = rc.level
 let creepLevelGroups = creepSpecs(rcl)
+
+// !!!   IMPORTANT   !!!   MUST ensure there is creep spec data before leveling up RCL, otherwise no new creeps will be spawned.
 let creepGroups = creepLevelGroups[rcl - 1]
 // roleTower.run(home)
 for (let creepType in creepGroups) {
@@ -96,11 +99,16 @@ module.exports.loop = function () {
     // This approach seems terribly inefficient; it would be better to simply reassign the appropriate number of creeps
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
-    if(buildTargets.length){
+    if (buildTargets.length) {
         creepGroups['builder'].wants = 3
     } else {
         creepGroups['builder'].wants = 0
     }
+
+    let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
+        filter: (s) => (s.structureType == STRUCTURE_TOWER)
+            && s.energy < s.energyCapacity
+    });
 
     // PROSPECTIVE CODE not using yet
     // let roles = [
@@ -117,8 +125,14 @@ module.exports.loop = function () {
     //     creep.memory.currentRole = newRole
     // }
 
+    // for (let name in Game.creeps) {
+    //     let creep = Game.creeps[name];
+    //     console.log("🚀 ~ file: main.js ~ line 122 ~ creep", creep)
+    // }
+
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
+
         // if (checkRepairTargets) {
         //     repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         //         filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
@@ -142,9 +156,8 @@ module.exports.loop = function () {
             //     spawn.recycleCreep(creep)
             // }
         }
-        if (creep.memory.role == 'hauler') {        
-            roleHarvester.run(creep);
-            if (unusedEnergyCapacity < 1) {
+        if (creep.memory.role == 'hauler') {
+            if (unusedEnergyCapacity < 1 && !towersNeedEnergy.length) {
                 if (buildTargets.length) {
                     roleBuilder.run(creep);
                 } else {
@@ -153,6 +166,9 @@ module.exports.loop = function () {
             } else {
                 roleHarvester.run(creep);
             }
+        }
+        if (creep.memory.role == 'salvager') {
+            roleSalvager.run(creep);
         }
         if (creep.memory.role == 'upgrader') {
             if (buildTargets.length) {
@@ -214,6 +230,8 @@ module.exports.loop = function () {
         console.log('CPU used end main loop (checking once every five ticks): ', Game.cpu.getUsed())
     }
     everyFiveCounter--
-    if (everyFiveCounter == 0) { everyFiveCounter = 5 }
+    if (everyFiveCounter == 0) { 
+        everyFiveCounter = 5 
+    }
 
 }
