@@ -82,14 +82,15 @@ module.exports.loop = function () {
     // Uncomment this to see current and max energy available in spawn and structures
     // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
 
-
-    if (everyFiveCounter == 5) {
+    let tally = 0
+    // if (everyFiveCounter == 5) {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-            console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+            // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
             console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
+            tally += creepGroups[creepType].has
         }
-    }
+    // }
 
     // let checkRepairTargets = true
     // let repairTarget
@@ -100,7 +101,7 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 3
+        creepGroups['builder'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
     }
@@ -157,14 +158,20 @@ module.exports.loop = function () {
             // }
         }
         if (creep.memory.role == 'hauler') {
-            if (unusedEnergyCapacity < 1 && !towersNeedEnergy.length) {
+            console.log("🚀 ~ file: main.js ~ line 162 ~ unusedEnergyCapacity", unusedEnergyCapacity)
+            console.log(`all creeps tally: ${tally}`)
+            if (unusedEnergyCapacity < 1 && tally > 4) {
+
                 if (buildTargets.length) {
+                    console.log(`harvester ${creep} BUILD`)
                     roleBuilder.run(creep);
                 } else {
+                    console.log(`harvester ${creep} UPGRADE`)
                     roleUpgrader.run(creep);
                 }
             } else {
-                roleHarvester.run(creep);
+                console.log(`harvester ${creep} HARVEST`)
+                roleHarvester.run(creep, tally);
             }
         }
         if (creep.memory.role == 'salvager') {
@@ -230,8 +237,8 @@ module.exports.loop = function () {
         console.log('CPU used end main loop (checking once every five ticks): ', Game.cpu.getUsed())
     }
     everyFiveCounter--
-    if (everyFiveCounter == 0) { 
-        everyFiveCounter = 5 
+    if (everyFiveCounter == 0) {
+        everyFiveCounter = 5
     }
 
 }

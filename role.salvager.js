@@ -51,7 +51,6 @@ module.exports = {
         } else {
             creep.memory.currentTask = '➕⚡ harvest'
             creep.say('➕⚡');
-            console.log("🚀 ~ file: role.salvager.js ~ line 60 ~ targetSource", targetSource)
             harvest(targetSource)
         }
 

@@ -168,25 +168,9 @@ let creepSpecs = (rcl) => {
                 wants: 0,
                 level: rcl,
                 recipe: {
-                    WORK: 6,
+                    WORK: 9,
                     CARRY: 9,
-                    MOVE: 4,
-                    ATTACK: 0,
-                    RANGED_ATTACK: 0,
-                    HEAL: 0,
-                    CLAIM: 0,
-                    TOUGH: 0
-                },
-                cost: 0
-            },
-            'repairer': {
-                has: 0,
-                wants: 1,
-                level: rcl,
-                recipe: {
-                    WORK: 4,
-                    CARRY: 11,
-                    MOVE: 6,
+                    MOVE: 9,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
@@ -245,12 +229,12 @@ let creepSpecs = (rcl) => {
             },
             'hauler': {
                 has: 0,
-                wants: 5,
+                wants: 4,
                 level: rcl,
                 recipe: {
-                    WORK: 5,
-                    CARRY: 8,
-                    MOVE: 7,
+                    WORK: 8,
+                    CARRY: 11,
+                    MOVE: 9,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
@@ -261,12 +245,28 @@ let creepSpecs = (rcl) => {
             },
             'salvager': {
                 has: 0,
-                wants: 2,
+                wants: 1,
                 level: rcl,
                 recipe: {
                     WORK: 5,
-                    CARRY: 10,
-                    MOVE: 6,
+                    CARRY: 15,
+                    MOVE: 10,
+                    ATTACK: 0,
+                    RANGED_ATTACK: 0,
+                    HEAL: 0,
+                    CLAIM: 0,
+                    TOUGH: 0
+                },
+                cost: 0
+            },
+            'repairer': {
+                has: 0,
+                wants: 1,
+                level: rcl,
+                recipe: {
+                    WORK: 5,
+                    CARRY: 15,
+                    MOVE: 10,
                     ATTACK: 0,
                     RANGED_ATTACK: 0,
                     HEAL: 0,
