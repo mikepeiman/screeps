@@ -4,7 +4,7 @@ var roleUpgrader = {
     run: function(creep) {
         creep.memory.currentRole = 'upgrader'
         creep.memory.currentTask = '⚡ upgrade room controller'
-        creep.memory.upgrading = true
+        // creep.memory.upgrading = true
         // was busy upgrading, but ran out of energy
         if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.upgrading = false;

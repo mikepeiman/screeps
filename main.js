@@ -87,7 +87,7 @@ module.exports.loop = function () {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
             // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
-            console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
+            // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
             tally += creepGroups[creepType].has
         }
     // }

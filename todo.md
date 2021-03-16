@@ -1,7 +1,7 @@
 TASKS
 
-* Add level 4 creep models to creepGroups, change RCL calculation (from -2 to -1 for array)
-* Refactor creepGroups construction properties (composition) to use # of body parts and algorithmic construction
+<!-- * Add level 4 creep models to creepGroups, change RCL calculation (from -2 to -1 for array) -->
+<!-- * Refactor creepGroups construction properties (composition) to use # of body parts and algorithmic construction -->
 * refactor all energy collection and energy transfer to task module
 * refactor all code so that creep targets are stored to memory, and creeps do not pursue the same target
     * in future, they can calculate if multiple creeps are need at same target or not, eg. dropped energy, does the creep have sufficient capacity to pick it all up on its own or not?
@@ -12,6 +12,7 @@ TASKS
 * get tower coded for both defense and repair, and creep healing
 * more complex logic: if there is a spawn queue, and if there is less energy required than the full capacity of a harvesting creep, and if there is no creep already tasked with filling spawn-and-extensions capacity, then this creep should harvest only as much as needed to fill spawn & extensions, and then go fill them
 * get discrete logic to check creep timers and renew them (does not have to happen often as they all have a set lifespan of 1500 ticks)
+* begin mining resource
 
 ===
 
