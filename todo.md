@@ -13,6 +13,9 @@ TASKS
 * more complex logic: if there is a spawn queue, and if there is less energy required than the full capacity of a harvesting creep, and if there is no creep already tasked with filling spawn-and-extensions capacity, then this creep should harvest only as much as needed to fill spawn & extensions, and then go fill them
 * get discrete logic to check creep timers and renew them (does not have to happen often as they all have a set lifespan of 1500 ticks)
 * begin mining resource
+* if energy is out at one source, and there is energy at the other, calculate how long until regeneration for the one that is out; if more than x ticks, send creeps over to the other source. Also, if both sources are exhausted, and there are more than x ticks until regeneration, send partially-filled creeps out to work, saving time
+* combine salvage-repair roles - this is a good synergy, can handle it with a single creep
+* establish code for renewing creeps, instead of letting them die
 
 ===
 

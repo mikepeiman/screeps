@@ -86,7 +86,7 @@ module.exports.loop = function () {
     // if (everyFiveCounter == 5) {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-            // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+            console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
             // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
             tally += creepGroups[creepType].has
         }
@@ -101,7 +101,7 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 2
+        creepGroups['builder'].wants = 1
     } else {
         creepGroups['builder'].wants = 0
     }
@@ -158,19 +158,18 @@ module.exports.loop = function () {
             // }
         }
         if (creep.memory.role == 'hauler') {
-            console.log("🚀 ~ file: main.js ~ line 162 ~ unusedEnergyCapacity", unusedEnergyCapacity)
-            console.log(`all creeps tally: ${tally}`)
+            // console.log("🚀 ~ file: main.js ~ line 162 ~ unusedEnergyCapacity", unusedEnergyCapacity)
+            // console.log(`all creeps tally: ${tally}`)
             if (unusedEnergyCapacity < 1 && tally > 4) {
-
                 if (buildTargets.length) {
-                    console.log(`harvester ${creep} BUILD`)
+                    // console.log(`harvester ${creep} BUILD`)
                     roleBuilder.run(creep);
                 } else {
-                    console.log(`harvester ${creep} UPGRADE`)
+                    // console.log(`harvester ${creep} UPGRADE`)
                     roleUpgrader.run(creep);
                 }
             } else {
-                console.log(`harvester ${creep} HARVEST`)
+                // console.log(`harvester ${creep} HARVEST`)
                 roleHarvester.run(creep, tally);
             }
         }
