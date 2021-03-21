@@ -86,7 +86,7 @@ module.exports.loop = function () {
     // if (everyFiveCounter == 5) {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-            console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+            // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
             // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
             tally += creepGroups[creepType].has
         }
@@ -223,8 +223,8 @@ module.exports.loop = function () {
     for (let creepType in creepGroups) {
         let c = creepGroups[creepType]
         if (c.has < c.wants) {
-            console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
-            console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+            // console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
+            // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
             let comp = c.composition
             let name = `${creepType}-level-${rcl}-${Game.time}`
             let mem = { memory: { role: creepType, home: home, level: rcl, working: false } }

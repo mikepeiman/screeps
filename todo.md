@@ -18,6 +18,8 @@ TASKS
 * establish code for renewing creeps, instead of letting them die
 * if creeps are idle for more than x ticks (like, 3-10 depending on situation) retask - harvesters with >0 energy can transfer
 * code for creep production based on available max energy stores - so you never lose an energy store and then have no creeps able to be built
+* when energy storage (extensions) are being built, that messes up unusedEnergyCapacity until they are built - no upgrading will happen
+* make a new creep construction function that works based off total energy levels, and uses percentages for components 
 
 ===
 
