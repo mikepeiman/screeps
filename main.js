@@ -101,9 +101,11 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 1
+        creepGroups['builder'].wants = 3
+        creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
+        creepGroups['hauler'].wants = 4
     }
 
     let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
@@ -142,14 +144,18 @@ module.exports.loop = function () {
         // }
 
         if (creep.memory.role == 'harvester') {
-            // roleHarvester.run(creep);
-            // if (unusedEnergyCapacity < 1) {
-            //     if (buildTargets.length) {
-            //         roleBuilder.run(creep);
-            //     } else {
-            //         roleUpgrader.run(creep);
-            //     }
-            // } 
+            if (unusedEnergyCapacity < 1 && tally > 2) {
+                if (buildTargets.length) {
+                    // console.log(`harvester ${creep} BUILD`)
+                    roleBuilder.run(creep);
+                } else {
+                    // console.log(`harvester ${creep} UPGRADE`)
+                    roleUpgrader.run(creep);
+                }
+            } else {
+                // console.log(`harvester ${creep} HARVEST`)
+                roleHarvester.run(creep, tally);
+            }
             // SUICIDE CODE! works great
             // creep.moveTo(spawn)
             // if (spawn.pos.inRangeTo(creep.pos.x, creep.pos.y, 1)) {

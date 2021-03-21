@@ -16,6 +16,8 @@ TASKS
 * if energy is out at one source, and there is energy at the other, calculate how long until regeneration for the one that is out; if more than x ticks, send creeps over to the other source. Also, if both sources are exhausted, and there are more than x ticks until regeneration, send partially-filled creeps out to work, saving time
 * combine salvage-repair roles - this is a good synergy, can handle it with a single creep
 * establish code for renewing creeps, instead of letting them die
+* if creeps are idle for more than x ticks (like, 3-10 depending on situation) retask - harvesters with >0 energy can transfer
+* code for creep production based on available max energy stores - so you never lose an energy store and then have no creeps able to be built
 
 ===
 
