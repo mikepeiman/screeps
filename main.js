@@ -8,7 +8,9 @@ let creepSpecs = require('creep.specs')
 let roleTower = require('role.tower')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
-const roleRepairer = require('./role.repairer');
+const roleRepairer = require('role.repairer');
+const renewCreep = require('renew.creep')
+const renewCheck = require('renew.check')
 // let idleCreep = require('idleCreep')
 // let roleClaimer = require('role.claimer')
 // let p = require('pathfinder')
@@ -45,6 +47,7 @@ for (let creepType in creepGroups) {
 }
 
 let everyFiveCounter = 5
+let renewCreepTimer = 0
 module.exports.loop = function () {
     let towers = home.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
     for (let tower in towers) {
@@ -77,6 +80,16 @@ module.exports.loop = function () {
     })
     const takeEnergyTargets = [...takeEnergyTombstones, ...takeEnergyDroppedResources, ...takeEnergyRuins]
 
+    renewCreepTimer++
+
+    if (renewCreepTimer > 15) {
+        for (let name in Game.creeps) {
+            let creep = Game.creeps[name];
+            console.log(`🚀 ~ file: main.js ~ line 85 ~ renewCreepTimer`, renewCreepTimer)
+            renewCheck(creep, spawn)
+        }
+        renewCreepTimer = 0
+    }
 
     // console.log(`tick: controller level ${rcl}, ${RCLprogressRemains} remains`)
     // Uncomment this to see current and max energy available in spawn and structures
@@ -84,12 +97,12 @@ module.exports.loop = function () {
 
     let tally = 0
     // if (everyFiveCounter == 5) {
-        for (let creepType in creepGroups) {
-            creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-            // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
-            // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
-            tally += creepGroups[creepType].has
-        }
+    for (let creepType in creepGroups) {
+        creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
+        // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+        // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
+        tally += creepGroups[creepType].has
+    }
     // }
 
     // let checkRepairTargets = true
@@ -131,8 +144,13 @@ module.exports.loop = function () {
     //     console.log("🚀 ~ file: main.js ~ line 122 ~ creep", creep)
     // }
 
+
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
+        if(creep.memory.nextTask == "renew") {
+            renewCreep(creep,spawn)
+            // creep.memory.role = "harvester"
+        }
 
         // if (checkRepairTargets) {
         //     repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -140,7 +158,7 @@ module.exports.loop = function () {
         //     });
         //     checkRepairTargets = false
         // }
-
+        if(creep.memory.nextTask != "renew") {
         if (creep.memory.role == 'harvester') {
             if (unusedEnergyCapacity < 1 && tally > 3) {
                 if (buildTargets.length) {
@@ -216,11 +234,14 @@ module.exports.loop = function () {
             roleWarrior.move(creep, spawn);
             // roleWarrior.attack(creep, t2);
         }
+    } else {
+        renewCreep(creep, spawn)
+    }
     }
 
     for (let creepType in creepGroups) {
         let c = creepGroups[creepType]
- 
+
         if (c.has < c.wants) {
             console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
             // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
