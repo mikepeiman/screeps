@@ -44,8 +44,7 @@ var roleUpgrader = {
         }   
 
         function harvest(resource) {
-        console.log("🚀 ~ file: role.upgrader.js ~ line 47 ~ harvest ~ resource", resource)
-            
+        // console.log("🚀 ~ file: role.upgrader.js ~ line 47 ~ harvest ~ resource", resource)            
             let y = creep.harvest(resource, RESOURCE_ENERGY)
             if (y == ERR_NOT_IN_RANGE) {
                 creep.memory.currentTask = '⚡ harvest'
