@@ -35,9 +35,9 @@ let home = spawn.room
 let rc = home.controller
 let rcl = rc.level
 let creepLevelGroups = creepSpecs(rcl)
-
 // !!!   IMPORTANT   !!!   MUST ensure there is creep spec data before leveling up RCL, otherwise no new creeps will be spawned.
-let creepGroups = creepLevelGroups[rcl - 1]
+let creepGroups = creepLevelGroups[rcl - 1].specs
+
 // roleTower.run(home)
 for (let creepType in creepGroups) {
     let c = creepGroups[creepType]
@@ -86,7 +86,7 @@ module.exports.loop = function () {
     // if (everyFiveCounter == 5) {
         for (let creepType in creepGroups) {
             creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-            console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+            // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
             // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
             tally += creepGroups[creepType].has
         }
@@ -102,10 +102,8 @@ module.exports.loop = function () {
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
         creepGroups['builder'].wants = 3
-        creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
-        creepGroups['hauler'].wants = 4
     }
 
     let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
@@ -144,7 +142,7 @@ module.exports.loop = function () {
         // }
 
         if (creep.memory.role == 'harvester') {
-            if (unusedEnergyCapacity < 1 && tally > 2) {
+            if (unusedEnergyCapacity < 1 && tally > 3) {
                 if (buildTargets.length) {
                     // console.log(`harvester ${creep} BUILD`)
                     roleBuilder.run(creep);
@@ -222,15 +220,18 @@ module.exports.loop = function () {
 
     for (let creepType in creepGroups) {
         let c = creepGroups[creepType]
+ 
         if (c.has < c.wants) {
             console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
-            console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+            // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
             let comp = c.composition
+            // console.log("🚀 ~ file: main.js ~ line 230 ~ comp", comp)
             let name = `${creepType}-level-${rcl}-${Game.time}`
-            let mem = { memory: { role: creepType, home: home, level: rcl, working: false } }
+            let mem = { memory: { role: creepType, home: home.name, level: rcl, working: false } }
             let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
+            // console.log("🚀 ~ file: main.js ~ line 235 ~ (comp, name, mem)", JSON.stringify(comp), name, JSON.stringify(mem))
             if (x == 0) {
-                console.log(`Spawning a ${c}`)
+                console.log(`Spawning a ${creepType}`)
             } else {
                 console.log(`Error in spawning: ${x}`)
             }
