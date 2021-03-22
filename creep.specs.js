@@ -643,6 +643,22 @@ let creepSpecs = (rcl) => {
                     },
                     cost: 0
                 },
+                'claimer': {
+                    has: 0,
+                    wants: 0,
+                    level: rcl,
+                    recipe: {
+                        WORK: 0,
+                        CARRY: 0,
+                        MOVE: 1,
+                        ATTACK: 0,
+                        RANGED_ATTACK: 0,
+                        HEAL: 0,
+                        CLAIM: 1,
+                        TOUGH: 0
+                    },
+                    cost: 0
+                },
             }
         },
         {

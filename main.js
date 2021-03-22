@@ -12,7 +12,7 @@ const roleRepairer = require('role.repairer');
 const renewCreep = require('renew.creep')
 const renewCheck = require('renew.check')
 // let idleCreep = require('idleCreep')
-// let roleClaimer = require('role.claimer')
+let roleClaimer = require('role.claimer')
 // let p = require('pathfinder')
 // Room #1: Game.rooms['W14N43']
 let creepsFullPopulation = false
@@ -98,7 +98,7 @@ module.exports.loop = function () {
     // if (everyFiveCounter == 5) {
     for (let creepType in creepGroups) {
         creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-        // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+        console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
         tally += creepGroups[creepType].has
     }
@@ -110,7 +110,7 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 3
+        creepGroups['builder'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
     }
@@ -180,6 +180,11 @@ module.exports.loop = function () {
             // console.log(`checking scout creeps, current room name ${creep.room.name} and target ${creep.room.target}`)
             roleScout.run(creep)
         }
+        if (creep.memory.role == 'claimer') {
+            // creep.memory.target = Game.rooms['W6N54']
+            // console.log(`checking scout creeps, current room name ${creep.room.name} and target ${creep.room.target}`)
+            roleClaimer.run(creep, 'W6N54')
+        }
         if (creep.memory.role == 'warrior') {
             // nearest SK thug: 9,45,W6N54
             let t1 = new RoomPosition(9, 45, 'W6N54')
@@ -198,7 +203,7 @@ module.exports.loop = function () {
 
         if (c.has < c.wants) {
             console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
-            // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+            console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
             let comp = c.composition
             // console.log("🚀 ~ file: main.js ~ line 230 ~ comp", comp)
             let name = `${creepType}-level-${rcl}-${Game.time}`

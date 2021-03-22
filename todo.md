@@ -7,6 +7,8 @@ TASKS
 * if creep idle, creep energy empty, and energy sources empty, send to energy source to await regen
 * Emergency preparedness: if all my creeps die, code contingency to rebuild from 300 energy (spawn). So, if no creeps exist and total energy < 301, begin there.
 
+* Take neighboring room W7N53, target RC ID # 5bbcac7a9099fc012e635853 at 28, 8
+
 
 * refactor all energy collection and energy transfer to task module
 * refactor all code so that creep targets are stored to memory, and creeps do not pursue the same target

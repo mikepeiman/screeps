@@ -13,18 +13,18 @@ module.exports = {
         let targetSource
         if (takeEnergyDroppedResources.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyDroppedResources)
-            // console.log(`${creep} 🚀 ~ file: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
-            let amt = targetSource.amount
+            console.log(`${creep} 🚀 ~ file: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
+            // let amt = targetSource.amount
             // console.log("🚀 ~ file: role.salvager.js ~ line 18 ~ amt", amt)
         } else if (takeEnergyTombstones.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyTombstones)
-            // console.log("🚀 ~ file: role.salvager.js ~ line 19 ~ targetSource", targetSource)
-            let amt = targetSource.amount
+            console.log("🚀 ~ file: role.salvager.js ~ line 19 ~ targetSource", targetSource)
+            // let amt = targetSource.amount
             // console.log("🚀 ~ file: role.salvager.js ~ line 23 ~ amt", amt)
         } else if (takeEnergyRuins.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyRuins)
-            // console.log("🚀 ~ file: role.salvager.js ~ line 22 ~ targetSource", targetSource)
-            let amt = targetSource.amount
+            console.log("🚀 ~ file: role.salvager.js ~ line 22 ~ targetSource", targetSource)
+            // let amt = targetSource.amount
             // console.log("🚀 ~ file: role.salvager.js ~ line 28 ~ amt", amt)
         } else {
             sources = creep.room.find(FIND_SOURCES_ACTIVE)
