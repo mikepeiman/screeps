@@ -80,16 +80,15 @@ module.exports.loop = function () {
     })
     const takeEnergyTargets = [...takeEnergyTombstones, ...takeEnergyDroppedResources, ...takeEnergyRuins]
 
-    renewCreepTimer++
-
-    if (renewCreepTimer > 15) {
-        for (let name in Game.creeps) {
-            let creep = Game.creeps[name];
-            console.log(`🚀 ~ file: main.js ~ line 85 ~ renewCreepTimer`, renewCreepTimer)
-            renewCheck(creep, spawn)
-        }
-        renewCreepTimer = 0
-    }
+    // renewCreepTimer++
+    // if (renewCreepTimer > 15) {
+    //     for (let name in Game.creeps) {
+    //         let creep = Game.creeps[name];
+    //         console.log(`🚀 ~ file: main.js ~ line 85 ~ renewCreepTimer`, renewCreepTimer)
+    //         renewCheck(creep, spawn)
+    //     }
+    //     renewCreepTimer = 0
+    // }
 
     // console.log(`tick: controller level ${rcl}, ${RCLprogressRemains} remains`)
     // Uncomment this to see current and max energy available in spawn and structures
@@ -104,9 +103,6 @@ module.exports.loop = function () {
         tally += creepGroups[creepType].has
     }
     // }
-
-    // let checkRepairTargets = true
-    // let repairTarget
 
     // Automatically set whether we want to have any builders. This variable 'buildTargets' is also used
     // to determine work priorities for other creep types.
@@ -124,52 +120,21 @@ module.exports.loop = function () {
             && s.energy < s.energyCapacity
     });
 
-    // PROSPECTIVE CODE not using yet
-    // let roles = [
-    //     "harvester",
-    //     "upgrader",
-    //     "repairer",
-    //     "builder"
-    // ]
-
-    // function setCurrentRole(creep, newRole) {
-    //     roles.forEach(role => {
-    //         delete creep.memory.currentRole
-    //     })
-    //     creep.memory.currentRole = newRole
-    // }
-
-    // for (let name in Game.creeps) {
-    //     let creep = Game.creeps[name];
-    //     console.log("🚀 ~ file: main.js ~ line 122 ~ creep", creep)
-    // }
-
-
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
-        if(creep.memory.nextTask == "renew") {
-            renewCreep(creep,spawn)
-            // creep.memory.role = "harvester"
-        }
-
-        // if (checkRepairTargets) {
-        //     repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        //         filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
-        //     });
-        //     checkRepairTargets = false
+        // if(creep.memory.nextTask == "renew") {
+        //     renewCreep(creep,spawn)
         // }
-        if(creep.memory.nextTask != "renew") {
+
+        // if(creep.memory.nextTask != "renew") {
         if (creep.memory.role == 'harvester') {
             if (unusedEnergyCapacity < 1 && tally > 3) {
                 if (buildTargets.length) {
-                    // console.log(`harvester ${creep} BUILD`)
                     roleBuilder.run(creep);
                 } else {
-                    // console.log(`harvester ${creep} UPGRADE`)
                     roleUpgrader.run(creep);
                 }
             } else {
-                // console.log(`harvester ${creep} HARVEST`)
                 roleHarvester.run(creep, tally);
             }
             // SUICIDE CODE! works great
@@ -180,18 +145,13 @@ module.exports.loop = function () {
             // }
         }
         if (creep.memory.role == 'hauler') {
-            // console.log("🚀 ~ file: main.js ~ line 162 ~ unusedEnergyCapacity", unusedEnergyCapacity)
-            // console.log(`all creeps tally: ${tally}`)
             if (unusedEnergyCapacity < 1 && tally > 4) {
                 if (buildTargets.length) {
-                    // console.log(`harvester ${creep} BUILD`)
                     roleBuilder.run(creep);
                 } else {
-                    // console.log(`harvester ${creep} UPGRADE`)
                     roleUpgrader.run(creep);
                 }
             } else {
-                // console.log(`harvester ${creep} HARVEST`)
                 roleHarvester.run(creep, tally);
             }
         }
@@ -201,17 +161,11 @@ module.exports.loop = function () {
         if (creep.memory.role == 'upgrader') {
             if (buildTargets.length) {
                 roleBuilder.run(creep);
-                // } else if (repairTarget != undefined) {
-                //     creep.memory.repairing = false
-                //     roleRepairer.run(creep)
             } else {
                 roleUpgrader.run(creep);
             }
         }
         if (creep.memory.role == 'builder') {
-            // if (repairTarget != undefined) {
-            //     roleRepairer.run(creep)
-            // } else 
             if (buildTargets.length) {
                 roleBuilder.run(creep);
             } else {
@@ -234,9 +188,9 @@ module.exports.loop = function () {
             roleWarrior.move(creep, spawn);
             // roleWarrior.attack(creep, t2);
         }
-    } else {
-        renewCreep(creep, spawn)
-    }
+        // } else {
+        // renewCreep(creep, spawn)
+        // }
     }
 
     for (let creepType in creepGroups) {

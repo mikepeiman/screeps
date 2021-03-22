@@ -5,6 +5,7 @@ TASKS
 * renew creeps rather than let them die (if not boosted, at least)
 * check for creep idle, and send them to work if > 10% energy on board && more than 30 ticks to energy source regen
 * if creep idle, creep energy empty, and energy sources empty, send to energy source to await regen
+* Emergency preparedness: if all my creeps die, code contingency to rebuild from 300 energy (spawn). So, if no creeps exist and total energy < 301, begin there.
 
 
 * refactor all energy collection and energy transfer to task module

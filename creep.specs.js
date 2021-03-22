@@ -537,7 +537,7 @@ let creepSpecs = (rcl) => {
                     level: rcl,
                     recipe: {
                         WORK: 9,
-                        CARRY: 9,
+                        CARRY: 12,
                         MOVE: 9,
                         ATTACK: 0,
                         RANGED_ATTACK: 0,
