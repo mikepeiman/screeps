@@ -3,9 +3,7 @@ module.exports = {
         let takeEnergyTombstones = creep.room.find(FIND_TOMBSTONES, {
             filter: tombstone => tombstone.store.energy > 0
         })
-        let takeEnergyDroppedResources = creep.room.find(FIND_DROPPED_RESOURCES, {
-            filter: resource => resource.resourceType === RESOURCE_ENERGY
-        })
+        let takeEnergyDroppedResources = creep.room.find(FIND_DROPPED_RESOURCES)
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {
             filter: ruin => ruin.store.energy > 0
         })
@@ -29,6 +27,16 @@ module.exports = {
         } else {
             sources = creep.room.find(FIND_SOURCES_ACTIVE)
             targetSource = creep.pos.findClosestByPath(sources)
+        }
+        for (var resource in creep.store) {
+            console.log(`🚀 ~ file: role.salvager.js ~ line 36 ~ resource`, resource)
+        }
+        // let mineralsOnBoard = creep.store.getUsedCapacity(RESOURCE_MINERALS)
+        // console.log(`🚀 ~ file: role.salvager.js ~ line 33 ~ mineralsOnBoard`, mineralsOnBoard)
+        if (creep.store.getFreeCapacity() == 0) {
+            for (var resource in creep.store) {
+                console.log(`🚀 ~ file: role.salvager.js ~ line 36 ~ resource`, resource)
+            }
         }
 
         if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
@@ -63,9 +71,10 @@ module.exports = {
         }
 
         function harvest(resource) {
+            console.log(`🚀 ~ file: role.salvager.js ~ line 74 ~ harvest ~ resource`, resource)
             let x = creep.withdraw(resource, RESOURCE_ENERGY)
             if (x == ERR_NOT_IN_RANGE) {
-            // console.log("🚀 ~ file: role.salvager.js ~ line 59 ~ harvest ~ x", x)
+                // console.log("🚀 ~ file: role.salvager.js ~ line 59 ~ harvest ~ x", x)
 
                 creep.memory.currentTask = '⚡ harvest'
                 // // creep.say('⚡🥾');

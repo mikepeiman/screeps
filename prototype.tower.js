@@ -40,7 +40,7 @@ StructureTower.prototype.defend = function () {
     // repair only if towers have some defense energy in reserve
     let towerEnergy = this.store.getUsedCapacity(RESOURCE_ENERGY)
 
-    console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ towerEnergy`, towerEnergy)
+    // console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ towerEnergy`, towerEnergy)
     if (towerEnergy > 200 && !hostiles[0]) {
 
         // For everything that's not walls and ramparts (g. roads)
@@ -52,28 +52,28 @@ StructureTower.prototype.defend = function () {
         // if any walls or ramparts are below emergencyThreshold
         if (priorities[0]) {
             let x = this.repair(priorities[0]);
-            console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
+            // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
         } else {
             if (walls[0]) {
-                console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
+                // console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
                 let x = this.repair(walls[0]);
-                console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ x`, x)
+                // console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ x`, x)
             } if (ramparts[0]) {
-                console.log(`🚀 ~ file: role.tower.js ~ line 39 ~ ramparts.length`, ramparts.length)
+                // console.log(`🚀 ~ file: role.tower.js ~ line 39 ~ ramparts.length`, ramparts.length)
                 let x = this.repair(ramparts[0]);
-                console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
+                // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
             }
         }
     }
 
     if (hostiles[0]) {
         let username = hostiles[0].owner.username;
-        console.log(`🚀 ~ file: prototype.tower.js ~ line 35 ~ username`, username)
+        console.log(`👿👿👿 prototype.tower.jsUser ${username} spotted in room ${this.room}`)
         Game.notify(`User ${username} spotted in room ${this.room}`);
         this.attack(hostiles[0])
     } else if (wounded[0]) {
         // HEAL code
-        console.log("🚀 ~ file: role.this.js ~ line 20 ~ wounded", wounded)
+        // console.log("🚀 ~ file: role.this.js ~ line 20 ~ wounded", wounded)
         this.heal(wounded[0])
     }
 }

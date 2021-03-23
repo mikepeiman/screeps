@@ -21,10 +21,11 @@ module.exports = {
                 || s.structureType == STRUCTURE_EXTENSION)
                 && s.energy < s.energyCapacity
         });
-        let containers = creep.room.find(FIND_MY_STRUCTURES, {
+        let containers = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
                 && s.energy < s.energyCapacity
         });
+
         let towers = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
                 && s.energy < s.energyCapacity

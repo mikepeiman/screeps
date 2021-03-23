@@ -2,6 +2,7 @@ let roleHarvester = require('role.harvester');
 let roleSalvager = require('role.salvager');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
+let roleMiner = require('role.miner');
 let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
 let recycleCreep = require('creep.recycle')
@@ -73,9 +74,7 @@ module.exports.loop = function () {
     let takeEnergyTombstones = home.find(FIND_TOMBSTONES, {
         filter: tombstone => tombstone.store.energy > 0
     })
-    let takeEnergyDroppedResources = home.find(FIND_DROPPED_RESOURCES, {
-        filter: resource => resource.resourceType === RESOURCE_ENERGY
-    })
+    let takeEnergyDroppedResources = home.find(FIND_DROPPED_RESOURCES)
     let takeEnergyRuins = home.find(FIND_RUINS, {
         filter: ruin => ruin.store.energy > 0
     })
@@ -131,7 +130,7 @@ module.exports.loop = function () {
 
         // if(creep.memory.nextTask != "renew") {
         if (creep.memory.role == 'harvester') {
-            recycleCreep(creep,spawn)
+            // recycleCreep(creep, spawn)
             // if (unusedEnergyCapacity < 1 && tally > 3) {
             //     if (buildTargets.length) {
             //         roleBuilder.run(creep);
@@ -139,7 +138,7 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-            //     roleHarvester.run(creep, tally);
+                roleHarvester.run(creep, tally);
             // }
         }
         if (creep.memory.role == 'hauler') {
@@ -156,6 +155,9 @@ module.exports.loop = function () {
         if (creep.memory.role == 'salvager') {
             roleSalvager.run(creep);
         }
+        if (creep.memory.role == 'miner') {
+            roleMiner.run(creep);
+        }
         if (creep.memory.role == 'upgrader') {
             if (buildTargets.length) {
                 roleBuilder.run(creep);
@@ -167,7 +169,7 @@ module.exports.loop = function () {
             if (buildTargets.length) {
                 roleBuilder.run(creep);
             } else {
-                roleUpgrader.run(creep);
+                roleMiner.run(creep);
             }
         }
         if (creep.memory.role == 'repairer') {
@@ -191,17 +193,15 @@ module.exports.loop = function () {
             roleWarrior.move(creep, spawn);
             // roleWarrior.attack(creep, t2);
         }
-        // } else {
-        // renewCreep(creep, spawn)
-        // }
+
     }
 
     for (let creepType in creepGroups) {
         let c = creepGroups[creepType]
-//  && creepType == 'hauler'
+        //  && creepType == 'hauler'
         if (c.has < c.wants) {
-            console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
-            console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+            // console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
+            // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
             let comp = c.composition
             // console.log("🚀 ~ file: main.js ~ line 230 ~ comp", comp)
             let name = `${creepType}-level-${rcl}-${Game.time}`
@@ -211,10 +211,11 @@ module.exports.loop = function () {
             if (x == 0) {
                 console.log(`Spawning a ${creepType}`)
             } else {
-                console.log(`Error in spawning: ${x}`)
+                // console.log(`Error in spawning: ${x}`)
             }
         }
     }
+
 
 
     if (everyFiveCounter == 5) {
