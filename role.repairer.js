@@ -2,15 +2,15 @@ var roleRepairer = {
 
 	/** @param {Creep} creep **/
 	run: function (creep) {
-		// creep.memory.currentTask = 'repair'
+        let moveOpts = { visualizePathStyle: { stroke: '#00ffaa' }, reusePath: 3 }
 		creep.memory.currentRole = 'repairer'
 		if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
 			creep.memory.repairing = false;
-			creep.say('🔄 harvest');
+			// creep.say('🔄 harvest');
 		}
 		if (!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
 			creep.memory.repairing = true;
-			creep.say('🔨 repair');
+			// creep.say('🔨 repair');
 		}
 
 		let structureToRepair = creep.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -23,10 +23,10 @@ var roleRepairer = {
 				// console.log(`structureToRepair ${structureToRepair} exists! We should be working ${creep}`)
 				if (creep.repair(structureToRepair) == ERR_NOT_IN_RANGE) {
 					// move towards it
-					creep.say('🔨 repair');
-					creep.moveTo(structureToRepair);
+					// creep.say('🔨 repair');
+					creep.moveTo(structureToRepair, moveOpts);
 				} else {
-					creep.say(`🔨!`);
+					// creep.say(`🔨!`);
 					creep.repair(structureToRepair)
 				}
 			}
@@ -35,10 +35,10 @@ var roleRepairer = {
 			var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 			if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
 				// move towards the source
-				creep.say('🔄 harvest');
-				creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' }, range: 1 })
+				// creep.say('🔄 harvest');
+				creep.moveTo(source, moveOpts)
 			} else {
-				creep.say('⚡🍓');
+				// creep.say('⚡🍓');
 			}
 		}
 	}

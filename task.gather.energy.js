@@ -7,25 +7,25 @@ let gatherEnergy = (creep, takeEnergyTargets, takeEnergySources) => {
         console.log(`nearestTarget for energy pickup: `, nearestTarget)
         if (pickupResult == ERR_NOT_IN_RANGE) {
             // move towards the source
-            creep.say('🎁🚛');
+            // creep.say('🎁🚛');
             creep.moveTo(nearestTarget, { visualizePathStyle: { stroke: '#00aaff' } });
         } else {
             if(pickupResult == 0){
-                creep.say('🎁🍓');
+                // creep.say('🎁🍓');
             } else {
-                creep.say('🎁???');
+                // creep.say('🎁???');
             }
         }
     } else {
         if (harvestResult == ERR_NOT_IN_RANGE) {
             // move towards the source
-            creep.say('⚡🚛');
+            // creep.say('⚡🚛');
             creep.moveTo(nearestSource, { visualizePathStyle: { stroke: '#ffaa00' } });
         } else {
             if(harvestResult == 0){
-                creep.say('⚡🍓');
+                // creep.say('⚡🍓');
             } else {
-                creep.say('⚡???');
+                // creep.say('⚡???');
             }
         }
     }

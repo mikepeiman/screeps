@@ -1,6 +1,6 @@
 let roleWarrior = {
     move: (creep,target) => {
-            creep.say('🏃‍♂️👮‍♂️');
+            // creep.say('🏃‍♂️👮‍♂️');
             creep.moveTo(target)    
     },
     attack: (creep,target) => {
@@ -11,7 +11,7 @@ let roleWarrior = {
         console.log("🚀 ~ file: role.warrior.js ~ line 7 ~ attack", attack)
 
             if (attack == ERR_NOT_IN_RANGE) {
-                creep.say('⚔🏃‍♂️');
+                // creep.say('⚔🏃‍♂️');
                 creep.attack(target);
             }
     }

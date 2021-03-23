@@ -5,7 +5,6 @@ let roleBuilder = require('role.builder');
 let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
 let creepSpecs = require('creep.specs')
-let roleTower = require('role.tower')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
 const roleRepairer = require('role.repairer');
@@ -13,8 +12,6 @@ const renewCreep = require('renew.creep')
 const renewCheck = require('renew.check')
 // let idleCreep = require('idleCreep')
 let roleClaimer = require('role.claimer')
-// let p = require('pathfinder')
-// Room #1: Game.rooms['W14N43']
 let creepsFullPopulation = false
 
 // explore Traveler.js
@@ -48,10 +45,13 @@ for (let creepType in creepGroups) {
 
 let everyFiveCounter = 5
 let renewCreepTimer = 0
+require('prototype.tower')
+
 module.exports.loop = function () {
     let towers = home.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
-    for (let tower in towers) {
-        roleTower.run(towers[tower], Game.spawns['Spawn1'].room)
+    for (let i in towers) {
+        let tower = towers[i]
+        tower.defend()
     }
     for (let name in Memory.creeps) {
         if (!Game.creeps[name]) {
@@ -98,7 +98,7 @@ module.exports.loop = function () {
     // if (everyFiveCounter == 5) {
     for (let creepType in creepGroups) {
         creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-        console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+        // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
         tally += creepGroups[creepType].has
     }
@@ -111,8 +111,10 @@ module.exports.loop = function () {
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
         creepGroups['builder'].wants = 2
+        creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
+        creepGroups['hauler'].wants = 4
     }
 
     let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
@@ -140,7 +142,7 @@ module.exports.loop = function () {
             // SUICIDE CODE! works great
             // creep.moveTo(spawn)
             // if (spawn.pos.inRangeTo(creep.pos.x, creep.pos.y, 1)) {
-            //     creep.say("Here!")
+            //     // creep.say("Here!")
             //     spawn.recycleCreep(creep)
             // }
         }
@@ -152,7 +154,7 @@ module.exports.loop = function () {
                     roleUpgrader.run(creep);
                 }
             } else {
-                roleHarvester.run(creep, tally);
+                roleHarvester.run(creep);
             }
         }
         if (creep.memory.role == 'salvager') {

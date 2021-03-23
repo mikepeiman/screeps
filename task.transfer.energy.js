@@ -15,7 +15,7 @@ let transferEnergy = (creep) => {
             // try to transfer energy, if it is not in range
             if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.memory.currentTask = '⚡🔄 transfer'
-                creep.say('⚡🔄');
+                // creep.say('⚡🔄');
                 // move towards it
                 creep.moveTo(structure, { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 25 });
             }

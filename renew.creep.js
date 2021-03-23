@@ -6,7 +6,7 @@ let renewCreep = (creep, spawn) => {
         console.log(`🚀 ~ file: renew.creep.js ~ ${creep} ~ renewCreep ~ x`, x)
         if (x == "ERR_NOT_IN_RANGE") {
             creep.moveTo(spawn)
-            creep.say('🔃')
+            // creep.say('🔃')
         }
         if(x == -8){
             creep.memory.role = creep.memory.lastRole

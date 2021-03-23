@@ -25,12 +25,12 @@ let roleClaimer = {
 
             if (creep.moveTo(room) == ERR_NOT_IN_RANGE) {
                 console.log(`moving to room`)
-                creep.say('Claim...🚩')
+                // creep.say('Claim...🚩')
                 creep.moveTo(room, { visualizePathStyle: { stroke: '#ffaa00' }})
             }
             // if (creep.reserveController(rc) == ERR_NOT_IN_RANGE) {
             //     creep.moveTo(room, { visualizePathStyle: { stroke: '#ffaa00' }});
-            //     creep.say('Claim...🚩')
+            //     // creep.say('Claim...🚩')
             // }
             // claimer-level-3-26194808
             let reserve = creep.reserveController(room.controller)

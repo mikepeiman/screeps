@@ -8,22 +8,22 @@ var roleUpgrader = {
         // was busy upgrading, but ran out of energy
         if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.upgrading = false;
-            creep.say('🔄 harvest');
+            // creep.say('🔄 harvest');
 	    }
 
         // was not upgrading, but has reached full energy capacity - time to upgrade
 	    if(!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
 	        creep.memory.upgrading = true;
-	        creep.say('⚡ upgrade');
+	        // creep.say('⚡ upgrade');
 	    }
         let rc = creep.room.controller
         let upgrade = creep.upgradeController(rc)
 	    if(creep.memory.upgrading) {
             if(upgrade == ERR_NOT_IN_RANGE) {
-                creep.say('⚡!');
+                // creep.say('⚡!');
                 creep.moveTo(rc, {visualizePathStyle: {stroke: '#ffffff'}});
             } else {
-                creep.say('⚡⚡');
+                // creep.say('⚡⚡');
             }
         } else {
             let sources = creep.room.find(FIND_SOURCES_ACTIVE);
@@ -38,7 +38,7 @@ var roleUpgrader = {
     
             let x = harvest(targetSource)
             if (x == ERR_NOT_IN_RANGE) {
-                creep.say('🔄 harvest');
+                // creep.say('🔄 harvest');
                 creep.moveTo(targetSource, { visualizePathStyle: { stroke: '#ffaa00' } });
             }
         }   
@@ -48,7 +48,7 @@ var roleUpgrader = {
             let y = creep.harvest(resource, RESOURCE_ENERGY)
             if (y == ERR_NOT_IN_RANGE) {
                 creep.memory.currentTask = '⚡ harvest'
-                creep.say('⚡🥾');
+                // creep.say('⚡🥾');
                 creep.moveTo(resource, { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 25 });
             } 
         }

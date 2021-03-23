@@ -6,7 +6,7 @@ module.exports = {
             // find exit to target room
             // var exit = creep.room.findExitTo(creep.memory.target);
             // move to exit
-            creep.say('🗺🛸');
+            // creep.say('🗺🛸');
             creep.moveTo(new RoomPosition(20,45,'W6N54'))
             // creep.moveTo(creep.pos.findClosestByRange(exit));
         }
