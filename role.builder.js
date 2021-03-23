@@ -2,7 +2,7 @@ var roleBuilder = {
 
 	/** @param {Creep} creep **/
 	run: function (creep) {
-		let moveOpts = { visualizePathStyle: { stroke: '#00aaff' }, range: 1, ignoreCreeps: true, reusePath: 3 }
+		let moveOpts = { visualizePathStyle: { stroke: '#00aaff' }, range: 1, ignoreCreeps: false, reusePath: 3 }
 		creep.memory.currentTask = 'build'
 		creep.memory.currentRole = 'builder'
 		if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {

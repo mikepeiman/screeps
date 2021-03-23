@@ -4,6 +4,7 @@ let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
+let recycleCreep = require('creep.recycle')
 let creepSpecs = require('creep.specs')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
@@ -111,10 +112,10 @@ module.exports.loop = function () {
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
         creepGroups['builder'].wants = 2
-        creepGroups['hauler'].wants = 2
+        // creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
-        creepGroups['hauler'].wants = 4
+        // creepGroups['hauler'].wants = 4
     }
 
     let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
@@ -130,24 +131,19 @@ module.exports.loop = function () {
 
         // if(creep.memory.nextTask != "renew") {
         if (creep.memory.role == 'harvester') {
-            if (unusedEnergyCapacity < 1 && tally > 3) {
-                if (buildTargets.length) {
-                    roleBuilder.run(creep);
-                } else {
-                    roleUpgrader.run(creep);
-                }
-            } else {
-                roleHarvester.run(creep, tally);
-            }
-            // SUICIDE CODE! works great
-            // creep.moveTo(spawn)
-            // if (spawn.pos.inRangeTo(creep.pos.x, creep.pos.y, 1)) {
-            //     // creep.say("Here!")
-            //     spawn.recycleCreep(creep)
+            recycleCreep(creep,spawn)
+            // if (unusedEnergyCapacity < 1 && tally > 3) {
+            //     if (buildTargets.length) {
+            //         roleBuilder.run(creep);
+            //     } else {
+            //         roleUpgrader.run(creep);
+            //     }
+            // } else {
+            //     roleHarvester.run(creep, tally);
             // }
         }
         if (creep.memory.role == 'hauler') {
-            if (unusedEnergyCapacity < 1 && tally > 4) {
+            if (unusedEnergyCapacity < 1 && tally > 3) {
                 if (buildTargets.length) {
                     roleBuilder.run(creep);
                 } else {
@@ -202,7 +198,7 @@ module.exports.loop = function () {
 
     for (let creepType in creepGroups) {
         let c = creepGroups[creepType]
-
+//  && creepType == 'hauler'
         if (c.has < c.wants) {
             console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}`)
             console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)

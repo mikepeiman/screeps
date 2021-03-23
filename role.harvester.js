@@ -21,6 +21,10 @@ module.exports = {
                 || s.structureType == STRUCTURE_EXTENSION)
                 && s.energy < s.energyCapacity
         });
+        let containers = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
+                && s.energy < s.energyCapacity
+        });
         let towers = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
                 && s.energy < s.energyCapacity
@@ -28,8 +32,10 @@ module.exports = {
   
         if (towers.length) {
             structure = creep.pos.findClosestByPath(towers)
-        } else {
+        } else if (spawnAndExtensions.length){
             structure = creep.pos.findClosestByPath(spawnAndExtensions)
+        } else {
+            structure = creep.pos.findClosestByPath(containers)
         }
 
         function harvest(resource) {
