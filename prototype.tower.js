@@ -36,23 +36,12 @@ StructureTower.prototype.defend = function () {
         }
     }
 
-    if (hostiles[0]) {
-        let username = hostiles[0].owner.username;
-        console.log(`🚀 ~ file: prototype.tower.js ~ line 35 ~ username`, username)
-        Game.notify(`User ${username} spotted in room ${this.room}`);
-        this.attack(hostiles[0])
-    } else if (wounded[0]) {
-        // HEAL code
-        console.log("🚀 ~ file: role.this.js ~ line 20 ~ wounded", wounded)
-        this.heal(wounded[0])
-    }
-
     // REPAIR code
     // repair only if towers have some defense energy in reserve
     let towerEnergy = this.store.getUsedCapacity(RESOURCE_ENERGY)
 
     console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ towerEnergy`, towerEnergy)
-    if (towerEnergy > 200) {
+    if (towerEnergy > 200 && !hostiles[0]) {
 
         // For everything that's not walls and ramparts (g. roads)
         // if (structuresToRepair.length > 0) {
@@ -75,6 +64,17 @@ StructureTower.prototype.defend = function () {
                 console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
             }
         }
+    }
+
+    if (hostiles[0]) {
+        let username = hostiles[0].owner.username;
+        console.log(`🚀 ~ file: prototype.tower.js ~ line 35 ~ username`, username)
+        Game.notify(`User ${username} spotted in room ${this.room}`);
+        this.attack(hostiles[0])
+    } else if (wounded[0]) {
+        // HEAL code
+        console.log("🚀 ~ file: role.this.js ~ line 20 ~ wounded", wounded)
+        this.heal(wounded[0])
     }
 }
 
