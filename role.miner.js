@@ -19,21 +19,21 @@ module.exports = {
 
 		// set boolean logic to determine whether creep mines or moves to transfer
 		if (creep.store.getFreeCapacity() == 0) {
-            console.log(`🚀 ~ file: role.miner.js ~ line 27 ~ creep.store.getFreeCapacity() == 0`, creep.store.getFreeCapacity())
+            // console.log(`🚀 ~ file: role.miner.js ~ line 27 ~ creep.store.getFreeCapacity() == 0`, creep.store.getFreeCapacity())
 			creep.memory.mining = false
 			creep.memory.currentTask = '⚡ find transfer target'
 		} else if (creep.store.getFreeCapacity() > 0 && creep.memory.mining) {
-            console.log(`🚀 ~ file: role.miner.js ~ line 47 ~ creep.store.getFreeCapacity() > 0`, creep.store.getFreeCapacity() > 0)
+            // console.log(`🚀 ~ file: role.miner.js ~ line 47 ~ creep.store.getFreeCapacity() > 0`, creep.store.getFreeCapacity() > 0)
 			creep.memory.mining = true
 		} else if (creep.store.getUsedCapacity() == 0) {
-            console.log(`🚀 ~ file: role.miner.js ~ line 35 ~ creep.store.getUsedCapacity() == 0`, creep.store.getUsedCapacity() == 0)
+            // console.log(`🚀 ~ file: role.miner.js ~ line 35 ~ creep.store.getUsedCapacity() == 0`, creep.store.getUsedCapacity() == 0)
 			creep.memory.mining = true
 		}
 
 		if (creep.memory.mining) {
 			harvest(minerals[0])
 		} else {
-			console.log(`✨✨✨ I want to transfer minerals ~ ${creep} `)
+			// console.log(`✨✨✨ I want to transfer minerals ~ ${creep} `)
 			transfer(containers[0])
 		}
 
@@ -54,7 +54,7 @@ module.exports = {
 			} else {
 				x = creep.transfer(toTarget, RESOURCE_ENERGY)
 			}
-            console.log(`🚀 ~ file: role.miner.js ~~~ ${creep} ~~~ transfer ${mineralType} ~~~ x (-9 == NOT IN RANGE)`, x)
+            // console.log(`🚀 ~ file: role.miner.js ~~~ ${creep} ~~~ transfer ${mineralType} ~~~ x (-9 == NOT IN RANGE)`, x)
 			if (x == ERR_NOT_IN_RANGE) { 
 				creep.memory.currentTask = '⚒ transfer'
 				creep.moveTo(toTarget, moveOpts);
