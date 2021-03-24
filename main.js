@@ -45,7 +45,7 @@ for (let creepType in creepGroups) {
     let c = creepGroups[creepType]
     console.log(`${creepType} costs: ${c.cost}`)
 }
-
+let everyHundredCounter = 100
 let everyFiveCounter = 5
 let renewCreepTimer = 0
 require('prototype.tower')
@@ -80,6 +80,10 @@ module.exports.loop = function () {
         filter: ruin => ruin.store.energy > 0
     })
     const takeEnergyTargets = [...takeEnergyTombstones, ...takeEnergyDroppedResources, ...takeEnergyRuins]
+    let minerals = home.find(FIND_MINERALS)
+    let mineralsAmount = minerals[0].mineralAmount
+    let mineralRegen = minerals[0].ticksToRegeneration
+
 
     // renewCreepTimer++
     // if (renewCreepTimer > 15) {
@@ -102,18 +106,14 @@ module.exports.loop = function () {
         let hauler = creepGroups["hauler"]
         let salvager = creepGroups["salvager"]
         if (hauler.has < 3) {
-            // console.log(`🚀 ~ file: priority ${spawnPriority} *** main.js ~ line 105 ~ hauler.has`, hauler.has)
             spawnPriority = "hauler"
         } else if (salvager.has < 1) {
             spawnPriority = "salvager"
-            // console.log(`🚀 ~ file: priority ${spawnPriority} *** main.js ~ line 113 ~ salvager.has`, salvager.has)
         } else {
             spawnPriority = "false"
-            // console.log(`🚀 ~ file: main.js ~ line 113 ~ NO PRIORITY`, spawnPriority)
         }
 
         // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
-        // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
         tally += creepGroups[creepType].has
     }
     // }
@@ -130,6 +130,31 @@ module.exports.loop = function () {
         creepGroups['builder'].wants = 0
         // creepGroups['hauler'].wants = 4
     }
+
+    if (everyHundredCounter == 100) {
+        if (mineralsAmount > 500 && mineralsAmount < 2000) {
+            console.log(`(mineralsAmount > 500 && mineralsAmount < 2000) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+            if (creepGroups["miner"].has > 1) {
+                creepGroups["miner"].wants = 0
+                console.log(`(mineralsAmount > 500 && mineralsAmount < 2000)(creepGroups["miner"].has > 1) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+            } else {
+                creepGroups["miner"].wants = 1
+                console.log(`(mineralsAmount > 500 && mineralsAmount < 2000)(else) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+            }
+        } else if (mineralsAmount < 100 && mineralRegen > 150) {
+            creepGroups["miner"].wants = 0
+            console.log(`else if(mineralsAmount < 100 && mineralRegen > 150) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+        } else {
+            creepGroups["miner"].wants = 2
+            console.log(`else ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+        }
+    }
+    everyHundredCounter--
+    if (everyHundredCounter == 0) {
+        everyHundredCounter = 100
+    }
+
+
 
     let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
         filter: (s) => (s.structureType == STRUCTURE_TOWER)
@@ -170,7 +195,14 @@ module.exports.loop = function () {
             roleSalvager.run(creep);
         }
         if (creep.memory.role == 'miner') {
-            roleMiner.run(creep);
+            if (mineralsAmount) {
+                roleMiner.run(creep);
+            } else if (unusedEnergyCapacity > 0) {
+                roleHarvester.run(creep)
+            } else {
+                roleUpgrader.run(creep)
+            }
+
         }
         if (creep.memory.role == 'upgrader') {
             if (buildTargets.length) {
@@ -182,10 +214,11 @@ module.exports.loop = function () {
         if (creep.memory.role == 'builder') {
             if (buildTargets.length) {
                 roleBuilder.run(creep);
-            } else if(creepGroups["hauler"].has > 2) {
+            } else if (creepGroups["hauler"].has > 2) {
                 roleMiner.run(creep);
+            } else {
+                roleHarvester.run(creep)
             }
-            roleHarvester.run(creep)
         }
         if (creep.memory.role == 'repairer') {
             roleRepairer.run(creep)

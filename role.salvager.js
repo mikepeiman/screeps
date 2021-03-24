@@ -35,7 +35,7 @@ module.exports = {
 
         if (droppedResourcesEnergy.length) {
             targetSource = creep.pos.findClosestByPath(droppedResourcesEnergy)
-            console.log(`${creep} 🚀 ~ file: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
+            // console.log(`${creep} 🚀 ~ file: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
             // let amt = targetSource.amount
             // console.log("🚀 ~ file: role.salvager.js ~ line 18 ~ amt", amt)
         } else if (takeEnergyTombstones.length) {
@@ -53,22 +53,7 @@ module.exports = {
             targetSource = creep.pos.findClosestByPath(sources)
         }
 
-        console.log(`🚀 ~ file: role.salvager.js ~ line 58 ~ targetSource`, targetSource)
-
-        // for (var resource in creep.store) {
-        // console.log(`🚀 ~ file: role.salvager.js ~ line 36 ~ resource`, resource)
-        // }
-        // let mineralsOnBoard = creep.store.getUsedCapacity(RESOURCE_MINERALS)
-        // console.log(`🚀 ~ file: role.salvager.js ~ line 33 ~ mineralsOnBoard`, mineralsOnBoard)
-        // let resourcesOnBoard = []
-        // if (creep.store.getUsedCapacity()) {
-        //     for (var i in creep.store) {
-        //         let amt = creep.store.getUsedCapacity(i)
-        //         console.log(`🚀 ~ file: role.salvager.js ~ line 36 ~ i ${i}: ${amt}`,)
-        //         resourcesOnBoard = [...resourcesOnBoard, i]
-        //     }
-        // }
-
+        // console.log(`🚀 ~ file: role.salvager.js ~ line 58 ~ targetSource`, targetSource)
 
         // was transfering, but out of resource now: begin scavenging agaiN
         if (creep.memory.transfering && totalLoad == 0) {
@@ -84,9 +69,9 @@ module.exports = {
             for (var res in creep.store) {
                 let deposit = creep.transfer(storage[0], res)
                 let amt = creep.store.getUsedCapacity(res)
-                console.log(`🚀 ~ file: role.salvager.js ~ line 88 ~ res ${res}: amt `, amt)
-                console.log(`🚀 ~ file: role.salvager.js ~ line 89 ~ storage`, storage)
-                console.log(`🚀 ~ file: role.salvager.js ~ line 86 ~ deposit result `, deposit)
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 88 ~ res ${res}: amt `, amt)
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 89 ~ storage`, storage)
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 86 ~ deposit result `, deposit)
                 if (deposit == ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage[0])
                 }

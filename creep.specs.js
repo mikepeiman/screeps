@@ -597,7 +597,7 @@ let creepSpecs = (rcl) => {
                 },
                 'hauler': {
                     has: 0,
-                    wants: 4,
+                    wants: 3,
                     level: rcl,
                     recipe: {
                         WORK: 10,
