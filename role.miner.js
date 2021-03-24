@@ -1,7 +1,7 @@
 module.exports = {
 	run: function (creep) {
 		creep.memory.currentRole = 'miner'
-		let moveOpts = { visualizePathStyle: { stroke: '#ffaaff' }, reusePath: 3 }
+		let moveOpts = { visualizePathStyle: { stroke: '#ffaaff' }, reusePath: 5 }
 		let minerals = creep.room.find(FIND_MINERALS)
 		let mineralType = minerals[0].mineralType
 		let totalLoad = creep.store.getUsedCapacity()

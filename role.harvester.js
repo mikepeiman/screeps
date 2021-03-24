@@ -24,10 +24,12 @@ module.exports = {
         });
 
         // energy transfer TO target logic
-        if (spawnAndExtensions.length) {
-            transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-        } else if (towers.length) {
+        if (towers.length) {
             transferTarget = creep.pos.findClosestByPath(towers)
+        }
+        else if (spawnAndExtensions.length) {
+            transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
+
         } else {
             transferTarget = creep.pos.findClosestByPath(containerTargets)
         }
@@ -36,7 +38,7 @@ module.exports = {
         let sources = creep.room.find(FIND_SOURCES_ACTIVE)
         let containerSources = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
-                &&  s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+                && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
         });
         // console.log(`🚀 ~ file: role.harvester.js ~ line 41 ~ containerSources energy ${containerSources.getUsedCapacity(RESOURCE_ENERGY)}`, containerSources)
 
