@@ -601,7 +601,7 @@ let creepSpecs = (rcl) => {
                     level: rcl,
                     recipe: {
                         WORK: 10,
-                        CARRY: 12,
+                        CARRY: 15,
                         MOVE: 10,
                         ATTACK: 0,
                         RANGED_ATTACK: 0,
@@ -616,9 +616,9 @@ let creepSpecs = (rcl) => {
                     wants: 2,
                     level: rcl,
                     recipe: {
-                        WORK: 10,
+                        WORK: 12,
                         CARRY: 12,
-                        MOVE: 10,
+                        MOVE: 8,
                         ATTACK: 0,
                         RANGED_ATTACK: 0,
                         HEAL: 0,
@@ -632,7 +632,7 @@ let creepSpecs = (rcl) => {
                     wants: 1,
                     level: rcl,
                     recipe: {
-                        WORK: 5,
+                        WORK: 10,
                         CARRY: 15,
                         MOVE: 10,
                         ATTACK: 0,

@@ -1,42 +1,50 @@
 // let roleUpgrader = require('role.upgrader');
 module.exports = {
     run: function (creep) {
+        let energy = creep.room.energyAvailable;
+        let energyCapacity = creep.room.energyCapacityAvailable;
+        let unusedEnergyCapacity = energyCapacity - energy
         creep.memory.currentRole = 'harvester'
-        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 3 }
+        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 5 }
 
-        // Identify energy sources - prioritize untapped source
-        let sources = creep.room.find(FIND_SOURCES_ACTIVE)
-        let targetSource = creep.pos.findClosestByPath(sources)
-        // for (let i in sources) {
-        //     if (sources[i].energy == sources[i].energyCapacity) {
-        //         targetSource = sources[i]
-        //     } else {
-        //         targetSource = creep.pos.findClosestByPath(sources);
-        //     }
-        // }
-
-        let structure
+        // energy transfer TO targets
+        let transferTarget, harvestTarget
         let spawnAndExtensions = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_SPAWN
                 || s.structureType == STRUCTURE_EXTENSION)
                 && s.energy < s.energyCapacity
         });
-        let containers = creep.room.find(FIND_STRUCTURES, {
+        let containerTargets = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
                 && s.energy < s.energyCapacity
         });
-
         let towers = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
                 && s.energy < s.energyCapacity
         });
-  
-        if (towers.length) {
-            structure = creep.pos.findClosestByPath(towers)
-        } else if (spawnAndExtensions.length){
-            structure = creep.pos.findClosestByPath(spawnAndExtensions)
+
+        // energy transfer TO target logic
+        if (spawnAndExtensions.length) {
+            transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
+        } else if (towers.length) {
+            transferTarget = creep.pos.findClosestByPath(towers)
         } else {
-            structure = creep.pos.findClosestByPath(containers)
+            transferTarget = creep.pos.findClosestByPath(containerTargets)
+        }
+
+        // energy harvest FROM targets
+        let sources = creep.room.find(FIND_SOURCES_ACTIVE)
+        let containerSources = creep.room.find(FIND_STRUCTURES, {
+            filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
+                &&  s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+        });
+        // console.log(`🚀 ~ file: role.harvester.js ~ line 41 ~ containerSources energy ${containerSources.getUsedCapacity(RESOURCE_ENERGY)}`, containerSources)
+
+        // energy harvest FROM logic
+        if (containerSources.length && unusedEnergyCapacity < 1) {
+            harvestTarget = creep.pos.findClosestByPath(containerSources)
+        } else {
+            harvestTarget = creep.pos.findClosestByPath(sources)
         }
 
         function harvest(resource) {
@@ -76,14 +84,14 @@ module.exports = {
             creep.memory.transferring == false
         }
 
-        if(creep.memory.harvesting) {
+        if (creep.memory.harvesting) {
             creep.memory.currentTask = '➕⚡ gather energy'
             // // creep.say('➕⚡');
-            harvest(targetSource) 
+            harvest(harvestTarget)
         } else {
             creep.memory.currentTask = '⚡ transfer energy'
             // // creep.say('⚡🔄');
-            transfer(structure)
+            transfer(transferTarget)
         }
     }
 }

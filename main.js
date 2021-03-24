@@ -101,13 +101,17 @@ module.exports.loop = function () {
         creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
         let hauler = creepGroups["hauler"]
         let salvager = creepGroups["salvager"]
-        if (hauler.has < 2) {
+        if (hauler.has < 3) {
+            // console.log(`🚀 ~ file: priority ${spawnPriority} *** main.js ~ line 105 ~ hauler.has`, hauler.has)
             spawnPriority = "hauler"
-        } else if(salvager.has < 1) {
-            spawnPriority - "salvager"
+        } else if (salvager.has < 1) {
+            spawnPriority = "salvager"
+            // console.log(`🚀 ~ file: priority ${spawnPriority} *** main.js ~ line 113 ~ salvager.has`, salvager.has)
         } else {
             spawnPriority = "false"
+            // console.log(`🚀 ~ file: main.js ~ line 113 ~ NO PRIORITY`, spawnPriority)
         }
+
         // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         // console.log(`Tally creeps costs: ${creepType} ${creepGroups[creepType].cost}`)
         tally += creepGroups[creepType].has
@@ -178,12 +182,14 @@ module.exports.loop = function () {
         if (creep.memory.role == 'builder') {
             if (buildTargets.length) {
                 roleBuilder.run(creep);
-            } else {
+            } else if(creepGroups["hauler"].has > 2) {
                 roleMiner.run(creep);
             }
+            roleHarvester.run(creep)
         }
         if (creep.memory.role == 'repairer') {
             roleRepairer.run(creep)
+            // roleHarvester.run(creep)
         }
         if (creep.memory.role == 'scout') {
             // creep.memory.target = Game.rooms['W6N54']
@@ -209,7 +215,7 @@ module.exports.loop = function () {
     if (spawnPriority != "false") {
         creepType = spawnPriority
         c = creepGroups[creepType]
-        console.log(`Time to spawn a ${creepType}, ${spawnPriority} PRIORITY. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
+        console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
         let comp = c.composition
         let name = `${creepType}-level-${rcl}-${Game.time}`
         let mem = { memory: { role: creepType, home: home.name, level: rcl, working: false } }
