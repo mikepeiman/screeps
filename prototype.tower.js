@@ -3,8 +3,8 @@
 StructureTower.prototype.defend = function () {
 
 
-    let wallQuota = 50000
-    let rampartQuota = 50000
+    let wallQuota = 100000
+    let rampartQuota = 100000
     let emergencyThreshold = 1000
     // DEFENSE code
     let hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
@@ -28,13 +28,12 @@ StructureTower.prototype.defend = function () {
         filter: (r) => r.structureType == STRUCTURE_RAMPART && r.hits < emergencyThreshold || r.structureType == STRUCTURE_WALL && r.hits < emergencyThreshold
     })
     wallsAndRamparts = [...walls, ...ramparts]
-    highestWallOrRampart = _.max(wallsAndRamparts, s => s.hits)
-    lowestWallOrRampart = _.min(wallsAndRamparts, s => s.hits)
-    console.log(`🚀 ~ file: prototype.tower.js ~ line 30 ~ lowestWallOrRampart ${lowestWallOrRampart}::: hits ${lowestWallOrRampart.hits}`, )
-    // console.log(`🚀 ~ file: prototype.tower.js ~ line 25 ~ priorities`, priorities)
-    console.log(`🚀 ~ file: prototype.tower.js ~ line 37 ~ highestWallOrRampart  ${highestWallOrRampart}::: hits ${highestWallOrRampart.hits}`,)
-    var otherRepairTargets = this.room.find(FIND_STRUCTURES, {
-
+    lowestWallOrRampart = _.min(wallsAndRamparts, 'hits')
+        // highestWallOrRampart = _.max(wallsAndRamparts, s => s.hits)
+    // console.log(`🚀 ~ file: prototype.tower.js ~ line 30 ~ lowestWallOrRampart ${lowestWallOrRampart}::: hits ${lowestWallOrRampart.hits}`, )
+    // console.log(`🚀 ~ file: prototype.tower.js ~ line 37 ~ highestWallOrRampart  ${highestWallOrRampart}::: hits ${highestWallOrRampart.hits}`,)
+    
+    let otherRepairTargets = this.room.find(FIND_STRUCTURES, {
         filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART
     });
 
@@ -43,7 +42,7 @@ StructureTower.prototype.defend = function () {
             wounded.push(creep.id)
         }
     }
-
+// Yet, it is working... I'm watching with my own eyes :slightly_smiling_face: 
     // REPAIR code
     // repair only if towers have some defense energy in reserve
     let towerEnergy = this.store.getUsedCapacity(RESOURCE_ENERGY)

@@ -31,7 +31,9 @@ module.exports = {
         if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
         } else if (towers.length) {
-            transferTarget = creep.pos.findClosestByPath(towers)
+            // let tEnergy = t.store.getUsedCapacity()
+            let t = _.min(towers, t=> t.store.getUsedCapacity(RESOURCE_ENERGY) )
+            transferTarget = creep.pos.findClosestByPath(t)
         } else {
             transferTarget = creep.pos.findClosestByPath(containerTargets)
         }
@@ -86,6 +88,8 @@ module.exports = {
         } else if (creep.carry.energy == 0) {
             creep.memory.idle = false
             creep.memory.transferring = false
+        } else if(creep.memory.idle) {
+            transfer(transferTarget)
         }
 
         if (!creep.memory.transferring) {

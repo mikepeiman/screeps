@@ -986,8 +986,10 @@ let creepSpecs = (rcl) => {
         let c = creepGroups[t]
         let counter = 0
         let buildComp = []
-        if (c.recipe[TOUGH] > 0) {
-            for (let z = 0; z < c.recipe[TOUGH]; z++) {
+        // console.log(`🚀 ~ file: creep.specs.js ~ line 1020 ~ creepSpecs ~ c.recipe[TOUGH]`, c.recipe['MOVE'])
+
+        if (c.recipe['TOUGH'] > 0) {
+            for (let z = 0; z < c.recipe['TOUGH']; z++) {
                 buildComp.push('tough')
             }
         }
@@ -998,7 +1000,7 @@ let creepSpecs = (rcl) => {
                 // console.log(`🚀 ~ file: creep.specs.js ~ line 998 ~ creepSpecs ~ z ${z} `)
                 let x = `${z.toLowerCase()}`
                 if (c.recipe[z] > counter) {
-                    if (z != [TOUGH] && z != [HEAL]) {
+                    if (x != 'tough' && x != 'heal') {
                             buildComp.push(x)
                     }
                 }
@@ -1006,8 +1008,8 @@ let creepSpecs = (rcl) => {
             ++counter
             c.composition = buildComp
         }
-        if (c.recipe[HEAL] > 0) {
-            for (let z = 0; z < c.recipe[HEAL]; z++) {
+        if (c.recipe['HEAL'] > 0) {
+            for (let z = 0; z < c.recipe['HEAL']; z++) {
                 buildComp.push('heal')
             }
         }
