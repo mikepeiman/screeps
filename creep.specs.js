@@ -579,6 +579,22 @@ let creepSpecs = (rcl) => {
                     },
                     cost: 0
                 },
+                'raider': {
+                    has: 0,
+                    wants: 0,
+                    level: rcl,
+                    recipe: {
+                        WORK: 0,
+                        CARRY: 0,
+                        MOVE: 11,
+                        ATTACK: 6,
+                        RANGED_ATTACK: 0,
+                        HEAL: 4,
+                        CLAIM: 0,
+                        TOUGH: 20
+                    },
+                    cost: 0
+                },
                 'scout': {
                     has: 0,
                     wants: 0,
@@ -971,7 +987,7 @@ let creepSpecs = (rcl) => {
         let counter = 0
         let buildComp = []
         if (c.recipe[TOUGH] > 0) {
-            for (let z = 0; z < c.recipe['TOUGH']; z++) {
+            for (let z = 0; z < c.recipe[TOUGH]; z++) {
                 buildComp.push('tough')
             }
         }
@@ -979,9 +995,10 @@ let creepSpecs = (rcl) => {
         let max = Math.max(...arr)
         while (counter < max) {
             for (let z in c.recipe) {
+                // console.log(`🚀 ~ file: creep.specs.js ~ line 998 ~ creepSpecs ~ z ${z} `)
                 let x = `${z.toLowerCase()}`
                 if (c.recipe[z] > counter) {
-                    if (z != TOUGH && z != HEAL) {
+                    if (z != [TOUGH] && z != [HEAL]) {
                             buildComp.push(x)
                     }
                 }
@@ -995,6 +1012,8 @@ let creepSpecs = (rcl) => {
             }
         }
         c.composition = buildComp
+        console.log(`🚀 ~ file: creep.specs.js ~ line 1014 ~ creepSpecs ~ buildComp ${t}::: `, buildComp)
+
         c.cost = getBodyCost(c.composition)
     }
 

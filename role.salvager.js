@@ -1,16 +1,20 @@
-module.exports = {
-    run: (creep) => {
+let taskUpgrade = require('task.upgrade')
+let taskPowerTowers = require('task.transfer.energy.to.towers')
+let taskFillStorageEnergy = require('task.transfer.energy.to.storage')
+let taskFillRoomEnergy = require('task.fill.room.energy')
 
+module.exports = {
+    run: (creep, taskPriority) => {
         creep.memory.currentRole = 'salvager'
-        // creep.memory.transfering = true
         let moveOpts = { visualizePathStyle: { stroke: '#aaffff' }, reusePath: 5 }
 
+        let energy = creep.room.energyAvailable;
+        let energyCapacity = creep.room.energyCapacityAvailable;
+        let unusedEnergyCapacity = energyCapacity - energy
         let controller = creep.room.controller
         let minerals = creep.room.find(FIND_MINERALS)
         let mineralType = minerals[0].mineralType
-        let totalCapacity = creep.store.getCapacity()
         let totalLoad = creep.store.getUsedCapacity()
-        console.log(`🚀 ~ file: role.salvager.js ~ line 13 ~ totalLoad`, totalLoad)
         let carryingEnergy = creep.store.getUsedCapacity(RESOURCE_ENERGY)
         let carryingMineral = creep.store.getUsedCapacity(mineralType)
         let nonEnergyLoad = totalLoad - carryingEnergy
@@ -30,70 +34,55 @@ module.exports = {
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {
             filter: ruin => ruin.store.energy > 0
         })
-
         let targetSource
 
         if (droppedResourcesEnergy.length) {
             targetSource = creep.pos.findClosestByPath(droppedResourcesEnergy)
-            // console.log(`${creep} 🚀 ~ file: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
-            // let amt = targetSource.amount
-            // console.log("🚀 ~ file: role.salvager.js ~ line 18 ~ amt", amt)
+            // console.log(`${creep} 🚀 ~ ${creep}: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
         } else if (takeEnergyTombstones.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyTombstones)
-            // console.log("🚀 ~ file: role.salvager.js ~ line 19 ~ targetSource", targetSource)
-            // let amt = targetSource.amount
-            // console.log("🚀 ~ file: role.salvager.js ~ line 23 ~ amt", amt)
         } else if (takeEnergyRuins.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyRuins)
-            // console.log("🚀 ~ file: role.salvager.js ~ line 22 ~ targetSource", targetSource)
-            // let amt = targetSource.amount
-            // console.log("🚀 ~ file: role.salvager.js ~ line 28 ~ amt", amt)
         } else {
             sources = creep.room.find(FIND_SOURCES_ACTIVE)
             targetSource = creep.pos.findClosestByPath(sources)
         }
 
-        // console.log(`🚀 ~ file: role.salvager.js ~ line 58 ~ targetSource`, targetSource)
-
-        // was transfering, but out of resource now: begin scavenging agaiN
-        if (creep.memory.transfering && totalLoad == 0) {
+        // console.log(`🚀 ~ file: role.salvager.js ~ line 58 ~ creep.store.getUsedCapacity()`, creep.store.getUsedCapacity())
+        // was transfering, but out of resource now: begin salvaging/harvesting again
+        if (creep.memory.transfering && creep.store.getUsedCapacity() == 0) {
             creep.memory.transfering = false
         }
         // was not transfering, but full of resource now: begin transfering
-        if (!creep.memory.transfering && creep.store.getFreeCapacity() < totalCapacity * .9) {
+        if (!creep.memory.transfering && creep.store.getFreeCapacity() == 0) {
             creep.memory.transfering = true
             creep.memory.currentTask = '⚡💎 transfer'
         }
 
         if (creep.memory.transfering) {
-            for (var res in creep.store) {
-                let deposit = creep.transfer(storage[0], res)
-                let amt = creep.store.getUsedCapacity(res)
-                // console.log(`🚀 ~ file: role.salvager.js ~ line 88 ~ res ${res}: amt `, amt)
-                // console.log(`🚀 ~ file: role.salvager.js ~ line 89 ~ storage`, storage)
-                // console.log(`🚀 ~ file: role.salvager.js ~ line 86 ~ deposit result `, deposit)
-                if (deposit == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(storage[0])
+            // console.log(`🚀 ~ file: role.salvager.js ~ line 66 ~ creep.memory.transfering`, creep.memory.transfering)
+            if (taskPriority == "upgradeController") {
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 12 ~ taskPriority`, taskPriority)
+                taskUpgrade.run(creep)
+            }
+            if (taskPriority == "fillRoomEnergy") {
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 81 ~ taskPriority`, taskPriority)
+                taskFillRoomEnergy.run(creep)
+                if (unusedEnergyCapacity == 0) {
+                    taskPowerTowers.run(creep)
                 }
+            }
+            if (taskPriority == "fillStorage") {
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 6 ~ taskPriority`, taskPriority)
+                taskFillStorageEnergy.run(creep)
+            }
+            if (taskPriority == "powerTowers") {
+                // console.log(`🚀 ~ file: role.salvager.js ~ line 12 ~ taskPriority`, taskPriority)
+                taskPowerTowers.run(creep)
             }
         } else {
             harvest(targetSource)
         }
-
-        //     for (var res in creep.store) {
-        //         let amt = creep.store.getUsedCapacity(res)
-        //         if(res == "energy"){
-
-        //         }
-        //     }
-        //         transfer(resource)
-        //     } else {
-        //         transfer(RESOURCE_ENERGY)
-        //     }
-        // } else {
-        //     harvest(targetSource)
-        // }
-
 
         function transfer(resource) {
             if (carryingMineral > 0) {
@@ -108,6 +97,7 @@ module.exports = {
                 }
             }
 
+
         }
 
         function harvest(resource) {
@@ -115,18 +105,18 @@ module.exports = {
             let x = creep.withdraw(resource, RESOURCE_ENERGY)
             if (x == ERR_NOT_IN_RANGE) {
                 // console.log("🚀 ~ file: role.salvager.js ~ line 59 ~ harvest ~ x", x)
-                creep.memory.currentTask = '⚡ harvest'
-                creep.moveTo(resource, { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 25 });
+                creep.memory.currentTask = '⚡ withdraw from ruin or tombstone'
+                creep.moveTo(resource, moveOpts);
             } else if (x == ERR_INVALID_TARGET) {
                 x = creep.pickup(resource, RESOURCE_ENERGY)
                 if (x == ERR_NOT_IN_RANGE) {
-                    creep.memory.currentTask = '⚡ harvest'
-                    creep.moveTo(resource, { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 25 });
+                    creep.memory.currentTask = '⚡ pickup energy'
+                    creep.moveTo(resource, moveOpts);
                 } else if (x == ERR_INVALID_TARGET) {
                     x = creep.harvest(resource, RESOURCE_ENERGY)
                     if (x == ERR_NOT_IN_RANGE) {
-                        creep.memory.currentTask = '⚡ harvest'
-                        creep.moveTo(resource, { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 25 });
+                        creep.memory.currentTask = '⚡ harvest source'
+                        creep.moveTo(resource, moveOpts);
                     }
                 }
             }

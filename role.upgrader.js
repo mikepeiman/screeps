@@ -20,11 +20,8 @@ var roleUpgrader = {
         let upgrade = creep.upgradeController(rc)
 	    if(creep.memory.upgrading) {
             if(upgrade == ERR_NOT_IN_RANGE) {
-                // creep.say('⚡!');
                 creep.moveTo(rc, {visualizePathStyle: {stroke: '#ffffff'}});
-            } else {
-                // creep.say('⚡⚡');
-            }
+            } 
         } else {
             let sources = creep.room.find(FIND_SOURCES_ACTIVE);
             let targetSource

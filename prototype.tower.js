@@ -1,14 +1,14 @@
+// const minBy = require('./method.minby.js')
+
 StructureTower.prototype.defend = function () {
 
-    let wallQuota = 10000
-    let rampartQuota = 20000
+
+    let wallQuota = 50000
+    let rampartQuota = 50000
     let emergencyThreshold = 1000
     // DEFENSE code
     let hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
         filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
-    });
-    let structuresToRepair = this.room.find(FIND_STRUCTURES, {
-        filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
     });
     let walls = this.room.find(FIND_STRUCTURES, {
         filter: (w) => w.structureType == STRUCTURE_WALL && w.hits < wallQuota
@@ -17,18 +17,26 @@ StructureTower.prototype.defend = function () {
     let ramparts = this.room.find(FIND_STRUCTURES, {
         filter: (r) => r.structureType == STRUCTURE_RAMPART && r.hits < rampartQuota
     })
+
+    let wallsAndRamparts = this.room.find(FIND_STRUCTURES, {
+        filter: (s) => s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL
+    })
     // console.log(`🚀 ~ file: role.tower.js ~ line 21 ~ ramparts`, ramparts)
     let wounded = []
 
     let priorities = this.room.find(FIND_STRUCTURES, {
-        filter: (r) => r.structureType == STRUCTURE_RAMPART && r.hits < emergencyThreshold
+        filter: (r) => r.structureType == STRUCTURE_RAMPART && r.hits < emergencyThreshold || r.structureType == STRUCTURE_WALL && r.hits < emergencyThreshold
     })
+    wallsAndRamparts = [...walls, ...ramparts]
+    highestWallOrRampart = _.max(wallsAndRamparts, s => s.hits)
+    lowestWallOrRampart = _.min(wallsAndRamparts, s => s.hits)
+    console.log(`🚀 ~ file: prototype.tower.js ~ line 30 ~ lowestWallOrRampart ${lowestWallOrRampart}::: hits ${lowestWallOrRampart.hits}`, )
     // console.log(`🚀 ~ file: prototype.tower.js ~ line 25 ~ priorities`, priorities)
+    console.log(`🚀 ~ file: prototype.tower.js ~ line 37 ~ highestWallOrRampart  ${highestWallOrRampart}::: hits ${highestWallOrRampart.hits}`,)
+    var otherRepairTargets = this.room.find(FIND_STRUCTURES, {
 
-    var targets = this.room.find(FIND_STRUCTURES, {
         filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART
     });
-    // console.log(`🚀 ~ file: role.tower.js ~ line 25 ~ targets`, targets)
 
     for (creep in Game.creeps) {
         if (creep.hits < creep.hitsMax) {
@@ -54,15 +62,16 @@ StructureTower.prototype.defend = function () {
             let x = this.repair(priorities[0]);
             // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
         } else {
-            if (walls[0]) {
-                // console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
-                let x = this.repair(walls[0]);
-                // console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ x`, x)
-            } if (ramparts[0]) {
-                // console.log(`🚀 ~ file: role.tower.js ~ line 39 ~ ramparts.length`, ramparts.length)
-                let x = this.repair(ramparts[0]);
-                // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
-            }
+            let x = this.repair(lowestWallOrRampart)
+            // if (walls[0]) {
+            //     // console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
+            //     let x = this.repair(walls[0]);
+            //     // console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ x`, x)
+            // } if (ramparts[0]) {
+            //     // console.log(`🚀 ~ file: role.tower.js ~ line 39 ~ ramparts.length`, ramparts.length)
+            //     let x = this.repair(ramparts[0]);
+            //     // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
+            // }
         }
     }
 

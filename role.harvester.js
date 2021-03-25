@@ -1,11 +1,15 @@
-// let roleUpgrader = require('role.upgrader');
+let taskUpgrade = require('task.upgrade')
+let taskPowerTowers = require('task.transfer.energy.to.towers')
+let taskFillStorageEnergy = require('task.transfer.energy.to.storage')
+let taskFillRoomEnergy = require('task.fill.room.energy')
+
 module.exports = {
     run: function (creep) {
         let energy = creep.room.energyAvailable;
         let energyCapacity = creep.room.energyCapacityAvailable;
         let unusedEnergyCapacity = energyCapacity - energy
         creep.memory.currentRole = 'harvester'
-        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 5 }
+        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, ignoreCreeps: true, reusePath: 10 }
         let containerSource = false
         // energy transfer TO targets
         let transferTarget, harvestTarget
@@ -24,12 +28,10 @@ module.exports = {
         });
 
         // energy transfer TO target logic
-        if (towers.length) {
-            transferTarget = creep.pos.findClosestByPath(towers)
-        }
-        else if (spawnAndExtensions.length) {
+        if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-
+        } else if (towers.length) {
+            transferTarget = creep.pos.findClosestByPath(towers)
         } else {
             transferTarget = creep.pos.findClosestByPath(containerTargets)
         }
@@ -53,7 +55,7 @@ module.exports = {
 
         function harvest(resource) {
             let x
-            if(!containerSource){
+            if (!containerSource) {
                 x = creep.harvest(resource, RESOURCE_ENERGY)
             } else {
                 x = creep.withdraw(resource, RESOURCE_ENERGY)
@@ -69,7 +71,6 @@ module.exports = {
 
         function transfer(toTarget) {
             if (creep.transfer(toTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.memory.currentTask = '⚡ transfer'
                 creep.moveTo(toTarget, moveOpts);
             }
         }
@@ -78,22 +79,26 @@ module.exports = {
         let creepFull = creep.carry.energy == creep.carryCapacity
         if (creepFull) {
             creep.memory.transferring = true
-            creep.memory.harvesting = false
+            creep.memory.idle = false
             creep.memory.currentTask = '⚡ find transfer target'
         } else if (creep.carry.energy > 0 && creep.memory.transferring) {
             creep.memory.energyFull = false
         } else if (creep.carry.energy == 0) {
-            creep.memory.harvesting = true
+            creep.memory.idle = false
             creep.memory.transferring = false
         }
 
-        if (creep.memory.harvesting) {
+        if (!creep.memory.transferring) {
             creep.memory.currentTask = '➕⚡ gather energy'
-            // // creep.say('➕⚡');
-            harvest(harvestTarget)
+            if (harvestTarget) {
+                harvest(harvestTarget)
+            } else {
+                creep.memory.idle = true
+                console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+            }
+            // console.log(`🚀 ~ file: role.harvester.js ~ line 95 ~ harvestTarget`, harvestTarget)
         } else {
             creep.memory.currentTask = '⚡ transfer energy'
-            // // creep.say('⚡🔄');
             transfer(transferTarget)
         }
     }

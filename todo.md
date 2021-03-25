@@ -5,7 +5,9 @@ TASKS
 * renew creeps rather than let them die (if not boosted, at least)
 * check for creep idle, and send them to work if > 10% energy on board && more than 30 ticks to energy source regen
 * if creep idle, creep energy empty, and energy sources empty, send to energy source to await regen
-* Emergency preparedness: if all my creeps die, code contingency to rebuild from 300 energy (spawn). So, if no creeps exist and total energy < 301, begin there.
+* Emergency preparedness: if all my creeps die, code contingency to rebuild from 300 energy (spawn). So, if no creeps exist and total energy < 301, begin there. Also, I can set an "emergency respawn" protocol, using a creep to staticlly withdraw from storage and transfer to spawn & extensions, building bigger creeps at appropriate intervals
+* consider passing in a "taskPriority" variable along with creep to each role/task. For example, if hostiles are present in the room, prioritize energizing towers; withdraw energy from storage for this purpose. 
+* I need to do more than direct a crowd of creeps to a priority target - this results in powering towers and spawning no replacement creeps, and running out of creeps. I need to allocate one to the task, but only as much as needed.
 
 * Take neighboring room W7N53, target RC ID # 5bbcac7a9099fc012e635853 at 28, 8
 

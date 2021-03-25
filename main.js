@@ -40,10 +40,14 @@ let creepLevelGroups = creepSpecs(rcl)
 // !!!   IMPORTANT   !!!   MUST ensure there is creep spec data before leveling up RCL, otherwise no new creeps will be spawned.
 let creepGroups = creepLevelGroups[rcl - 1].specs
 
+// priorities for energy harvester creeps:  ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController" ]
+let energyHarvesterCreepsPriorities = ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController"]
+let creepTaskPriority
+
 // roleTower.run(home)
 for (let creepType in creepGroups) {
     let c = creepGroups[creepType]
-    console.log(`${creepType} costs: ${c.cost}`)
+    // console.log(`${creepType} costs: ${c.cost}`)
 }
 let everyHundredCounter = 100
 let everyFiveCounter = 5
@@ -67,6 +71,12 @@ module.exports.loop = function () {
     home = spawn.room
     rc = home.controller
     rcl = rc.level
+
+    let hostiles = home.find(FIND_HOSTILE_CREEPS, {
+        filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
+    });
+
+
     let energy = spawn.room.energyAvailable;
     let energyCapacity = spawn.room.energyCapacityAvailable;
     let unusedEnergyCapacity = energyCapacity - energy
@@ -84,7 +94,11 @@ module.exports.loop = function () {
     let mineralsAmount = minerals[0].mineralAmount
     let mineralRegen = minerals[0].ticksToRegeneration
 
-
+    if (hostiles[0]) {
+        creepTaskPriority = "powerTowers"
+    } else {
+        creepTaskPriority = "fillRoomEnergy"
+    }
     // renewCreepTimer++
     // if (renewCreepTimer > 15) {
     //     for (let name in Game.creeps) {
@@ -105,7 +119,7 @@ module.exports.loop = function () {
         creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
         let hauler = creepGroups["hauler"]
         let salvager = creepGroups["salvager"]
-        if (hauler.has < 3) {
+        if (hauler.has < 1) {
             spawnPriority = "hauler"
         } else if (salvager.has < 1) {
             spawnPriority = "salvager"
@@ -124,7 +138,7 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 2
+        creepGroups['builder'].wants = 1
         // creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
@@ -181,18 +195,18 @@ module.exports.loop = function () {
             // }
         }
         if (creep.memory.role == 'hauler') {
-            if (unusedEnergyCapacity < 1 && tally > 3) {
-                if (buildTargets.length) {
-                    roleBuilder.run(creep);
-                } else {
-                    roleUpgrader.run(creep);
-                }
-            } else {
+            // if (unusedEnergyCapacity < 1 && tally > 3) {
+            //     if (buildTargets.length) {
+            //         roleBuilder.run(creep);
+            //     } else {
+            //         roleUpgrader.run(creep);
+            //     }
+            // } else {
                 roleHarvester.run(creep);
-            }
+            // }
         }
         if (creep.memory.role == 'salvager') {
-            roleSalvager.run(creep);
+            roleSalvager.run(creep, creepTaskPriority);
         }
         if (creep.memory.role == 'miner') {
             if (mineralsAmount) {
@@ -214,8 +228,6 @@ module.exports.loop = function () {
         if (creep.memory.role == 'builder') {
             if (buildTargets.length) {
                 roleBuilder.run(creep);
-            } else if (creepGroups["hauler"].has > 2) {
-                roleMiner.run(creep);
             } else {
                 roleHarvester.run(creep)
             }
@@ -241,6 +253,16 @@ module.exports.loop = function () {
             // let target = new RoomPosition(9, 45, 'W6N54')
             roleWarrior.move(creep, spawn);
             // roleWarrior.attack(creep, t2);
+        }
+        if (creep.memory.role == 'raider') {
+            // nearest SK thug: 9,45,W6N54
+            // 2021-03-25 invaderCore next door West: 24,9,W7N53
+            let moveTarget = new RoomPosition(9, 45, 'W6N54')
+            let attackTarget = new RoomPosition(24, 9, 'W7N53')
+            // let target = new RoomPosition(9, 45, 'W6N54')
+            // roleWarrior.move(creep, attackTarget);
+            // roleWarrior.attack(creep, t2);
+            recycleCreep(creep, spawn)
         }
 
     }
