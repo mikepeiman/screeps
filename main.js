@@ -139,7 +139,7 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 1
+        creepGroups['builder'].wants = 2
         // creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0

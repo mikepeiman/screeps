@@ -23,23 +23,25 @@ module.exports = {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
                 && s.energy < s.energyCapacity
         });
-        console.log(`🚀 ~ file: role.harvester.js ~ line 25 ~ containerTargets`, containerTargets)
-        let towers = creep.room.find(FIND_MY_STRUCTURES, {
+        let towers = []
+        let towersObj = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
-                && s.energy < s.energyCapacity
+                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 50
         });
-
+        for (let i in towersObj) {
+            let t = towersObj[i]
+            towers = [...towers, t]
+        }
         // energy transfer TO target logic
         if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
         } else if (towers.length) {
-            // let tEnergy = t.store.getUsedCapacity()
             let t = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
-            transferTarget = creep.pos.findClosestByPath(t)
+            transferTarget = t
         } else {
             transferTarget = creep.pos.findClosestByPath(containerTargets)
         }
-        console.log(`🚀 ~ file: role.harvester.js ~ line 39 ~ transferTarget`, transferTarget)
+        console.log(`🚀 ~ ${creep} role.harvester.js ~ line 39 ~ transferTarget`, transferTarget)
 
 
         // energy harvest FROM targets
@@ -58,6 +60,7 @@ module.exports = {
             harvestTarget = creep.pos.findClosestByPath(sources)
             containerSource = false
         }
+        console.log(`🚀 ~ ${creep} role.harvester.js ~ line 61 ~ harvestTarget`, harvestTarget)
 
         function harvest(resource) {
             let x
