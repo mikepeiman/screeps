@@ -42,12 +42,13 @@ let creepGroups = creepLevelGroups[rcl - 1].specs
 
 // priorities for energy harvester creeps:  ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController" ]
 let energyHarvesterCreepsPriorities = ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController"]
+let emergencySpawn = false
 let creepTaskPriority
 
 // roleTower.run(home)
 for (let creepType in creepGroups) {
     let c = creepGroups[creepType]
-    // console.log(`${creepType} costs: ${c.cost}`)
+    console.log(`${creepType} costs: ${c.cost}`)
 }
 let everyHundredCounter = 100
 let everyFiveCounter = 5
@@ -191,7 +192,7 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-            roleHarvester.run(creep, tally);
+            roleHarvester.run(creep, emergencySpawn);
             // }
         }
         if (creep.memory.role == 'hauler') {
@@ -260,9 +261,9 @@ module.exports.loop = function () {
             let moveTarget = new RoomPosition(9, 45, 'W6N54')
             let attackTarget = new RoomPosition(24, 9, 'W7N53')
             // let target = new RoomPosition(9, 45, 'W6N54')
-            // roleWarrior.move(creep, attackTarget);
+            roleWarrior.move(creep, attackTarget);
             // roleWarrior.attack(creep, t2);
-            recycleCreep(creep, spawn)
+            // recycleCreep(creep, spawn)
         }
 
     }

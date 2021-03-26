@@ -5,7 +5,7 @@ let taskFillRoomEnergy = require('task.give.energy.to.room')
 let getEnergyFromStorage = require('task.get.energy.from.storage')
 
 module.exports = {
-    run: function (creep, emergency) {
+    run: function (creep) {
         let energy = creep.room.energyAvailable;
         let energyCapacity = creep.room.energyCapacityAvailable;
         let unusedEnergyCapacity = energyCapacity - energy
@@ -34,7 +34,7 @@ module.exports = {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
         } else if (towers.length) {
             // let tEnergy = t.store.getUsedCapacity()
-            let t = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
+            let t = _.min(towers, t=> t.store.getUsedCapacity(RESOURCE_ENERGY) )
             transferTarget = creep.pos.findClosestByPath(t)
         } else {
             transferTarget = creep.pos.findClosestByPath(containerTargets)
@@ -92,31 +92,25 @@ module.exports = {
         } else if (creep.carry.energy == 0) {
             creep.memory.idle = false
             creep.memory.transferring = false
-        }
+        } 
+        // else {
+        //     transfer(transferTarget)
+        // }
 
-        // if there is an emergency - a manual flag I set - get energy from storage and fill room ASAP for spawning
-        if (emergency) {
-            if (!creep.memory.transferring) {
-                creep.memory.currentTask = '!!!⚡ withdraw energy'
-                getEnergyFromStorage.run(creep)
-            } else {
-                creep.memory.currentTask = '⚡ fill room energy'
-                taskFillRoomEnergy.run(creep)
-            }
-            // else, no emergency, do regular source harvesting
+        if (!creep.memory.transferring) {
+            creep.memory.currentTask = '➕⚡ gather energy'
+            getEnergyFromStorage.run(creep)
+            // if (harvestTarget) {
+            //     harvest(harvestTarget)
+            // } else {
+            //     creep.memory.idle = true
+            //     console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+            // }
+            // console.log(`🚀 ~ file: role.harvester.js ~ line 95 ~ harvestTarget`, harvestTarget)
         } else {
-            if (!creep.memory.transferring) {
-                creep.memory.currentTask = '➕⚡ gather energy'
-                if (harvestTarget) {
-                    harvest(harvestTarget)
-                } else {
-                    creep.memory.idle = true
-                    console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
-                }
-            } else {
-                creep.memory.currentTask = '⚡ transfer energy'
-                transfer(transferTarget)
-            }
+            creep.memory.currentTask = '⚡ transfer energy'
+            // transfer(transferTarget)
+            taskFillRoomEnergy.run(creep)
         }
     }
 }

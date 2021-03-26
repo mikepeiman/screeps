@@ -586,7 +586,7 @@ let creepSpecs = (rcl) => {
                     recipe: {
                         WORK: 0,
                         CARRY: 0,
-                        MOVE: 11,
+                        MOVE: 10,
                         ATTACK: 6,
                         RANGED_ATTACK: 0,
                         HEAL: 4,
@@ -1014,44 +1014,10 @@ let creepSpecs = (rcl) => {
             }
         }
         c.composition = buildComp
-        console.log(`🚀 ~ file: creep.specs.js ~ line 1014 ~ creepSpecs ~ buildComp ${t}::: `, buildComp)
-
+        // console.log(`🚀 ~ file: creep.specs.js ~ line 1014 ~ creepSpecs ~ buildComp ${t}::: `, buildComp)
         c.cost = getBodyCost(c.composition)
     }
 
-    // for (let creepType in creepGroups) {
-    //     let t = creepType
-    //     let c = creepGroups[t]
-    //     let counter = 0
-    //     let buildComp = []
-    //     if (c.recipe[TOUGH] > 0) {
-    //         for (let z = 0; z < c.recipe[TOUGH]; z++) {
-    //             buildComp.push(TOUGH)
-    //         }
-    //     }
-    //     let arr = Object.values(c.recipe)
-    //     let max = Math.max(...arr)
-    //     while (counter < max) {
-    //         for (let z in c.recipe) {
-    //         console.log(`🚀 ~ file: creep.specs.js ~ line 983 ~ creepSpecs ~ z`, z)
-                
-    //             if (c.recipe[z] > counter) {
-    //                 if (z != TOUGH && z != HEAL) {
-    //                         buildComp.push(z)
-    //                 }
-    //             }
-    //         }
-    //         ++counter
-    //         c.composition = buildComp
-    //     }
-    //     if (c.recipe[HEAL] > 0) {
-    //         for (let z = 0; z < c.recipe[HEAL]; z++) {
-    //             buildComp.push(HEAL)
-    //         }
-    //     }
-    //     c.composition = buildComp
-    //     c.cost = getBodyCost(buildComp)
-    // }
     return creepLevelGroups
 }
 
