@@ -269,7 +269,7 @@ let creepSpecs = (rcl) => {
                 },
                 'builder': {
                     has: 0,
-                    wants: 0,
+                    wants: 20,
                     level: rcl,
                     recipe: {
                         WORK: 6,
@@ -533,7 +533,7 @@ let creepSpecs = (rcl) => {
                 },
                 'builder': {
                     has: 0,
-                    wants: 0,
+                    wants: 2,
                     level: rcl,
                     recipe: {
                         WORK: 10,
@@ -613,7 +613,7 @@ let creepSpecs = (rcl) => {
                 },
                 'hauler': {
                     has: 0,
-                    wants: 3,
+                    wants: 2,
                     level: rcl,
                     recipe: {
                         WORK: 10,

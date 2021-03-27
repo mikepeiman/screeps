@@ -9,7 +9,7 @@ module.exports = {
 		let carryingEnergy = creep.store.getUsedCapacity(RESOURCE_ENERGY)
 		let carryingMineral = creep.store.getUsedCapacity(mineralType)
 		let nonEnergyLoad = totalLoad - carryingEnergy
-		console.log(`🚀 ~ file: role.miner.js ~ ${creep} ~ totalLoad ${totalLoad} carryingMineral ${carryingMineral} carryingEnergy ${carryingEnergy}. Room has ${minerals.amount} of type ${carryingMineral.resourceType} and non-energy load ${nonEnergyLoad}`,)
+		console.log(`🚀 ~ file: role.miner.js ~ ${creep} ~ totalLoad ${totalLoad} carryingMineral ${carryingMineral} carryingEnergy ${carryingEnergy}. Room has ${minerals} of type ${mineralType} and non-energy load ${nonEnergyLoad}`,)
 
 		let storage = creep.room.find(FIND_STRUCTURES, {
 			filter: (s) => s.structureType == STRUCTURE_STORAGE && s.store.getFreeCapacity() > 100

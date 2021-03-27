@@ -1,16 +1,22 @@
-let taskUpgrade = require('task.upgrade')
+let taskUpgradeController = require('task.give.energy.to.upgrade.controller')
 let taskPowerTowers = require('task.transfer.energy.to.towers')
 let taskFillStorageEnergy = require('task.transfer.energy.to.storage')
 let taskFillRoomEnergy = require('task.give.energy.to.room')
 let getEnergyFromStorage = require('task.get.energy.from.storage')
+const taskGiveEnergyToUpgradeController = require('./task.give.energy.to.upgrade.controller')
+const taskGiveEnergyToTowers = require('./task.give.energy.to.towers')
 
 module.exports = {
     run: function (creep, emergency) {
+    console.log(`🚀 ~ file: role.harvester.js ~ line 9 ~ emergency`, emergency)
         let energy = creep.room.energyAvailable;
         let energyCapacity = creep.room.energyCapacityAvailable;
+        // console.log(`🚀 ~ file: role.harvester.js ~ line 11 ~ energyCapacity`, energyCapacity)
         let unusedEnergyCapacity = energyCapacity - energy
+        let roomEnergyFull = unusedEnergyCapacity == 0
+        // console.log(`🚀 ~ file: role.harvester.js ~ line 13 ~ unusedEnergyCapacity`, unusedEnergyCapacity)
         creep.memory.currentRole = 'harvester'
-        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, ignoreCreeps: true, reusePath: 10 }
+        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, ignoreCreeps: true, reusePath: 3 }
         let containerSource = false
         // energy transfer TO targets
         let transferTarget, harvestTarget
@@ -19,6 +25,7 @@ module.exports = {
                 || s.structureType == STRUCTURE_EXTENSION)
                 && s.energy < s.energyCapacity
         });
+        console.log(`🚀 ~ file: role.harvester.js ~ line 25 ~ spawnAndExtensions`, spawnAndExtensions)
         let containerTargets = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER)
                 && s.energy < s.energyCapacity
@@ -32,15 +39,20 @@ module.exports = {
             let t = towersObj[i]
             towers = [...towers, t]
         }
+        let lowestEnergyTower
+        if (towers.length) {
+            lowestEnergyTower = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
+            lowestEnergyTowerValue = lowestEnergyTower.store.getFreeCapacity()
+        } 
         // energy transfer TO target logic
         if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-        } else if (towers.length) {
-            let t = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
-            transferTarget = t
+        } else if (towers.length && lowestEnergyTowerValue < 600) {
+            transferTarget = lowestEnergyTower
         } else {
-            transferTarget = creep.pos.findClosestByPath(containerTargets)
+            transferTarget = "upgradeController"
         }
+
         console.log(`🚀 ~ ${creep} role.harvester.js ~ line 39 ~ transferTarget`, transferTarget)
 
 
@@ -102,9 +114,13 @@ module.exports = {
             if (!creep.memory.transferring) {
                 creep.memory.currentTask = '!!!⚡ withdraw energy'
                 getEnergyFromStorage.run(creep)
-            } else {
+            } else if(!roomEnergyFull) {
                 creep.memory.currentTask = '⚡ fill room energy'
                 taskFillRoomEnergy.run(creep)
+            } else if(towers.length) {
+                taskGiveEnergyToTowers.run(creep)
+            } else {
+                taskGiveEnergyToUpgradeController.run(creep)
             }
             // else, no emergency, do regular source harvesting
         } else {
@@ -117,8 +133,13 @@ module.exports = {
                     console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
                 }
             } else {
-                creep.memory.currentTask = '⚡ transfer energy'
-                transfer(transferTarget)
+                if (transferTarget == "upgradeController") {
+                    taskUpgradeController.run(creep)
+                } else {
+                    creep.memory.currentTask = '⚡ transfer energy'
+                    transfer(transferTarget)
+                }
+
             }
         }
     }

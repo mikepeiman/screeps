@@ -25,10 +25,29 @@ module.exports = {
             filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store.getFreeCapacity() > 100
         })
 
+        let tombstones = creep.room.find(FIND_TOMBSTONES, {
+        })
 
+        // TODO: complete salvage pickup for tombstones and dropped resources other than energy
+        // a good approach might be to not distinguish between and resource type, and just pick it all up in sequence
+        tombstones.forEach(tombstone => {
+            console.log(`🚀 ~ file: role.salvager.js ~ line 32 ~ tombstone`, tombstone.store)
+            for (let i in tombstone.store) {
+                let res = tombstone.store[i]
+                let t = res.resourceType
+                let a = res.amount
+                console.log(`🚀 ~ item ${i}: role.salvager.js ~ line 35 ~ res ${res} type ${t} amount ${a}`)
+            }
+        });
+
+        console.log(`🚀 ~ file: role.salvager.js ~ line 30 ~ tombstones`, tombstones)
         let takeEnergyTombstones = creep.room.find(FIND_TOMBSTONES, {
             filter: tombstone => tombstone.store.energy > 0
         })
+        let droppedResourcesOther = creep.room.find(FIND_DROPPED_RESOURCES, {
+            filter: res => res.resourceType != RESOURCE_ENERGY
+        })
+        console.log(`🚀 ~ file: role.salvager.js ~ line 48 ~ droppedResourcesOther`, droppedResourcesOther)
         let droppedResourcesEnergy = creep.room.find(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY)
         let droppedResourcesMinerals = creep.room.find(FIND_DROPPED_RESOURCES, mineralType)
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {

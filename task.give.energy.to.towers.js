@@ -1,17 +1,23 @@
 module.exports = {
     run: (creep) => {
-        console.log(`🚀 ~ file: task.fill.room.energy.js ~ line 18 ~ creep`, creep)
         let moveOpts = { visualizePathStyle: { stroke: '#aaffff' }, reusePath: 5 }
-        let spawnAndExtensions = creep.room.find(FIND_MY_STRUCTURES, {
-            filter: (s) => (s.structureType == STRUCTURE_SPAWN
-                || s.structureType == STRUCTURE_EXTENSION)
-                && s.energy < s.energyCapacity
+        let towers = []
+        let towersObj = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: (s) => (s.structureType == STRUCTURE_TOWER)
+                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 20
         });
-        let toTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-        let x = creep.transfer(toTarget, RESOURCE_ENERGY)
+        for (let i in towersObj) {
+            let t = towersObj[i]
+            towers = [...towers, t]
+        }
+        if (towers.length) {
+            let t = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
+            transferTarget = t
+        }
 
-        if (creep.transfer(toTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(toTarget, moveOpts);
+        let x = creep.transfer(transferTarget, RESOURCE_ENERGY)
+        if (creep.transfer(transferTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(transferTarget, moveOpts);
         }
 
     }
