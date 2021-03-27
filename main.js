@@ -44,6 +44,13 @@ let creepGroups = creepLevelGroups[rcl - 1].specs
 let energyHarvesterCreepsPriorities = ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController"]
 let emergencySpawn = false
 let creepTaskPriority
+let hostiles = home.find(FIND_HOSTILE_CREEPS, {
+    filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
+});
+let hostilesInRoom
+if(hostiles[0]) {
+    hostilesInRoom = true
+}
 
 // roleTower.run(home)
 for (let creepType in creepGroups) {
@@ -98,7 +105,7 @@ module.exports.loop = function () {
     if (hostiles[0]) {
         creepTaskPriority = "powerTowers"
     } else {
-        creepTaskPriority = "fillRoomEnergy"
+        creepTaskPriority = "fillStorage"
     }
     // renewCreepTimer++
     // if (renewCreepTimer > 15) {
@@ -192,7 +199,7 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-            roleHarvester.run(creep, emergencySpawn);
+            roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             // }
         }
         if (creep.memory.role == 'hauler') {
@@ -203,7 +210,7 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-                roleHarvester.run(creep, emergencySpawn);
+                roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             // }
         }
         if (creep.memory.role == 'salvager') {

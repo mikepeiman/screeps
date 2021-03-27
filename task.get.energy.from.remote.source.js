@@ -1,6 +1,6 @@
 module.exports = {
     run: (creep) => {
-        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, ignoreCreeps: true, reusePath: 10 }
+        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 3 }
         let storage = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => s.structureType == STRUCTURE_STORAGE && s.store.getUsedCapacity() > 0
         })

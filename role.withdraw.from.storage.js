@@ -10,7 +10,7 @@ module.exports = {
         let energyCapacity = creep.room.energyCapacityAvailable;
         let unusedEnergyCapacity = energyCapacity - energy
         creep.memory.currentRole = 'harvester'
-        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, ignoreCreeps: true, reusePath: 10 }
+        let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, reusePath: 3 }
         let containerSource = false
         // energy transfer TO targets
         let transferTarget, harvestTarget

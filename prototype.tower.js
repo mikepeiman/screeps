@@ -10,6 +10,16 @@ StructureTower.prototype.defend = function () {
     let hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
         filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
     });
+    let hostileHealers = []
+    hostiles.forEach(hostile => {
+        let healer
+        if (hostile.getActiveBodyparts(HEAL) > 0) {
+            healer = hostile
+            hostileHealers.push(healer)
+        } else {
+            healer = null
+        }
+    });
     let walls = this.room.find(FIND_STRUCTURES, {
         filter: (w) => w.structureType == STRUCTURE_WALL && w.hits < wallQuota
     })
@@ -29,10 +39,10 @@ StructureTower.prototype.defend = function () {
     })
     wallsAndRamparts = [...walls, ...ramparts]
     lowestWallOrRampart = _.min(wallsAndRamparts, 'hits')
-        // highestWallOrRampart = _.max(wallsAndRamparts, s => s.hits)
+    // highestWallOrRampart = _.max(wallsAndRamparts, s => s.hits)
     // console.log(`🚀 ~ file: prototype.tower.js ~ line 30 ~ lowestWallOrRampart ${lowestWallOrRampart}::: hits ${lowestWallOrRampart.hits}`, )
     // console.log(`🚀 ~ file: prototype.tower.js ~ line 37 ~ highestWallOrRampart  ${highestWallOrRampart}::: hits ${highestWallOrRampart.hits}`,)
-    
+
     let otherRepairTargets = this.room.find(FIND_STRUCTURES, {
         filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART
     });
@@ -42,7 +52,7 @@ StructureTower.prototype.defend = function () {
             wounded.push(creep.id)
         }
     }
-// Yet, it is working... I'm watching with my own eyes :slightly_smiling_face: 
+    // Yet, it is working... I'm watching with my own eyes :slightly_smiling_face: 
     // REPAIR code
     // repair only if towers have some defense energy in reserve
     let towerEnergy = this.store.getUsedCapacity(RESOURCE_ENERGY)
@@ -76,9 +86,15 @@ StructureTower.prototype.defend = function () {
 
     if (hostiles[0]) {
         let username = hostiles[0].owner.username;
-        console.log(`👿👿👿 prototype.tower.jsUser ${username} spotted in room ${this.room}`)
         Game.notify(`User ${username} spotted in room ${this.room}`);
-        this.attack(hostiles[0])
+        console.log(`👿👿👿 prototype.tower.jsUser ${username} spotted in room ${this.room}`)
+        if (hostileHealers[0]) {
+            this.attack(hostileHealers[0])
+        } else {
+            this.attack(hostiles[0])
+        }
+
+
     } else if (wounded[0]) {
         // HEAL code
         // console.log("🚀 ~ file: role.this.js ~ line 20 ~ wounded", wounded)
