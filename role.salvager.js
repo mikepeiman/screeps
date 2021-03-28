@@ -19,16 +19,10 @@ module.exports = {
         let carryingMineral = creep.store.getUsedCapacity(mineralType)
         let carryingResources = []
         for (let r in creep.store) {
-            console.log(`🚀 ~ file: role.salvager.js ~ line 24 ~ r`, r)
             if(r != 'energy') {
                 carryingResources.push(r)
             }
         }
-
-        carryingResources.forEach(element => {
-            console.log(`🚀 ~ file: role.salvager.js ~ line 25 ~ element`, element)
-        });
-
 
         let nonEnergyLoad = totalLoad - carryingEnergy
         let storage = creep.room.find(FIND_STRUCTURES, {
@@ -53,14 +47,12 @@ module.exports = {
             }
         });
 
-        console.log(`🚀 ~ file: role.salvager.js ~ line 30 ~ tombstones`, tombstones)
         let takeEnergyTombstones = creep.room.find(FIND_TOMBSTONES, {
             filter: tombstone => tombstone.store.energy > 0
         })
         let droppedResourcesOther = creep.room.find(FIND_DROPPED_RESOURCES, {
             filter: res => res.resourceType != RESOURCE_ENERGY
         })
-        console.log(`🚀 ~ file: role.salvager.js ~ line 48 ~ droppedResourcesOther`, droppedResourcesOther)
         let droppedResourcesEnergy = creep.room.find(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY)
         let droppedResourcesMinerals = creep.room.find(FIND_DROPPED_RESOURCES, mineralType)
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {
@@ -92,8 +84,8 @@ module.exports = {
         }
 
         if (creep.memory.transfering) {
-            console.log(`🚀 ~ file: role.salvager.js ~ line 82 ~ taskPriority`, taskPriority)
-            console.log(`🚀 ~ file: role.salvager.js ~ line 98 ~ carryingMineral`, carryingMineral)
+            // console.log(`🚀 ~ file: role.salvager.js ~ line 82 ~ taskPriority`, taskPriority)
+            // console.log(`🚀 ~ file: role.salvager.js ~ line 98 ~ carryingMineral`, carryingMineral)
 
             if (carryingResources[0]) {
                 let deposit = creep.transfer(storage[0], carryingResources[0])
@@ -102,22 +94,18 @@ module.exports = {
                 }
             } else {
                 if (taskPriority == "upgradeController") {
-                    console.log(`🚀 ~ file: role.salvager.js ~ line 12 ~ taskPriority`, taskPriority)
                     taskUpgrade.run(creep)
                 }
                 if (taskPriority == "fillRoomEnergy") {
-                    console.log(`🚀 ~ file: role.salvager.js ~ line 81 ~ taskPriority`, taskPriority)
                     taskFillRoomEnergy.run(creep)
                     if (unusedEnergyCapacity == 0) {
                         taskPowerTowers.run(creep)
                     }
                 }
                 if (taskPriority == "fillStorage") {
-                    console.log(`🚀 ~ file: role.salvager.js ~ line 6 ~ taskPriority`, taskPriority)
                     taskFillStorageEnergy.run(creep)
                 }
                 if (taskPriority == "powerTowers") {
-                    console.log(`🚀 ~ file: role.salvager.js ~ line 12 ~ taskPriority`, taskPriority)
                     taskPowerTowers.run(creep)
                 }
             }
