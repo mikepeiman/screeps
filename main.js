@@ -105,7 +105,7 @@ module.exports.loop = function () {
     if (hostiles[0]) {
         creepTaskPriority = "powerTowers"
     } else {
-        creepTaskPriority = "fillStorage"
+        creepTaskPriority = "upgradeController"
     }
     // renewCreepTimer++
     // if (renewCreepTimer > 15) {
@@ -124,18 +124,19 @@ module.exports.loop = function () {
     let tally = 0
     // if (everyFiveCounter == 5) {
     for (let creepType in creepGroups) {
+        console.log('creepType: ', creepType);
         creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-        let hauler = creepGroups["hauler"]
-        let salvager = creepGroups["salvager"]
-        if (hauler.has < 1) {
-            spawnPriority = "hauler"
-        } else if (salvager.has < 1) {
-            spawnPriority = "salvager"
-        } else {
-            spawnPriority = "false"
-        }
+        let hauler = creepGroups["hauler"] || ''
+        let salvager = creepGroups["salvager"] || ''
+        // if (hauler.has < 1) {
+        //     spawnPriority = "hauler"
+        // } else if (salvager?.has < 1) {
+        //     spawnPriority = "salvager"
+        // } else {
+        //     spawnPriority = "false"
+        // }
 
-        // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+        console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         tally += creepGroups[creepType].has
     }
     // }
@@ -146,31 +147,33 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 1
+        // creepGroups['builder'].wants = 5
+        // #todo reduce to 1 when the rebuild is complete
         // creepGroups['hauler'].wants = 2
     } else {
         creepGroups['builder'].wants = 0
         // creepGroups['hauler'].wants = 4
     }
 
-    if (everyHundredCounter == 100) {
-        if (mineralsAmount > 500 && mineralsAmount < 2000) {
-            console.log(`(mineralsAmount > 500 && mineralsAmount < 2000) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
-            if (creepGroups["miner"].has > 1) {
-                creepGroups["miner"].wants = 0
-                console.log(`(mineralsAmount > 500 && mineralsAmount < 2000)(creepGroups["miner"].has > 1) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
-            } else {
-                creepGroups["miner"].wants = 1
-                console.log(`(mineralsAmount > 500 && mineralsAmount < 2000)(else) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
-            }
-        } else if (mineralsAmount < 100 && mineralRegen > 150) {
-            creepGroups["miner"].wants = 0
-            console.log(`else if(mineralsAmount < 100 && mineralRegen > 150) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
-        } else {
-            creepGroups["miner"].wants = 2
-            console.log(`else ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
-        }
-    }
+    // if (everyHundredCounter == 100) {
+    //     if (mineralsAmount > 500 && mineralsAmount < 2000) {
+    //         console.log(`(mineralsAmount > 500 && mineralsAmount < 2000) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+    //         if (creepGroups["miner"].has > 1) {
+    //             creepGroups["miner"].wants = 0
+    //             console.log(`(mineralsAmount > 500 && mineralsAmount < 2000)(creepGroups["miner"].has > 1) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+    //         } else {
+    //             creepGroups["miner"].wants = 1
+    //             console.log(`(mineralsAmount > 500 && mineralsAmount < 2000)(else) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+    //         }
+    //     } else if (mineralsAmount < 100 && mineralRegen > 150) {
+    //         creepGroups["miner"].wants = 0
+    //         console.log(`else if(mineralsAmount < 100 && mineralRegen > 150) ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+    //     } else {
+    //         // #todo uncomment this once base is rebuilt
+    //         // creepGroups["miner"].wants = 2
+    //         console.log(`else ~~~ mineralsAmount ${mineralsAmount} mineralRegen ${mineralRegen} creepGroups["miner"].wants ${creepGroups["miner"].wants}`)
+    //     }
+    // }
     everyHundredCounter--
     if (everyHundredCounter == 0) {
         everyHundredCounter = 100
@@ -274,7 +277,7 @@ module.exports.loop = function () {
         }
 
     }
-    // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+    console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
     if (spawnPriority != "false") {
         creepType = spawnPriority
         c = creepGroups[creepType]

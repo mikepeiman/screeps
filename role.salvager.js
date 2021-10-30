@@ -2,9 +2,12 @@ let taskUpgrade = require('task.upgrade')
 let taskPowerTowers = require('task.transfer.energy.to.towers')
 let taskFillStorageEnergy = require('task.transfer.energy.to.storage')
 let taskFillRoomEnergy = require('task.fill.room.energy')
-
+let taskBuild = require('task.give.energy.to.construction')
 module.exports = {
     run: (creep, taskPriority) => {
+
+        taskPriority = "upgradeController"
+
         creep.memory.currentRole = 'salvager'
         let moveOpts = { visualizePathStyle: { stroke: '#aa00ff' }, reusePath: 5 }
 
@@ -18,6 +21,14 @@ module.exports = {
         let carryingEnergy = creep.store.getUsedCapacity(RESOURCE_ENERGY)
         let carryingMineral = creep.store.getUsedCapacity(mineralType)
         let carryingResources = []
+
+
+        let buildTargets = creep.room.find(FIND_CONSTRUCTION_SITES);
+        if(buildTargets.length){
+            taskPriority = "build"
+        }
+
+
         for (let r in creep.store) {
             if(r != 'energy') {
                 carryingResources.push(r)
@@ -93,6 +104,9 @@ module.exports = {
                     creep.moveTo(storage[0])
                 }
             } else {
+                if(taskPriority == "build"){
+                    taskBuild.run(creep, buildTargets)
+                }
                 if (taskPriority == "upgradeController") {
                     taskUpgrade.run(creep)
                 }

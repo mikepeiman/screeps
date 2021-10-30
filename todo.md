@@ -12,6 +12,7 @@ TASKS
 * Take neighboring room W7N53, target RC ID # 5bbcac7a9099fc012e635853 at 28, 8
 
 * set a priority array, spawn array[0] preferentially
+* determine total amount of energy required for construction jobs, spawn # builders accordingly
 
 * refactor all energy collection and energy transfer to task module
 * refactor all code so that creep targets are stored to memory, and creeps do not pursue the same target

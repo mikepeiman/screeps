@@ -17,7 +17,7 @@ let creepSpecs = (rcl) => {
             level: 1, specs: {
                 'harvester': {
                     has: 0,
-                    wants: 8,
+                    wants: 5,
                     level: rcl,
                     recipe: {
                         WORK: 1,
@@ -117,7 +117,7 @@ let creepSpecs = (rcl) => {
             level: 2, specs: {
                 'harvester': {
                     has: 0,
-                    wants: 4,
+                    wants: 5,
                     level: rcl,
                     recipe: {
                         WORK: 1,
@@ -133,7 +133,7 @@ let creepSpecs = (rcl) => {
                 },
                 'builder': {
                     has: 0,
-                    wants: 2,
+                    wants: 4,
                     level: rcl,
                     recipe: {
                         WORK: 1,
@@ -365,7 +365,7 @@ let creepSpecs = (rcl) => {
                 },
                 'salvager': {
                     has: 0,
-                    wants: 2,
+                    wants: 1,
                     level: rcl,
                     recipe: {
                         WORK: 5,
@@ -511,6 +511,22 @@ let creepSpecs = (rcl) => {
                     },
                     cost: 0
                 },
+                'miner': {
+                    has: 0,
+                    wants: 0,
+                    level: rcl,
+                    recipe: {
+                        WORK: 12,
+                        CARRY: 12,
+                        MOVE: 8,
+                        ATTACK: 0,
+                        RANGED_ATTACK: 0,
+                        HEAL: 0,
+                        CLAIM: 0,
+                        TOUGH: 0
+                    },
+                    cost: 0
+                },
             }
         },
         {
@@ -629,7 +645,7 @@ let creepSpecs = (rcl) => {
                 },
                 'miner': {
                     has: 0,
-                    wants: 2,
+                    wants: 0,
                     level: rcl,
                     recipe: {
                         WORK: 12,
@@ -716,9 +732,9 @@ let creepSpecs = (rcl) => {
                     wants: 0,
                     level: rcl,
                     recipe: {
-                        WORK: 9,
-                        CARRY: 9,
-                        MOVE: 9,
+                        WORK: 10,
+                        CARRY: 20,
+                        MOVE: 15,
                         ATTACK: 0,
                         RANGED_ATTACK: 0,
                         HEAL: 0,
@@ -791,14 +807,30 @@ let creepSpecs = (rcl) => {
                     },
                     cost: 0
                 },
+                'miner': {
+                    has: 0,
+                    wants: 0,
+                    level: rcl,
+                    recipe: {
+                        WORK: 12,
+                        CARRY: 12,
+                        MOVE: 8,
+                        ATTACK: 0,
+                        RANGED_ATTACK: 0,
+                        HEAL: 0,
+                        CLAIM: 0,
+                        TOUGH: 0
+                    },
+                    cost: 0
+                },
                 'hauler': {
                     has: 0,
                     wants: 0,
                     level: rcl,
                     recipe: {
-                        WORK: 8,
-                        CARRY: 11,
-                        MOVE: 9,
+                        WORK: 10,
+                        CARRY: 10,
+                        MOVE: 10,
                         ATTACK: 0,
                         RANGED_ATTACK: 0,
                         HEAL: 0,
@@ -812,14 +844,14 @@ let creepSpecs = (rcl) => {
                     wants: 1,
                     level: rcl,
                     recipe: {
-                        [WORK]: 16,
-                        [CARRY]: 20,
-                        [MOVE]: 14,
-                        [ATTACK]: 0,
-                        [RANGED_ATTACK]: 0,
-                        [HEAL]: 0,
-                        [CLAIM]: 0,
-                        [TOUGH]: 0
+                        WORK: 10,
+                        CARRY: 15,
+                        MOVE: 10,
+                        ATTACK: 0,
+                        RANGED_ATTACK: 0,
+                        HEAL: 0,
+                        CLAIM: 0,
+                        TOUGH: 0
                     },
                     cost: 0
                 },
@@ -843,6 +875,22 @@ let creepSpecs = (rcl) => {
         },
         {
             level: 8, specs: {
+                'miner': {
+                    has: 0,
+                    wants: 0,
+                    level: rcl,
+                    recipe: {
+                        WORK: 12,
+                        CARRY: 12,
+                        MOVE: 8,
+                        ATTACK: 0,
+                        RANGED_ATTACK: 0,
+                        HEAL: 0,
+                        CLAIM: 0,
+                        TOUGH: 0
+                    },
+                    cost: 0
+                },
                 'harvester': {
                     has: 0,
                     wants: 0,
