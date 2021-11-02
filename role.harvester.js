@@ -147,7 +147,7 @@ module.exports = {
                 }
             } else {
                 if (transferTarget == "upgradeController") {
-                    console.log(`🚀🔥🔥🔥 ~ file: role.harvester.js ~ line 148 ~ transferTarget upgradeController`, transferTarget)
+                    // console.log(`🚀🔥🔥🔥 ~ file: role.harvester.js ~ line 148 ~ transferTarget upgradeController`, transferTarget)
                     taskUpgradeController.run(creep)
                 } else {
                     creep.memory.currentTask = '⚡ transfer energy'
