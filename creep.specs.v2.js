@@ -33,7 +33,8 @@ let creepSpecs = (energyCapacity) => {
 
 
     let creepGroups = {
-        'harvester-dynamic': {
+        // Resource-Hulaer maximizes carry capacity, moderate to low movement, minimal work capacity
+        'Resource-Hauler': {
             type: 'worker',
             priorities: {
                 WORK: 40,
@@ -46,7 +47,8 @@ let creepSpecs = (energyCapacity) => {
                 TOUGH: 0
             },
         },
-        'harvester-static': {
+        // Harvester-Miner maximizes work capacity, no carry capacity, minimal mobility
+        'Harvester-Miner': {
             type: 'worker',
             priorities: {
                 WORK: 100,
@@ -59,23 +61,11 @@ let creepSpecs = (energyCapacity) => {
                 TOUGH: 0
             },
         },
-        'hauler': {
+        // Engineers work and carry energy, with decent mobility
+        'Engineer': {
             type: 'worker',
             priorities: {
                 WORK: 0,
-                CARRY: 2,
-                MOVE: 2,
-                ATTACK: 0,
-                RANGED_ATTACK: 0,
-                HEAL: 0,
-                CLAIM: 0,
-                TOUGH: 0
-            },
-        },
-        'salvage-repair': {
-            type: 'worker',
-            priorities: {
-                WORK: 1,
                 CARRY: 2,
                 MOVE: 2,
                 ATTACK: 0,
@@ -115,8 +105,8 @@ let creepSpecs = (energyCapacity) => {
 
     function calculateCreepPartsList(energyCapacity) {
         console.log('energyCapacity: ', energyCapacity);
-        for (let creepType in creepGroups) {
-            let creep = creepGroups[creepType]
+        for (let creepName in creepGroups) {
+            let creep = creepGroups[creepName]
             let type = creep.type
             let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
             // Here begins my first attempt at "verbose coding", the concept of using fully-descriptive function and variable names,
@@ -124,7 +114,23 @@ let creepSpecs = (energyCapacity) => {
             // This is a strategy I am exploring that might improve my actual programming skill, as well as my ability to debug code -
             // especially debugging when the code has been forgotten due to intervening time and other projects. Or, it is even
             // someone else reading the code, who did not write it.
-            determineCreepCompositionBasedOnCurrentSituation(creep, roomLayout, resourceInventory, hostilesInventory)
+
+
+            let energyHarvestStrategy = "dynamic" // or "static"
+            // what's relevant?
+            // distance between energy sources and...? I can calculate this. But why?
+            // perhaps the important thing is resource-collection strategy. Right now my "normal" is dynamic harvesting.
+            // I can code for this as I'm used to it, and then implement a static mining strategy.
+            let resourceInventory = "normal"
+            // what is this for? It made sense when I wrote it.
+            // I guess it might refer to if containers are full or not, things like that...
+            // keeping it for ideas, right now seems redundant/useless
+            let hostilesInventory = "normal"
+            // this should matter to warriors, but perhaps not to workers. This whole module is about building creeps,
+            // not directing/insutrcting/mobilizing them. OK. So this variable belongs with creep command, not creep construction.
+            // keeping it here for now so I remember to use it there.
+
+            determineCreepCompositionBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory)
 
         }
     }
@@ -132,28 +138,33 @@ let creepSpecs = (energyCapacity) => {
     calculateCreepPartsList(energyCapacity)
 
 
-    function determineCreepCompositionBasedOnCurrentSituation(creep, roomLayout, resourceInventory, hostilesInventory) {
-        roomLayout = "normal" // or... 
-        // what's relevant?
-        // distance between energy sources and...? I can calculate this. But why?
-        // perhaps the important thing is resource-collection strategy. Right now my "normal" is dynamic harvesting.
-        // I can code for this as I'm used to it, and then implement a static mining strategy.
-        resourceInventory = "normal"
-        // what is this for? It made sense when I wrote it.
-        // I guess it might refer to if containers are full or not, things like that...
-        // keeping it for ideas, right now seems redundant/useless
-        hostilesInventory = "normal"
-        // this should matter to warriors, but perhaps not to workers. This whole module is about building creeps,
-        // not directing/insutrcting/mobilizing them. OK. So this variable belongs with creep command, not creep construction.
-        // keeping it here for now so I remember to use it there.
+    function determineCreepCompositionBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory) {
+        let creep = creepGroups[creepName]
+        if (creep.type == "worker") { // creeps that perform infrastructure and resource tasks
+            if(creepName == "Resource-Hauler"){ // Maximizes carry capacity, moderate to low movement, minimal work capacity
+                
+            }
+            if(creepName == "Harvester-Miner"){ // Maximizes work capacity, no carry capacity, minimal mobility
+                if (energyHarvestStrategy == "dynamic") { // dynamic harvesting: creeps harvest energy and carry it to purpose
+
+                } else { // static harvesting
+        
+                }
+            }
+            if(creepName == "Engineer"){ // works and carries energy, with decent mobility
+
+            }
+        } else { // warrior class, creeps that perform military functions: scouting, attack and defense
+
+        }
 
 
     }
 
 
-    function subtractMandatoryPartsCosts(creepType, energyCapacity) {
+    function subtractMandatoryPartsCosts(creep, energyCapacity) {
         let mandatoryCost = 150
-        let type = creepGroups[creepType].type
+        let type = creep.type
         if (type == "warrior") {
             mandatoryCost = 50
         }
