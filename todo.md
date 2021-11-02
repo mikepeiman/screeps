@@ -2,6 +2,10 @@ TASKS
 
 <!-- * Add level 4 creep models to creepGroups, change RCL calculation (from -2 to -1 for array) -->
 <!-- * Refactor creepGroups construction properties (composition) to use # of body parts and algorithmic construction -->
+* code for every level 2 and up, to determine maximum energy capacity and build creeps accordingly - either have different creep versions within creep.specs, or generate creeps dynamically
+* "get out of the way!" code for routing: 
+  * 1. If a creep is performing a task (eg. build or transfer) and it is blocking another creep, move it to another suitable location to perform that task (can loop through all creeps' move directions and see if there is a location conflict)
+  * 2. If a creep's move path is blocked, see how far away - move it closer, at least, so it is ready
 * renew creeps rather than let them die (if not boosted, at least)
 * check for creep idle, and send them to work if > 10% energy on board && more than 30 ticks to energy source regen
 * if creep idle, creep energy empty, and energy sources empty, send to energy source to await regen

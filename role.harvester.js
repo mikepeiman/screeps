@@ -137,19 +137,21 @@ module.exports = {
             // else, no spawnEmergency, do regular source harvesting
         } else {
             if (!creep.memory.transferring) {
+                // console.log('!creep.memory.transferring: NOT XFER XFER XFER',);
                 creep.memory.currentTask = '➕⚡ gather energy'
                 if (harvestTarget) {
                     harvest(harvestTarget)
                 } else {
                     creep.memory.idle = true
-                    // console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+                    console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
                 }
             } else {
                 if (transferTarget == "upgradeController") {
-                    console.log(`🚀 ~ file: role.harvester.js ~ line 148 ~ transferTarget upgradeController`, transferTarget)
+                    console.log(`🚀🔥🔥🔥 ~ file: role.harvester.js ~ line 148 ~ transferTarget upgradeController`, transferTarget)
                     taskUpgradeController.run(creep)
                 } else {
                     creep.memory.currentTask = '⚡ transfer energy'
+                    taskUpgradeController.run(creep)
                     transfer(transferTarget)
                 }
 

@@ -124,13 +124,13 @@ module.exports.loop = function () {
     let tally = 0
     // if (everyFiveCounter == 5) {
     for (let creepType in creepGroups) {
-        console.log('creepType: ', creepType);
+        // console.log('creepType: ', creepType);
         creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
-        let hauler = creepGroups["hauler"] || ''
-        let salvager = creepGroups["salvager"] || ''
-        // if (hauler.has < 1) {
-        //     spawnPriority = "hauler"
-        // } else if (salvager?.has < 1) {
+        // let harvester = creepGroups["harvester"] || ''
+        // let salvager = creepGroups["salvager"] || ''
+        // if (harvester.has < 1) {
+        //     spawnPriority = "harvester"
+        // } else if (salvager.has < 1) {
         //     spawnPriority = "salvager"
         // } else {
         //     spawnPriority = "false"
@@ -147,7 +147,7 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        // creepGroups['builder'].wants = 5
+        creepGroups['builder'].wants = 4
         // #todo reduce to 1 when the rebuild is complete
         // creepGroups['hauler'].wants = 2
     } else {
@@ -187,7 +187,9 @@ module.exports.loop = function () {
     });
 
     for (let name in Game.creeps) {
+        console.log('name: ', name);
         let creep = Game.creeps[name];
+        // console.log(`creep: , ${creep}, HOME: ${creep.memory.home}, XFER: ${creep.memory.transferring}, ROLE: ${creep.memory.role}`);
         // if(creep.memory.nextTask == "renew") {
         //     renewCreep(creep,spawn)
         // }
@@ -195,15 +197,17 @@ module.exports.loop = function () {
         // if(creep.memory.nextTask != "renew") {
         if (creep.memory.role == 'harvester') {
             // recycleCreep(creep, spawn)
-            // if (unusedEnergyCapacity < 1 && tally > 3) {
-            //     if (buildTargets.length) {
-            //         roleBuilder.run(creep);
-            //     } else {
-            //         roleUpgrader.run(creep);
-            //     }
-            // } else {
+            if (unusedEnergyCapacity < 1 && tally > 3) {
+                if (buildTargets.length) {
+                    console.log('buildTargets: ', buildTargets);
+                    roleBuilder.run(creep);
+                } else {
+                    console.log(`roleHarvester run on harvester creep ${creep}`);
+                    roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
+                }
+            } else {
             roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
-            // }
+            }
         }
         if (creep.memory.role == 'hauler') {
             // if (unusedEnergyCapacity < 1 && tally > 3) {
@@ -280,6 +284,7 @@ module.exports.loop = function () {
     console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
     if (spawnPriority != "false") {
         creepType = spawnPriority
+        console.log('creepType: ', creepType);
         c = creepGroups[creepType]
         console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
         let comp = c.composition
