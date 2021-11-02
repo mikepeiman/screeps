@@ -30,7 +30,7 @@ let creepSpecs = (energyCapacity) => {
     Eg.:
     */
 
-    
+
 
     let creepGroups = {
         'harvester-dynamic': {
@@ -58,7 +58,7 @@ let creepSpecs = (energyCapacity) => {
                 CLAIM: 0,
                 TOUGH: 0
             },
-        }, 
+        },
         'hauler': {
             type: 'worker',
             priorities: {
@@ -115,38 +115,52 @@ let creepSpecs = (energyCapacity) => {
 
     function calculateCreepPartsList(energyCapacity) {
         console.log('energyCapacity: ', energyCapacity);
-        for(let creepType in creepGroups) {
+        for (let creepType in creepGroups) {
             let creep = creepGroups[creepType]
             let type = creep.type
-            console.log(`🚀 ~ file: creep.specs.v2.js ~ line 121 ~ calculateCreepPartsList ~ type`, type)
-            // let minSpecs = {
-            //     WORK: 0,
-            //     CARRY: 0,
-            //     MOVE: 1,
-            //     ATTACK: 0,
-            //     RANGED_ATTACK: 0,
-            //     HEAL: 0,
-            //     CLAIM: 0,
-            //     TOUGH: 0
-            // }
+            let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
+            // Here begins my first attempt at "verbose coding", the concept of using fully-descriptive function and variable names,
+            // and as many as necessary to make the entire program human-comprehensible.
+            // This is a strategy I am exploring that might improve my actual programming skill, as well as my ability to debug code -
+            // especially debugging when the code has been forgotten due to intervening time and other projects. Or, it is even
+            // someone else reading the code, who did not write it.
+            determineCreepCompositionBasedOnCurrentSituation(creep, roomLayout, resourceInventory, hostilesInventory)
 
-            // if(type == "worker") {
-            //     minSpecs.WORK = 1
-            // }
         }
     }
-calculateCreepPartsList(energyCapacity)
 
-function subtractMandatoryPartsCosts(creepType, energyCapacity) {
-    let mandatoryCost = 150
-    let type = creepGroups[creepType].type
-    if(type == "warrior") {
-        mandatoryCost = 50
-    } 
-    return remainingEnergyBudget = energyCapacity - mandatoryCost
-}
+    calculateCreepPartsList(energyCapacity)
 
-console.log(`🚀 ~ file: creep.specs.v2.js ~ line 141 ~ subtractMandatoryPartsCosts ~ subtractMandatoryPartsCosts`, subtractMandatoryPartsCosts("paladin", energyCapacity))
+
+    function determineCreepCompositionBasedOnCurrentSituation(creep, roomLayout, resourceInventory, hostilesInventory) {
+        roomLayout = "normal" // or... 
+        // what's relevant?
+        // distance between energy sources and...? I can calculate this. But why?
+        // perhaps the important thing is resource-collection strategy. Right now my "normal" is dynamic harvesting.
+        // I can code for this as I'm used to it, and then implement a static mining strategy.
+        resourceInventory = "normal"
+        // what is this for? It made sense when I wrote it.
+        // I guess it might refer to if containers are full or not, things like that...
+        // keeping it for ideas, right now seems redundant/useless
+        hostilesInventory = "normal"
+        // this should matter to warriors, but perhaps not to workers. This whole module is about building creeps,
+        // not directing/insutrcting/mobilizing them. OK. So this variable belongs with creep command, not creep construction.
+        // keeping it here for now so I remember to use it there.
+
+
+    }
+
+
+    function subtractMandatoryPartsCosts(creepType, energyCapacity) {
+        let mandatoryCost = 150
+        let type = creepGroups[creepType].type
+        if (type == "warrior") {
+            mandatoryCost = 50
+        }
+        return remainingEnergyBudget = energyCapacity - mandatoryCost
+    }
+
+    console.log(`🚀 ~ file: creep.specs.v2.js ~ line 141 ~ subtractMandatoryPartsCosts ~ subtractMandatoryPartsCosts`, subtractMandatoryPartsCosts("paladin", energyCapacity))
 
 
 
