@@ -7,7 +7,7 @@ let roleWarrior = require('role.warrior');
 let gatherEnergy = require('task.gather.energy')
 let recycleCreep = require('creep.recycle')
 let creepSpecs = require('creep.specs')
-let creepSpecs2 = require('creep.specs.v2')
+let buildCreep = require('buildCreep')
 const Traveler = require('traveler')
 const roleScout = require('role.scout');
 const roleRepairer = require('role.repairer');
@@ -88,7 +88,7 @@ module.exports.loop = function () {
 
     let energy = spawn.room.energyAvailable;
     let energyCapacity = spawn.room.energyCapacityAvailable;
-    creepSpecs2(energyCapacity)
+    buildCreep("Harvester-Miner", energyCapacity)
     let unusedEnergyCapacity = energyCapacity - energy
     let RCLprogressRemains = home.controller.progressTotal - home.controller.progress
     let takeEnergySources = home.find(FIND_SOURCES_ACTIVE)
