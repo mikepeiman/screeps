@@ -128,8 +128,10 @@ module.exports.loop = function () {
     let tally = 0
     // if (everyFiveCounter == 5) {
     for (let creepType in creepGroups) {
-        // console.log('creepType: ', creepType);
-        creepGroups[creepType].has = _.sum(Game.creeps, { memory: { role: creepType } })
+        // console.log(`🚀 ~ file: main.js ~ line 131 ~ creepType`, creepType)
+        let creep = creepGroups[creepType]
+        // console.log(`🚀 ~ file: main.js ~ line 133 ~ creep`, creep.name, creep.role)
+        creep.has = _.sum(Game.creeps, { memory: { role: creep.role } })
         // let harvester = creepGroups["harvester"] || ''
         // let salvager = creepGroups["salvager"] || ''
         // if (harvester.has < 1) {
@@ -299,13 +301,13 @@ module.exports.loop = function () {
     } else {
         for (let creepType in creepGroups) {
             let c = creepGroups[creepType]
-            console.log(`🚀 ~ file: main.js ~ line 301 ~ c`, c.name)
+            // console.log(`🚀 ~ file: main.js ~ line 301 ~ c`, c.name)
             //  && creepType == 'hauler'
             if (c.has < c.wants) {
                 console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
-                let comp = c.composition
+                let comp = c.blueprint
                 let name = `${creepType}-level-${rcl}-${Game.time}`
-                let mem = { memory: { role: creepType, home: home.name, level: rcl, working: false } }
+                let mem = { memory: { role: c.role, home: home.name, level: rcl, working: false } }
                 let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
                 if (x == 0) {
                     console.log(`Spawning a ${creepType}`)

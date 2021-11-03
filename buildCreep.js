@@ -41,17 +41,40 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             has: 0,
             wants: 0,
-            priorities: {},
+            priorities: {
+                'WORK': 1,
+                'CARRY': 75,
+                'MOVE': 25,
+            },
             composition: {},
             blueprint: []
         },
-        // Harvester-Miner maximizes work capacity, no carry capacity, minimal mobility
-        'Harvester-Miner': {
-            name: 'Harvester-Miner',
+        // Dynamic-Harvester-Miner balances work capacity, carry capacity, and mobility
+        'Dynamic-Harvester-Miner': {
+            name: 'Dynamic-Harvester-Miner',
+            type: 'worker',
+            role: 'harvester',
+            has: 0,
+            wants: 8,
+            priorities: {
+                'WORK': 50,
+                'CARRY': 25,
+                'MOVE': 25,
+            },
+            composition: {},
+            blueprint: []
+        },
+        // Static-Harvester-Miner maximizes work capacity, no carry capacity, minimal mobility
+        'Static-Harvester-Miner': {
+            name: 'Static-Harvester-Miner',
             type: 'worker',
             has: 0,
             wants: 0,
-            priorities: {},
+            priorities: {
+                'WORK': 100,
+                'CARRY': 1,
+                'MOVE': 1,
+            },
             composition: {},
             blueprint: []
         },
@@ -59,9 +82,14 @@ let buildCreep = (energyCapacity) => {
         'Engineer': {
             name: 'Engineer',
             type: 'worker',
+            role: 'harvester',
             has: 0,
             wants: 0,
-            priorities: {},
+            priorities: {
+                'WORK': 50,
+                'CARRY': 25,
+                'MOVE': 25,
+            },
             composition: {},
             blueprint: []
         },
@@ -70,7 +98,11 @@ let buildCreep = (energyCapacity) => {
             type: 'warrior',
             has: 0,
             wants: 0,
-            priorities: {},
+            priorities: {
+                'WORK': 0,
+                'CARRY': 0,
+                'MOVE': 1,
+            },
             composition: {},
             blueprint: []
         },
@@ -79,20 +111,24 @@ let buildCreep = (energyCapacity) => {
             type: 'warrior',
             has: 0,
             wants: 0,
-            priorities: {},
+            priorities: {
+                'WORK': 0,
+                'CARRY': 1,
+                'MOVE': 1,
+            },
             composition: {},
             blueprint: []
         }
     }
 
-    for(creepType in CREEP_TYPES){
-    calculateCreepPartsList(creepType)
+    for (creepType in CREEP_TYPES) {
+        calculateCreepPartsList(creepType)
     }
 
 
 
     function calculateCreepPartsList(creepName) {
-        console.log(`🚀 ~ file: buildCreep.js ~ line 95 ~ calculateCreepPartsList ~ creepName: ${creepName}, energyCapacity: ${energyCapacity}`, creepName)
+        // console.log(`🚀 ~ file: buildCreep.js ~ line 95 ~ calculateCreepPartsList ~ creepName: ${creepName}, energyCapacity: ${energyCapacity}`, creepName)
         let creep = CREEP_TYPES[creepName]
         let type = creep.type
         let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
@@ -100,7 +136,7 @@ let buildCreep = (energyCapacity) => {
     }
 
     function generateCreepComposition(creepName, energyBudget) {
-        console.log(`🚀 ~ file: creep.specs.v2.js ~ line 86 ~ generateCreepComposition ~ creepName`, creepName)
+        // console.log(`🚀 ~ file: creep.specs.v2.js ~ line 86 ~ generateCreepComposition ~ creepName`, creepName)
         let creep = CREEP_TYPES[creepName]
 
         let energyHarvestStrategy = "dynamic" // or "static"
@@ -122,7 +158,7 @@ let buildCreep = (energyCapacity) => {
         // This is a strategy I am exploring that might improve my actual programming skill, as well as my ability to debug code -
         // especially debugging when the code has been forgotten due to intervening time and other projects. Or, it is even
         // someone else reading the code, who did not write it.
-        determineCreepPrioritiesBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory)
+        // determineCreepPrioritiesBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory)
         for (let component in COSTS) {
             creep.composition[component] = getNumberOfPartsOfType(creep, component, energyBudget)
         }
@@ -134,7 +170,7 @@ let buildCreep = (energyCapacity) => {
     }
 
     function generateCreepBlueprintFromComposition(creep) {
-        console.log(`starting generateCreepBlueprintFromComposition()`)
+        // console.log(`starting generateCreepBlueprintFromComposition()`)
         for (let component in creep.composition) {
         }
         let blueprint = []
@@ -163,9 +199,9 @@ let buildCreep = (energyCapacity) => {
 
         }
         creep.blueprint = blueprint
-        console.log(`🚀 ~ file: buildCreep.js ~ line 150 ~ generateCreepBlueprintFromComposition ~ blueprint`, blueprint)
+        // console.log(`🚀 ~ file: buildCreep.js ~ line 150 ~ generateCreepBlueprintFromComposition ~ blueprint`, blueprint)
         creep.cost = getBodyCost(creep.blueprint)
-        console.log(`🚀 ~ file: buildCreep.js ~ line 157 ~ generateCreepBlueprintFromComposition ~ ${creep.name}.cost`, creep.cost)
+        // console.log(`🚀 ~ file: buildCreep.js ~ line 157 ~ generateCreepBlueprintFromComposition ~ ${creep.name}.cost`, creep.cost)
     }
 
 
@@ -187,8 +223,8 @@ let buildCreep = (energyCapacity) => {
                 creep.priorities['MOVE'] = 25;
                 creep.priorities['WORK'] = 1;
             }
-            if (creepName == "Harvester-Miner") { // Maximizes work capacity, no carry capacity, minimal mobility
-                console.log(`🚀 ~ file: creep.specs.v2.js ~ line 129 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ creepName == "Harvester-Miner"`, creepName == "Harvester-Miner")
+            if (creepName == "Dynamic-Harvester-Miner") { 
+                console.log(`🚀 ~ file: creep.specs.v2.js ~ line 129 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ creepName == "Static-Harvester-Miner"`, creepName == "Static-Harvester-Miner")
                 if (energyHarvestStrategy == "dynamic") { // dynamic harvesting: creeps harvest energy and carry it to purpose
                     console.log(`🚀 ~ file: creep.specs.v2.js ~ line 131 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ energyHarvestStrategy == "dynamic"`, energyHarvestStrategy == "dynamic")
                     creep.priorities['WORK'] = 50;

@@ -1,8 +1,11 @@
-How do I decide what creeps to build?
-If the energy sources are not being fully utilized - how do I determine and track this? How do I predict this proactively?
-If the mineral resource is not being fully utilized - how do I determine, track, and predict this?
-If infrastructure is not being properly maintained - all repairs, and energizing of towers
-If salvage resources are not being efficiently recovered. How do I determine, track, and predict this?
+How do I decide what creeps to build - and how many?
+- If the energy sources are not being fully utilized - how do I determine and track this? How do I predict this proactively?
+- If the mineral resource is not being fully utilized - how do I determine, track, and predict this?
+- If infrastructure is not being properly maintained - all repairs, and energizing of towers
+- If salvage resources are not being efficiently recovered - how do I determine, track, and predict this?
+- number of creeps: can be determined by the amount of work required
+  - how much work it takes to harvest all energy per source within the refresh time, 
+  - + how many build targets there are; and possibly, by how many occupiable units surround them
 
 What is the strategy for static harvesting and mining? How does it work in practice?
 I need to get a harvester creep to position itself next to an energy source, and on top of a container
