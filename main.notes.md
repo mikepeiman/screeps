@@ -18,5 +18,5 @@ How do I automate the building of roads?
 
 How do I automate the building of extensions? 
 - There must be a method to find number of available extensions to build that I can check
-- There should be some signal when the rom upgrades to a higher RCL; or I can check this intermittentlygi
+- There should be some signal when the rom upgrades to a higher RCL; or I can check this intermittently
 - 

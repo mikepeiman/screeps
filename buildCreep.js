@@ -1,4 +1,4 @@
-let buildCreep = (creepName, energyCapacity) => {
+let buildCreep = (energyCapacity) => {
 
     /* 
     parts costs for reference:
@@ -34,43 +34,66 @@ let buildCreep = (creepName, energyCapacity) => {
 
 
     // I should probably start using class-based inheritance for these guys...
-    let creepGroups = {
+    let CREEP_TYPES = {
         // Resource-Hauler maximizes carry capacity, moderate to low movement, minimal work capacity
         'Resource-Hauler': {
+            name: 'Resource-Hauler',
             type: 'worker',
+            has: 0,
+            wants: 0,
             priorities: {},
-            composition: {}
+            composition: {},
+            blueprint: []
         },
         // Harvester-Miner maximizes work capacity, no carry capacity, minimal mobility
         'Harvester-Miner': {
+            name: 'Harvester-Miner',
             type: 'worker',
+            has: 0,
+            wants: 0,
             priorities: {},
-            composition: {}
+            composition: {},
+            blueprint: []
         },
         // Engineers work and carry energy, with decent mobility
         'Engineer': {
+            name: 'Engineer',
             type: 'worker',
+            has: 0,
+            wants: 0,
             priorities: {},
-            composition: {}
+            composition: {},
+            blueprint: []
         },
-        'infantry': {
+        'Infantry': {
+            name: 'Infantry',
             type: 'warrior',
+            has: 0,
+            wants: 0,
             priorities: {},
-            composition: {}
+            composition: {},
+            blueprint: []
         },
-        'paladin': {
+        'Paladin': {
+            name: 'Paladin',
             type: 'warrior',
+            has: 0,
+            wants: 0,
             priorities: {},
-            composition: {}
+            composition: {},
+            blueprint: []
         }
     }
 
-    calculateCreepPartsList("Harvester-Miner")
-    calculateCreepPartsList("Resource-Hauler")
+    for(creepType in CREEP_TYPES){
+    calculateCreepPartsList(creepType)
+    }
+
+
 
     function calculateCreepPartsList(creepName) {
-        console.log('energyCapacity: ', energyCapacity);
-        let creep = creepGroups[creepName]
+        console.log(`🚀 ~ file: buildCreep.js ~ line 95 ~ calculateCreepPartsList ~ creepName: ${creepName}, energyCapacity: ${energyCapacity}`, creepName)
+        let creep = CREEP_TYPES[creepName]
         let type = creep.type
         let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
         generateCreepComposition(creepName, energyBudget)
@@ -78,7 +101,7 @@ let buildCreep = (creepName, energyCapacity) => {
 
     function generateCreepComposition(creepName, energyBudget) {
         console.log(`🚀 ~ file: creep.specs.v2.js ~ line 86 ~ generateCreepComposition ~ creepName`, creepName)
-        let creep = creepGroups[creepName]
+        let creep = CREEP_TYPES[creepName]
 
         let energyHarvestStrategy = "dynamic" // or "static"
         // what's relevant?
@@ -103,21 +126,66 @@ let buildCreep = (creepName, energyCapacity) => {
         for (let component in COSTS) {
             creep.composition[component] = getNumberOfPartsOfType(creep, component, energyBudget)
         }
+        generateCreepBlueprintFromComposition(creep)
     }
+
+    function getBodyCost(blueprint) {
+        return _.sum(blueprint, (component) => BODYPART_COST[component])
+    }
+
+    function generateCreepBlueprintFromComposition(creep) {
+        console.log(`starting generateCreepBlueprintFromComposition()`)
+        for (let component in creep.composition) {
+        }
+        let blueprint = []
+        for (let component in creep.composition) {
+            let counter = 0
+
+
+            if (creep.composition['TOUGH'] > 0) {
+                for (let iterator = 0; iterator < creep.composition['TOUGH']; iterator++) {
+                    blueprint.push('tough')
+                }
+            }
+            while (counter < creep.composition[component]) {
+                let componentLowercase = `${component.toLowerCase()}`
+                if (componentLowercase != 'tough' && componentLowercase != 'heal') {
+                    blueprint.push(componentLowercase)
+                }
+                ++counter
+                // creep.blueprint = blueprint
+            }
+            if (creep.composition['HEAL'] > 0) {
+                for (let z = 0; z < creep.composition['HEAL']; z++) {
+                    blueprint.push('heal')
+                }
+            }
+
+        }
+        creep.blueprint = blueprint
+        console.log(`🚀 ~ file: buildCreep.js ~ line 150 ~ generateCreepBlueprintFromComposition ~ blueprint`, blueprint)
+        creep.cost = getBodyCost(creep.blueprint)
+        console.log(`🚀 ~ file: buildCreep.js ~ line 157 ~ generateCreepBlueprintFromComposition ~ ${creep.name}.cost`, creep.cost)
+    }
+
 
     function getNumberOfPartsOfType(creep, partType, energyBudget) {
         let cost = COSTS[partType]
         let buildComponentPercentageAllocation = creep.priorities[partType] || 0
-        let result = Math.floor((energyBudget * (buildComponentPercentageAllocation / 100)) / cost)
+        let result = Math.ceil((energyBudget * (buildComponentPercentageAllocation / 100)) / cost)
+        if (creep.priorities[partType] == 1) {
+            return 1
+        }
         return result = isFinite(result) ? result : 0
     }
 
     function determineCreepPrioritiesBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory) {
-        let creep = creepGroups[creepName]
+        let creep = CREEP_TYPES[creepName]
         if (creep.type == "worker") { // creeps that perform infrastructure and resource tasks
             if (creepName == "Resource-Hauler") { // Maximizes carry capacity, moderate to low movement, minimal work capacity
                 creep.priorities['CARRY'] = 75;
                 creep.priorities['MOVE'] = 25;
+                creep.priorities['WORK'] = 1;
             }
             if (creepName == "Harvester-Miner") { // Maximizes work capacity, no carry capacity, minimal mobility
                 console.log(`🚀 ~ file: creep.specs.v2.js ~ line 129 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ creepName == "Harvester-Miner"`, creepName == "Harvester-Miner")
@@ -148,52 +216,7 @@ let buildCreep = (creepName, energyCapacity) => {
         return remainingEnergyBudget = energyCapacity - mandatoryCost
     }
 
-    const getBodyCost = (body) => _.sum(body, (p) => BODYPART_COST[p]);
-
-    // NOTE: this is where RCL determines which set of creeps gets built - and breaks the program if it does not exist
-    // let creepGroups = creepLevelGroups[rcl - 1].specs
-    // ENDNOTE
-
-    // for (let component in COSTS) {
-    //     console.log(`🚀 ~ file: creep.specs.v2.js ~ line 1186 ~ creepSpecs ~ component`, component)
-    //     //     let t = creepType
-    //     let cost = COSTS[component]
-    //     console.log(`🚀 ~ file: creep.specs.v2.js ~ line 1189 ~ creepSpecs ~ cost`, cost)
-    //     let counter = 0
-    //     let buildComp = []
-    //     // console.log(`🚀 ~ file: creep.specs.js ~ line 1020 ~ creepSpecs ~ c.recipe[TOUGH]`, c.recipe['MOVE'])
-
-    //     if (c.recipe['TOUGH'] > 0) {
-    //         for (let z = 0; z < c.recipe['TOUGH']; z++) {
-    //             buildComp.push('tough')
-    //         }
-    //     }
-    //     let arr = Object.values(c.recipe)
-    //     let max = Math.max(...arr)
-    //     while (counter < max) {
-    //         for (let z in c.recipe) {
-    //             // console.log(`🚀 ~ file: creep.specs.js ~ line 998 ~ creepSpecs ~ z ${z} `)
-    //             let x = `${z.toLowerCase()}`
-    //             if (c.recipe[z] > counter) {
-    //                 if (x != 'tough' && x != 'heal') {
-    //                     buildComp.push(x)
-    //                 }
-    //             }
-    //         }
-    //         ++counter
-    //         c.composition = buildComp
-    //     }
-    //     if (c.recipe['HEAL'] > 0) {
-    //         for (let z = 0; z < c.recipe['HEAL']; z++) {
-    //             buildComp.push('heal')
-    //         }
-    //     }
-    //     c.composition = buildComp
-    //     // console.log(`🚀 ~ file: creep.specs.js ~ line 1014 ~ creepSpecs ~ buildComp ${t}::: `, buildComp)
-    //     c.cost = getBodyCost(c.composition)
-    // }
-
-    return 1
+    return CREEP_TYPES
 }
 
 module.exports = buildCreep

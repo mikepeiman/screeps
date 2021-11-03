@@ -88,7 +88,9 @@ module.exports.loop = function () {
 
     let energy = spawn.room.energyAvailable;
     let energyCapacity = spawn.room.energyCapacityAvailable;
-    buildCreep("Harvester-Miner", energyCapacity)
+    let creepLevelGroups = buildCreep(energyCapacity)
+    let creepGroups = buildCreep(energyCapacity)
+    console.log(`🚀 ~ file: main.js ~ line 94 ~ creepGroups`, Object.keys(creepGroups))
     let unusedEnergyCapacity = energyCapacity - energy
     let RCLprogressRemains = home.controller.progressTotal - home.controller.progress
     let takeEnergySources = home.find(FIND_SOURCES_ACTIVE)
@@ -149,11 +151,11 @@ module.exports.loop = function () {
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
     if (buildTargets.length) {
-        creepGroups['builder'].wants = 4
+        creepGroups['Engineer'].wants = 4
         // #todo reduce to 1 when the rebuild is complete
         // creepGroups['hauler'].wants = 2
     } else {
-        creepGroups['builder'].wants = 0
+        creepGroups['Engineer'].wants = 0
         // creepGroups['hauler'].wants = 4
     }
 
@@ -287,7 +289,8 @@ module.exports.loop = function () {
     if (spawnPriority != "false") {
         creepType = spawnPriority
         console.log('creepType: ', creepType);
-        c = creepGroups[creepType]
+        c = buildCreep(energyCapacity)
+        console.log(`🚀 ~ file: main.js ~ line 292 ~ c`, c)
         console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
         let comp = c.composition
         let name = `${creepType}-level-${rcl}-${Game.time}`
@@ -296,6 +299,7 @@ module.exports.loop = function () {
     } else {
         for (let creepType in creepGroups) {
             let c = creepGroups[creepType]
+            console.log(`🚀 ~ file: main.js ~ line 301 ~ c`, c.name)
             //  && creepType == 'hauler'
             if (c.has < c.wants) {
                 console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)

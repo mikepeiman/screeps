@@ -1078,8 +1078,6 @@ let creepSpecs = (rcl) => {
             }
         }
         c.composition = buildComp
-        console.log(`🚀 ~ file: creep.specs.js ~ line 1081 ~ creepSpecs ~ buildComp`, buildComp)
-        console.log('buildComp: ', buildComp);
         // console.log(`🚀 ~ file: creep.specs.js ~ line 1014 ~ creepSpecs ~ buildComp ${t}::: `, buildComp)
         c.cost = getBodyCost(c.composition)
     }
