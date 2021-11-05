@@ -71,7 +71,8 @@ StructureTower.prototype.defend = function () {
             let x = this.repair(priorities[0]);
             // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
         } else {
-            let x = this.repair(lowestWallOrRampart)
+            let x = this.repair(otherRepairTargets[0])
+            // let x = this.repair(lowestWallOrRampart)
             // if (walls[0]) {
             //     // console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
             //     let x = this.repair(walls[0]);

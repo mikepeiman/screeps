@@ -152,14 +152,14 @@ module.exports.loop = function () {
     // This approach seems terribly inefficient; it would be better to simply reassign the appropriate number of creeps
     // from other tasks, as the creeps can be very general-purpose.
     let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
-    if (buildTargets.length) {
-        creepGroups['Engineer'].wants = 4
-        // #todo reduce to 1 when the rebuild is complete
-        // creepGroups['hauler'].wants = 2
-    } else {
-        creepGroups['Engineer'].wants = 0
-        // creepGroups['hauler'].wants = 4
-    }
+    // if (buildTargets.length) {
+    //     creepGroups['Engineer'].wants = 2
+    //     // #todo reduce to 1 when the rebuild is complete
+    //     // creepGroups['hauler'].wants = 2
+    // } else {
+    //     creepGroups['Engineer'].wants = 0
+    //     // creepGroups['hauler'].wants = 4
+    // }
 
     // if (everyHundredCounter == 100) {
     //     if (mineralsAmount > 500 && mineralsAmount < 2000) {

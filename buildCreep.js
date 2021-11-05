@@ -55,7 +55,7 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'harvester',
             has: 0,
-            wants: 8,
+            wants: 7,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
@@ -79,12 +79,27 @@ let buildCreep = (energyCapacity) => {
             blueprint: []
         },
         // Engineers work and carry energy, with decent mobility
-        'Engineer': {
-            name: 'Engineer',
+        'Engineer-Repairer': {
+            name: 'Engineer-Repairer',
             type: 'worker',
-            role: 'harvester',
+            role: 'repairer',
             has: 0,
-            wants: 0,
+            wants: 1,
+            priorities: {
+                'WORK': 50,
+                'CARRY': 25,
+                'MOVE': 25,
+            },
+            composition: {},
+            blueprint: []
+        },
+        // Engineers work and carry energy, with decent mobility
+        'Engineer-Salvager': {
+            name: 'Engineer-Salvager',
+            type: 'worker',
+            role: 'salvager',
+            has: 0,
+            wants: 1,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
@@ -217,13 +232,15 @@ let buildCreep = (energyCapacity) => {
 
     function determineCreepPrioritiesBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory) {
         let creep = CREEP_TYPES[creepName]
+        let lowercaseName = creepName.toLowerCase()
+        console.log(`🚀 ~ file: buildCreep.js ~ line 236 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ lowercaseName`, lowercaseName)
         if (creep.type == "worker") { // creeps that perform infrastructure and resource tasks
             if (creepName == "Resource-Hauler") { // Maximizes carry capacity, moderate to low movement, minimal work capacity
                 creep.priorities['CARRY'] = 75;
                 creep.priorities['MOVE'] = 25;
                 creep.priorities['WORK'] = 1;
             }
-            if (creepName == "Dynamic-Harvester-Miner") { 
+            if (creepName == "Dynamic-Harvester-Miner") {
                 console.log(`🚀 ~ file: creep.specs.v2.js ~ line 129 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ creepName == "Static-Harvester-Miner"`, creepName == "Static-Harvester-Miner")
                 if (energyHarvestStrategy == "dynamic") { // dynamic harvesting: creeps harvest energy and carry it to purpose
                     console.log(`🚀 ~ file: creep.specs.v2.js ~ line 131 ~ determineCreepPrioritiesBasedOnCurrentSituation ~ energyHarvestStrategy == "dynamic"`, energyHarvestStrategy == "dynamic")
@@ -234,7 +251,8 @@ let buildCreep = (energyCapacity) => {
 
                 }
             }
-            if (creepName == "Engineer") { // works and carries energy, with decent mobility
+
+            if (lowercaseName.includes("engineer")) { // works and carries energy, with decent mobility
                 creep.priorities['WORK'] = 50;
                 creep.priorities['CARRY'] = 25;
                 creep.priorities['MOVE'] = 25;
