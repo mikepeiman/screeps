@@ -49,7 +49,7 @@ let hostiles = home.find(FIND_HOSTILE_CREEPS, {
     filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
 });
 let hostilesInRoom
-if(hostiles[0]) {
+if (hostiles[0]) {
     hostilesInRoom = true
 }
 
@@ -212,7 +212,7 @@ module.exports.loop = function () {
                     roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
                 }
             } else {
-            roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
+                roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             }
         }
         if (creep.memory.role == 'hauler') {
@@ -223,11 +223,17 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-                roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
+            roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             // }
         }
         if (creep.memory.role == 'salvager') {
-            roleSalvager.run(creep, creepTaskPriority);
+            if (creepGroups['Dynamic-Harvester-Miner'].has < 2 && creepGroups['Static-Harvester-Miner'].has < 2) {
+                console.log(`salvager => harvest role`)
+                roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
+            } else {
+                console.log(`salvager => salvage role`)
+                roleSalvager.run(creep, creepTaskPriority);
+            }
         }
         if (creep.memory.role == 'miner') {
             if (mineralsAmount) {

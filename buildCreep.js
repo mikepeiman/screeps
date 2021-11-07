@@ -55,7 +55,7 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'harvester',
             has: 0,
-            wants: 7,
+            wants: 5,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
@@ -133,6 +133,20 @@ let buildCreep = (energyCapacity) => {
             },
             composition: {},
             blueprint: []
+        },
+        'Settler': {
+            name: 'Settler',
+            type: 'claimer',
+            has: 0,
+            wants: 0,
+            priorities: {
+                'WORK': 0,
+                'CARRY': 0,
+                'MOVE': 1,
+                'CLAIM': 1
+            },
+            composition: {},
+            blueprint: []
         }
     }
 
@@ -182,6 +196,11 @@ let buildCreep = (energyCapacity) => {
 
     function getBodyCost(blueprint) {
         return _.sum(blueprint, (component) => BODYPART_COST[component])
+    }
+
+    function determineTotalFleetWorkCapacity() {
+        // I want to adjust the number of creep workers .wants property based on how many work parts they have
+
     }
 
     function generateCreepBlueprintFromComposition(creep) {
