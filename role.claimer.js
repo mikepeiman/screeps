@@ -1,10 +1,10 @@
 let roleClaimer = {
-    run: (creep, roomName) => {
+    run: (creep, x,y,roomName) => {
         console.log(`roleClaimer module args creep: ${creep} target: ${roomName}`)
         // let creep = Game.creeps[name]
         // let room = Game.rooms[`'${roomName}'`]
-        let room = new RoomPosition(28, 8, roomName)
-        console.log(`🚀 ~ file: role.claimer.js ~ line 6 ~ room`, room)
+        let room = new RoomPosition(x, y, roomName)
+        console.log(`🚀 ~ file: role.claimer.js ~ line 6 ~ x:y ${x}:${y} room; `, room, x, y)
         // let rc = room2.controller
         // console.log('roomName controller is: ', rc)
                     var costs = new PathFinder.CostMatrix;

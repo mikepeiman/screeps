@@ -2,10 +2,13 @@
 
 StructureTower.prototype.defend = function () {
 
-
+    
     let wallQuota = 100000
     let rampartQuota = 100000
     let emergencyThreshold = 1000
+    let currentQuota = emergencyThreshold
+    // make a function to gradually increase the level of all walls and ramparts automatically.
+    
     // DEFENSE code
     let hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
         filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
@@ -28,16 +31,16 @@ StructureTower.prototype.defend = function () {
         filter: (r) => r.structureType == STRUCTURE_RAMPART && r.hits < rampartQuota
     })
 
-    let wallsAndRamparts = this.room.find(FIND_STRUCTURES, {
-        filter: (s) => s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL
-    })
+    // let wallsAndRamparts = this.room.find(FIND_STRUCTURES, {
+    //     filter: (s) => s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_WALL
+    // })
     // console.log(`🚀 ~ file: role.tower.js ~ line 21 ~ ramparts`, ramparts)
     let wounded = []
 
     let priorities = this.room.find(FIND_STRUCTURES, {
         filter: (r) => r.structureType == STRUCTURE_RAMPART && r.hits < emergencyThreshold || r.structureType == STRUCTURE_WALL && r.hits < emergencyThreshold
     })
-    wallsAndRamparts = [...walls, ...ramparts]
+    let wallsAndRamparts = [...walls, ...ramparts]
     lowestWallOrRampart = _.min(wallsAndRamparts, 'hits')
     // highestWallOrRampart = _.max(wallsAndRamparts, s => s.hits)
     // console.log(`🚀 ~ file: prototype.tower.js ~ line 30 ~ lowestWallOrRampart ${lowestWallOrRampart}::: hits ${lowestWallOrRampart.hits}`, )
@@ -73,15 +76,15 @@ StructureTower.prototype.defend = function () {
         } else {
             let x = this.repair(otherRepairTargets[0])
             // let x = this.repair(lowestWallOrRampart)
-            // if (walls[0]) {
-            //     // console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
-            //     let x = this.repair(walls[0]);
-            //     // console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ x`, x)
-            // } if (ramparts[0]) {
-            //     // console.log(`🚀 ~ file: role.tower.js ~ line 39 ~ ramparts.length`, ramparts.length)
-            //     let x = this.repair(ramparts[0]);
-            //     // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
-            // }
+            if (walls[0]) {
+                // console.log(`🚀 ~ file: role.tower.js ~ line 44 ~ walls.length`, walls.length)
+                let x = this.repair(walls[0]);
+                // console.log(`🚀 ~ file: prototype.tower.js ~ line 52 ~ x`, x)
+            } if (ramparts[0]) {
+                // console.log(`🚀 ~ file: role.tower.js ~ line 39 ~ ramparts.length`, ramparts.length)
+                let x = this.repair(ramparts[0]);
+                // console.log(`🚀 ~ file: prototype.tower.js ~ line 48 ~ x`, x)
+            }
         }
     }
 

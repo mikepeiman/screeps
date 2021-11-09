@@ -87,11 +87,14 @@ module.exports.loop = function () {
 
 
     let energy = spawn.room.energyAvailable;
-    let energyCapacity = spawn.room.energyCapacityAvailable;
-    let creepLevelGroups = buildCreep(energyCapacity)
-    let creepGroups = buildCreep(energyCapacity)
+    let roomEnergyCapacity = spawn.room.energyCapacityAvailable;
+    let currentEnergyAvailable = spawn.room.energyAvailable
+    let creepLevelGroups = buildCreep(roomEnergyCapacity)
+    let roomCreeps = Game.creeps
+    let creepGroups = buildCreep(roomEnergyCapacity)
     console.log(`🚀 ~ file: main.js ~ line 94 ~ creepGroups`, Object.keys(creepGroups))
-    let unusedEnergyCapacity = energyCapacity - energy
+
+    let unusedEnergyCapacity = roomEnergyCapacity - energy
     let RCLprogressRemains = home.controller.progressTotal - home.controller.progress
     let takeEnergySources = home.find(FIND_SOURCES_ACTIVE)
     let takeEnergyTombstones = home.find(FIND_TOMBSTONES, {
@@ -123,7 +126,7 @@ module.exports.loop = function () {
 
     // console.log(`tick: controller level ${rcl}, ${RCLprogressRemains} remains`)
     // Uncomment this to see current and max energy available in spawn and structures
-    // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+    // console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${roomEnergyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
 
     let tally = 0
     // if (everyFiveCounter == 5) {
@@ -189,7 +192,7 @@ module.exports.loop = function () {
 
     let towersNeedEnergy = home.find(FIND_MY_STRUCTURES, {
         filter: (s) => (s.structureType == STRUCTURE_TOWER)
-            && s.energy < s.energyCapacity
+            && s.energy < s.roomEnergyCapacity
     });
 
     for (let name in Game.creeps) {
@@ -264,20 +267,19 @@ module.exports.loop = function () {
             // roleHarvester.run(creep)
         }
         if (creep.memory.role == 'scout') {
-            // creep.memory.target = Game.rooms['W6N54']
+            // creep.memory.target = Game.rooms['E25S12']
             // console.log(`checking scout creeps, current room name ${creep.room.name} and target ${creep.room.target}`)
             roleScout.run(creep)
         }
         if (creep.memory.role == 'claimer') {
-            // creep.memory.target = Game.rooms['W6N54']
+            // creep.memory.target = Game.rooms['E25S12']
             // console.log(`checking scout creeps, current room name ${creep.room.name} and target ${creep.room.target}`)
-            roleClaimer.run(creep, 'W6N54')
+            roleClaimer.run(creep, 11, 34, 'E25S12')
         }
         if (creep.memory.role == 'warrior') {
-            // nearest SK thug: 9,45,W6N54
-            let t1 = new RoomPosition(9, 45, 'W6N54')
-            let t2 = new RoomPosition(9, 45, 'W6N54')
+            // can make note of targets here
             // let target = new RoomPosition(9, 45, 'W6N54')
+
             roleWarrior.move(creep, spawn);
             // roleWarrior.attack(creep, t2);
         }
@@ -293,13 +295,13 @@ module.exports.loop = function () {
         }
 
     }
-    console.log(`***ENERGY TALLY*** available now ${energy} and maximum capacity ${energyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+    console.log(`***ENERGY TALLY*** available now ${currentEnergyAvailable} and maximum capacity ${roomEnergyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
     if (spawnPriority != "false") {
         creepType = spawnPriority
         console.log('creepType: ', creepType);
-        c = buildCreep(energyCapacity)
+        c = buildCreep(roomEnergyCapacity)
         console.log(`🚀 ~ file: main.js ~ line 292 ~ c`, c)
-        console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
+        console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${roomEnergyCapacity}`)
         let comp = c.composition
         let name = `${creepType}-level-${rcl}-${Game.time}`
         let mem = { memory: { role: creepType, home: home.name, level: rcl, working: false } }
@@ -310,9 +312,9 @@ module.exports.loop = function () {
             // console.log(`🚀 ~ file: main.js ~ line 301 ~ c`, c.name)
             //  && creepType == 'hauler'
             if (c.has < c.wants) {
-                console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${energyCapacity}`)
+                console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${roomEnergyCapacity}`)
                 let comp = c.blueprint
-                let name = `${creepType}-level-${rcl}-${Game.time}`
+                let name = `${creepType}-${c.cost}-${Game.time}`
                 let mem = { memory: { role: c.role, home: home.name, level: rcl, working: false } }
                 let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
                 if (x == 0) {

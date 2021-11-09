@@ -3,6 +3,7 @@ TASKS
 <!-- * Add level 4 creep models to creepGroups, change RCL calculation (from -2 to -1 for array) -->
 <!-- * Refactor creepGroups construction properties (composition) to use # of body parts and algorithmic construction -->
 <!-- * code for every level 2 and up, to determine maximum energy capacity and build creeps accordingly - either have different creep versions within creep.specs, or generate creeps dynamically -->
+* if there is only one salvager, check time to death, and set a spawn priority to generate creep in advance
 * make a running average to track efficiency & productivity: predict time to upgrade RCL, track efficiency of utilizing energy sources, track creep movements, creep spawns and deaths and total energy spent, and energy spend rate per tick, etc.
 * make "link" code for sending energy; do static harvesting to storage, transfer via link to RCL upgrade
 * "get out of the way!" code for routing: 

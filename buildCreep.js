@@ -84,7 +84,7 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'repairer',
             has: 0,
-            wants: 1,
+            wants: 0,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
@@ -101,9 +101,9 @@ let buildCreep = (energyCapacity) => {
             has: 0,
             wants: 1,
             priorities: {
-                'WORK': 50,
-                'CARRY': 25,
-                'MOVE': 25,
+                'WORK': 12,
+                'CARRY': 24,
+                'MOVE': 12,
             },
             composition: {},
             blueprint: []
@@ -137,6 +137,7 @@ let buildCreep = (energyCapacity) => {
         'Settler': {
             name: 'Settler',
             type: 'claimer',
+            role: 'claimer',
             has: 0,
             wants: 0,
             priorities: {
@@ -232,6 +233,8 @@ let buildCreep = (energyCapacity) => {
             }
 
         }
+        // energyCapacity
+        // console.log(`🚀 ~ file: buildCreep.js ~ line 237 ~ generateCreepBlueprintFromComposition ~ energyCapacity`, energyCapacity)
         creep.blueprint = blueprint
         // console.log(`🚀 ~ file: buildCreep.js ~ line 150 ~ generateCreepBlueprintFromComposition ~ blueprint`, blueprint)
         creep.cost = getBodyCost(creep.blueprint)
