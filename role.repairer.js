@@ -2,6 +2,12 @@ var roleRepairer = {
 
 	/** @param {Creep} creep **/
 	run: function (creep) {
+
+		// if(creep.room.controller) {
+		// 	if(creep.signController(creep.room.controller, "Mostly peaceful warrior for truth, health and freedom.") == ERR_NOT_IN_RANGE) {
+		// 		creep.moveTo(creep.room.controller);
+		// 	}
+		// }
         let moveOpts = { visualizePathStyle: { stroke: '#00ffaa' }, reusePath: 3 }
 		creep.memory.currentRole = 'repairer'
 		if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
@@ -14,7 +20,7 @@ var roleRepairer = {
 		}
 
 		let structureToRepair = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-			filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL
+			filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART
 		});
 		// console.log(`repairer module --- structureToRepair: `, structureToRepair)
 
@@ -42,6 +48,6 @@ var roleRepairer = {
 			}
 		}
 	}
-};
+}
 
 module.exports = roleRepairer;

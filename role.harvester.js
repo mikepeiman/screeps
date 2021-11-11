@@ -36,7 +36,7 @@ module.exports = {
         let towers = []
         let towersObj = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
-                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 750
+                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 250
         });
         for (let i in towersObj) {
             let t = towersObj[i]
@@ -45,13 +45,14 @@ module.exports = {
         let lowestEnergyTower
         if (towers.length) {
             lowestEnergyTower = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
-            lowestEnergyTowerValue = lowestEnergyTower.store.getFreeCapacity(RESOURCE_ENERGY)
+            lowestEnergyTowerHas = lowestEnergyTower.store.getFreeCapacity(RESOURCE_ENERGY)
+            console.log(`🚀 ~ file: role.harvester.js ~ line 49 ~ ${lowestEnergyTower} lowestEnergyTowerHas`, lowestEnergyTowerHas)
         }
         // energy transfer TO target logic
         if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-        // } else if (towers.length && lowestEnergyTowerValue < 100) {
-        //     transferTarget = lowestEnergyTower
+        } else if (towers.length && lowestEnergyTowerHas < 200) {
+            transferTarget = lowestEnergyTower
         } else {
             transferTarget = "upgradeController"
         }
