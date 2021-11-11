@@ -1,0 +1,1 @@
+* currently harvester checks for tower energy levels and fills; but this uses all harvesters, duplicating CPU operations. This function should reside in main.js loop, possibly on a subloop to save CPU. This works with the plans to do context-directed task management, rather than creep-role-directed task management.
