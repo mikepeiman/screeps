@@ -36,7 +36,7 @@ module.exports = {
         let towers = []
         let towersObj = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
-                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 50
+                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 750
         });
         for (let i in towersObj) {
             let t = towersObj[i]
@@ -45,13 +45,13 @@ module.exports = {
         let lowestEnergyTower
         if (towers.length) {
             lowestEnergyTower = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
-            lowestEnergyTowerValue = lowestEnergyTower.store.getFreeCapacity()
+            lowestEnergyTowerValue = lowestEnergyTower.store.getFreeCapacity(RESOURCE_ENERGY)
         }
         // energy transfer TO target logic
         if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-        } else if (towers.length && lowestEnergyTowerValue < 600) {
-            transferTarget = lowestEnergyTower
+        // } else if (towers.length && lowestEnergyTowerValue < 100) {
+        //     transferTarget = lowestEnergyTower
         } else {
             transferTarget = "upgradeController"
         }
@@ -112,8 +112,7 @@ module.exports = {
             creep.memory.idle = false
             creep.memory.transferring = false
         }
-
-        // if there is an spawnEmergency - a manual flag I set - get energy from storage and fill room ASAP for spawning
+        // if there is are hostiles, get storage energy
         if (hostiles[0]) {
             // console.log(`🚀 ~ file: role.harvester.js ~ line 118 ~ hostiles[0]`, hostiles[0])
             if (!creep.memory.transferring) {
@@ -126,6 +125,7 @@ module.exports = {
                     taskFillRoomEnergy.run(creep)
                 }
             }
+        // if there is an spawnEmergency - a manual flag I set - get energy from storage and fill room ASAP for spawning
         } else if (spawnEmergency) {
             // console.log(`🚀 ~ file: role.harvester.js ~ line 129 ~ spawnEmergency`, spawnEmergency)
             if (!creep.memory.transferring) {

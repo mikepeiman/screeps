@@ -4,10 +4,11 @@ module.exports = {
         let towers = []
         let towersObj = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_TOWER)
-                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 20
+                && s.store.getFreeCapacity(RESOURCE_ENERGY) > 50
         });
         for (let i in towersObj) {
             let t = towersObj[i]
+
             towers = [...towers, t]
         }
         if (towers.length) {

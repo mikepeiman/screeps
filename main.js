@@ -92,7 +92,7 @@ module.exports.loop = function () {
     let creepLevelGroups = buildCreep(roomEnergyCapacity)
     let roomCreeps = Game.creeps
     let creepGroups = buildCreep(roomEnergyCapacity)
-    console.log(`🚀 ~ file: main.js ~ line 94 ~ creepGroups`, Object.keys(creepGroups))
+    // console.log(`🚀 ~ file: main.js ~ line 94 ~ creepGroups`, Object.keys(creepGroups))
 
     let unusedEnergyCapacity = roomEnergyCapacity - energy
     let RCLprogressRemains = home.controller.progressTotal - home.controller.progress
@@ -145,7 +145,7 @@ module.exports.loop = function () {
         //     spawnPriority = "false"
         // }
 
-        console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
+        // console.log(`Tally creeps values: ${creepType} ${creepGroups[creepType].has}`)
         tally += creepGroups[creepType].has
     }
     // }
