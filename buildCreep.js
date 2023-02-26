@@ -1,4 +1,5 @@
 let buildCreep = (energyCapacity) => {
+console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity:`, energyCapacity)
 
     /* 
     parts costs for reference:
@@ -100,11 +101,11 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'salvager',
             has: 0,
-            wants: 1,
+            wants: 8,
             priorities: {
-                'WORK': 30,
+                'WORK': 35,
                 'CARRY': 40,
-                'MOVE': 30,
+                'MOVE': 25,
             },
             composition: {},
             blueprint: []
@@ -192,6 +193,7 @@ let buildCreep = (energyCapacity) => {
         // determineCreepPrioritiesBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory)
         for (let component in COSTS) {
             creep.composition[component] = getNumberOfPartsOfType(creep, component, energyBudget)
+            // console.log(`🚀 ~ file: buildCreep.js:196 ~ generateCreepComposition ~ ${creep.name}.composition[${component}]:`, creep.composition[component])
         }
         generateCreepBlueprintFromComposition(creep)
     }
@@ -237,7 +239,7 @@ let buildCreep = (energyCapacity) => {
         // energyCapacity
         // console.log(`🚀 ~ file: buildCreep.js ~ line 237 ~ generateCreepBlueprintFromComposition ~ energyCapacity`, energyCapacity)
         creep.blueprint = blueprint
-        // console.log(`🚀 ~ file: buildCreep.js ~ line 150 ~ generateCreepBlueprintFromComposition ~ blueprint`, blueprint)
+        // console.log(`🚀 ~ file: buildCreep.js ~ line 242 ~ generateCreepBlueprintFromComposition ~ blueprint ${creep.name}: `, blueprint)
         creep.cost = getBodyCost(creep.blueprint)
         // console.log(`🚀 ~ file: buildCreep.js ~ line 157 ~ generateCreepBlueprintFromComposition ~ ${creep.name}.cost`, creep.cost)
     }

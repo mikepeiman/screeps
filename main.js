@@ -225,7 +225,7 @@ module.exports.loop = function () {
 
         // if(creep.memory.nextTask != "renew") {
         if (creep.memory.role == 'harvester') {
-            console.log(`🚀 ~ file: main.js:227 ~ creep.memory.role == 'harvester':`, creep)
+            console.log(`⛽ ~ file: main.js:227 ~ creep.memory.role == 'harvester':`, creep.name)
             // recycleCreep(creep, spawn)
             if (unusedEnergyCapacity < 1 && tally > 3) {
                 console.log(`🚀 ~ file: main.js:230 ~ unusedEnergyCapacity < 1 && tally > 3:`, unusedEnergyCapacity < 1 && tally > 3)
@@ -237,10 +237,11 @@ module.exports.loop = function () {
                     console.log(`🚀 ~ file: main.js:233 ~ CREEP ROLE HARVESTER: takeEnergyRuins.length > 0:`, takeEnergyRuins.length > 0)
                     roleSalvager.run(creep);
                 } else {
-                    // console.log(`roleHarvester run on harvester creep ${creep}`);
+                    console.log(`roleHarvester run on harvester creep ${creep}`);
                     roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
                 }
             } else {
+                console.log(`⛽🚜 ~ file: main.js: 244 ~ run role harvester `, creep.name)
                 roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             }
         }

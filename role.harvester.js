@@ -20,7 +20,7 @@ module.exports = {
         let hostiles = creep.room.find(FIND_HOSTILE_CREEPS, {
             filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
         });
-        let containerSource = false
+        let energySource = false
 
         // energy transfer TO targets
         let transferTarget, harvestTarget
@@ -67,30 +67,49 @@ module.exports = {
                 && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
         });
 
-
+        let takeEnergyRuins = creep.room.find(FIND_RUINS, {
+            filter: ruin => ruin.store.energy > 20
+        })
         // energy harvest FROM logic
-        if (containerSources.length) {
+        
+             console.log(`🚉 ~ file: role.harvester.js:75 ~ creep.name:`, creep.name)
+        if (takeEnergyRuins.length > 0) {
+            console.log(`🚀 ~ file: role.harvester.js:75 ~ takeEnergyRuins.length > 0:`, takeEnergyRuins.length > 0)
+            harvestTarget = creep.pos.findClosestByPath(takeEnergyRuins)
+            energySource = "ruin"
+            console.log(`🚀 ~ file: role.harvester.js:77 ~ harvestTarget:`, harvestTarget)
+        } else if (containerSources.length) {
             harvestTarget = creep.pos.findClosestByPath(containerSources)
-            containerSource = true
+            console.log(`🚀 ~ file: role.harvester.js:80 ~ harvestTarget:`, harvestTarget)
+            energySource = "container"
         } else {
             harvestTarget = creep.pos.findClosestByPath(sources)
-            containerSource = false
+            console.log(`🚀 ~ file: role.harvester.js:84 ~ harvestTarget:`, harvestTarget)
+            energySource = "source"
         }
-        // console.log(`🚀 ~ file: role.harvester.js ~ line 76 ~ harvestTarget`, harvestTarget)
+        console.log(`🚀 ~ file: role.harvester.js ~ line 76 ~ harvestTarget ${harvestTarget} type ${harvestTarget.store}`)
 
         function harvest(resource) {
+            console.log(`🚀 ~ file: role.harvester.js:92 ~ harvest ~ resource:`, resource)
             let x
-            if (!containerSource) {
+            if (energySource == "source") {
+                console.log(`🚀 ~ file: role.harvester.js:95 ~ harvest ~ !energySource:`, !energySource)
                 x = creep.harvest(resource, RESOURCE_ENERGY)
             } else {
+                console.log(`🚀 ~ file: role.harvester.js:98 ~ harvest ~ !energySource:`, energySource)
                 x = creep.withdraw(resource, RESOURCE_ENERGY)
             }
 
             if (x == ERR_NOT_IN_RANGE) {
+                console.log(`🚦⛵ ~ file: role.harvester.js:101 ~ harvest ~ x == ERR_NOT_IN_RANGE:`, x == ERR_NOT_IN_RANGE)
                 creep.memory.currentTask = '⚡ harvest'
                 creep.moveTo(resource, moveOpts);
+            } else if (x !== 0) {
+                x
+                console.log(`🚩 ~ file: role.harvester.js:107 ~ harvest ~ x:`, x)
             } else {
                 x
+                console.log(`✅✨ ~ file: role.harvester.js:110 ~ harvest ~ x:`, x)
             }
         }
 
@@ -126,7 +145,7 @@ module.exports = {
                     taskFillRoomEnergy.run(creep)
                 }
             }
-        // if there is an spawnEmergency - a manual flag I set - get energy from storage and fill room ASAP for spawning
+            // if there is an spawnEmergency - a manual flag I set - get energy from storage and fill room ASAP for spawning
         } else if (spawnEmergency) {
             // console.log(`🚀 ~ file: role.harvester.js ~ line 129 ~ spawnEmergency`, spawnEmergency)
             if (!creep.memory.transferring) {
