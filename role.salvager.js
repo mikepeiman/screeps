@@ -49,7 +49,6 @@ module.exports = {
         // TODO: complete salvage pickup for tombstones and dropped resources other than energy
         // a good approach might be to not distinguish between and resource type, and just pick it all up in sequence
         tombstones.forEach(tombstone => {
-            console.log(`🚀 ~ file: role.salvager.js ~ line 32 ~ tombstone`, tombstone.store)
             for (let i in tombstone.store) {
                 let res = tombstone.store[i]
                 let t = res.resourceType
@@ -67,8 +66,9 @@ module.exports = {
         let droppedResourcesEnergy = creep.room.find(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY)
         let droppedResourcesMinerals = creep.room.find(FIND_DROPPED_RESOURCES, mineralType)
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {
-            filter: ruin => ruin.store.energy > 0
+            filter: ruin => ruin.store.energy > 20
         })
+        // console.log(`🚀 ~ file: role.salvager.js:71 ~ takeEnergyRuins:`, takeEnergyRuins)
         let targetSource
 
         if (droppedResourcesEnergy.length) {
@@ -77,7 +77,9 @@ module.exports = {
         } else if (takeEnergyTombstones.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyTombstones)
         } else if (takeEnergyRuins.length) {
+            console.log(`🚀 ~ file: role.salvager.js:80 ~ takeEnergyRuins is TRUE:`, takeEnergyRuins.length)
             targetSource = creep.pos.findClosestByPath(takeEnergyRuins)
+            console.log(`🚀 ~ file: role.salvager.js:82 ~ targetSource:`, targetSource)
         } else {
             sources = creep.room.find(FIND_SOURCES_ACTIVE)
             targetSource = creep.pos.findClosestByPath(sources)

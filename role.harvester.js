@@ -45,13 +45,13 @@ module.exports = {
         let lowestEnergyTower
         if (towers.length) {
             lowestEnergyTower = _.min(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))
-            lowestEnergyTowerHas = lowestEnergyTower.store.getFreeCapacity(RESOURCE_ENERGY)
-            console.log(`🚀 ~ file: role.harvester.js ~ line 49 ~ ${lowestEnergyTower} lowestEnergyTowerHas`, lowestEnergyTowerHas)
+            lowestEnergyTowerCapacity = lowestEnergyTower.store.getFreeCapacity(RESOURCE_ENERGY)
+            console.log(`🚀 ~ file: role.harvester.js ~ line 49 ~ ${lowestEnergyTower} lowestEnergyTowerCapacity`, lowestEnergyTowerCapacity)
         }
         // energy transfer TO target logic
         if (spawnAndExtensions.length) {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
-        } else if (towers.length && lowestEnergyTowerHas < 200) {
+        } else if (towers.length && lowestEnergyTowerCapacity > 400) {
             transferTarget = lowestEnergyTower
         } else {
             transferTarget = "upgradeController"

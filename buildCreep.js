@@ -68,11 +68,12 @@ let buildCreep = (energyCapacity) => {
         'Static-Harvester-Miner': {
             name: 'Static-Harvester-Miner',
             type: 'worker',
+            role: 'miner',
             has: 0,
-            wants: 0,
+            wants: 1,
             priorities: {
-                'WORK': 100,
-                'CARRY': 1,
+                'WORK': 90,
+                'CARRY': 10,
                 'MOVE': 1,
             },
             composition: {},
