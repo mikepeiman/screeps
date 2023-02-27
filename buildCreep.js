@@ -80,6 +80,20 @@ let buildCreep = (energyCapacity) => {
             composition: {},
             blueprint: []
         },
+        'Resourcer-Mover': {
+            name: 'Resourcer-Mover',
+            type: 'worker',
+            role: 'resources',
+            has: 0,
+            wants: 1,
+            priorities: {
+                'WORK': 10,
+                'CARRY': 80,
+                'MOVE': 10,
+            },
+            composition: {},
+            blueprint: []
+        },
         // Engineers work and carry energy, with decent mobility
         'Engineer-Repairer': {
             name: 'Engineer-Repairer',
@@ -101,7 +115,7 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'salvager',
             has: 0,
-            wants: 3,
+            wants: 4,
             priorities: {
                 'WORK': 35,
                 'CARRY': 40,
@@ -113,6 +127,7 @@ let buildCreep = (energyCapacity) => {
         'Infantry': {
             name: 'Infantry',
             type: 'warrior',
+            role: 'warrior',
             has: 0,
             wants: 0,
             priorities: {
@@ -126,6 +141,7 @@ let buildCreep = (energyCapacity) => {
         'Paladin': {
             name: 'Paladin',
             type: 'warrior',
+            role: 'warrior',
             has: 0,
             wants: 0,
             priorities: {

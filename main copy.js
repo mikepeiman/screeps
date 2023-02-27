@@ -1,68 +1,29 @@
-let roleHarvester = require('role.harvester');
-let roleResourceMover = require('role.resource.mover');
-let roleSalvager = require('role.salvager');
-let roleUpgrader = require('role.upgrader');
-let roleBuilder = require('role.builder');
-let roleMiner = require('role.miner');
-let roleWarrior = require('role.warrior');
-let gatherEnergy = require('task.gather.energy')
-let recycleCreep = require('creep.recycle')
-let creepSpecs = require('creep.specs')
-let buildCreep = require('buildCreep')
-const Traveler = require('traveler')
-const roleScout = require('role.scout');
-const roleRepairer = require('role.repairer');
-const renewCreep = require('renew.creep')
-const renewCheck = require('renew.check')
-// let idleCreep = require('idleCreep')
-let roleClaimer = require('role.claimer')
-let creepsFullPopulation = false
-
-// explore Traveler.js
-// let pos = Game.creeps['harvester-sameroom-level-3-26228040'].pos
-
-// let sk = Game.getObjectById('5bbcac869099fc012e6359ec')
-// let sks = Game.getObjectById('5bbcac869099fc012e6359eb')
-// let skbot = Game.getObjectById('6047ebbafc4bbeed6eb13ac1')
-// let aBuilder = Game.getObjectById('6047e312dc2f33540f6f449e')
-// // let tp = pos.FindPathTo(Game.getObjectById['6047d7d7f201b67fa1efd0e8'])
-//  console.log(`:::---:::   explore Traveler.js: source keeper:::   ${sk}   ${JSON.stringify(sk)}`)
-//  console.log(`:::---:::   explore Traveler.js: SK source keeper:::   ${sks}   ${JSON.stringify(sks)}`)
-//  console.log(`:::---:::   explore Traveler.js: SK fighter :::   ${skbot}   ${JSON.stringify(skbot)}`)
-//  console.log(`:::---:::   explore Traveler.js: my builder:::   ${aBuilder}   ${JSON.stringify(aBuilder)}`)
-//  console.log(`:::---:::   explore Traveler.js: source keeper ${JSON.stringify(tp)}`)
-
-
 let spawn = Game.spawns['Spawn1']
 let home = spawn.room
-let spawnPriority = "false"
+let spawnPriority = "false" // consider: roomPriority = [spawn, defend, upgrade, build]. Perhaps "spawn" is simply a function of the other priorities?
 let rc = home.controller
 let rcl = rc.level
 let creepLevelGroups = creepSpecs(rcl)
-// !!!   IMPORTANT   !!!   MUST ensure there is creep spec data before leveling up RCL, otherwise no new creeps will be spawned.
 let creepGroups = creepLevelGroups[rcl - 1].specs
 
 // priorities for energy harvester creeps:  ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController" ]
 let energyHarvesterCreepsPriorities = ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController"]
 let emergencySpawn = false
 let creepTaskPriority
+
+// Check for invaders; always a top priority. Check every tick, or every... 2? 3? 5 ticks?
 let hostiles = home.find(FIND_HOSTILE_CREEPS, {
     filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
 });
-let hostilesInRoom
+let hostilesInRoom = false
 if (hostiles[0]) {
     hostilesInRoom = true
 }
 
-// roleTower.run(home)
-// for (let creepType in creepGroups) {
-//     let c = creepGroups[creepType]
-//     console.log(`${creepType} costs: ${c.cost}`)
-// }
+
 let everyHundredCounter = 100
 let everyFiveCounter = 5
 let renewCreepTimer = 0
-require('prototype.tower')
 
 module.exports.loop = function () {
     
@@ -239,28 +200,13 @@ module.exports.loop = function () {
                     roleSalvager.run(creep);
                 } else {
                     console.log(`roleHarvester run on harvester creep ${creep}`);
-                    roleSalvager.run(creep);
-                    // roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
+                    roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
                 }
             } else {
                 console.log(`⛽🚜 ~ file: main.js: 244 ~ run role harvester `, creep.name)
                 roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             }
         }
-
-        
-        if (creep.memory.role == 'resources') {
-            // if (unusedEnergyCapacity < 1 && tally > 3) {
-            //     if (buildTargets.length) {
-            //         roleBuilder.run(creep);
-            //     } else {
-            //         roleUpgrader.run(creep);
-            //     }
-            // } else {
-            roleResourceMover.run(creep);
-            // }
-        }
-    
         if (creep.memory.role == 'hauler') {
             // if (unusedEnergyCapacity < 1 && tally > 3) {
             //     if (buildTargets.length) {

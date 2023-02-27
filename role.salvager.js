@@ -76,11 +76,14 @@ module.exports = {
             // console.log(`${creep} 🚀 ~ ${creep}: role.salvager.js ~ line 16 ~ targetSource`, targetSource)
         } else if (takeEnergyTombstones.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyTombstones)
-        } else if (takeEnergyRuins.length) {
-            // console.log(`🚀 ~ file: role.salvager.js:80 ~ takeEnergyRuins is TRUE:`, takeEnergyRuins.length)
-            targetSource = creep.pos.findClosestByPath(takeEnergyRuins)
-            // console.log(`🚀 ~ file: role.salvager.js:82 ~ targetSource:`, targetSource)
-        } else {
+        }
+        // comment out ruin-seeking, to allow resource-mover to move to new storage. don't want renewable energy to go to waste.
+        //  else if (takeEnergyRuins.length) {
+        //     // console.log(`🚀 ~ file: role.salvager.js:80 ~ takeEnergyRuins is TRUE:`, takeEnergyRuins.length)
+        //     targetSource = creep.pos.findClosestByPath(takeEnergyRuins)
+        //     // console.log(`🚀 ~ file: role.salvager.js:82 ~ targetSource:`, targetSource)
+        // } 
+        else {
             sources = creep.room.find(FIND_SOURCES_ACTIVE)
             targetSource = creep.pos.findClosestByPath(sources)
         }
@@ -147,7 +150,7 @@ module.exports = {
         }
 
         function harvest(resource) {
-            // console.log(`🚀 ~ file: role.salvager.js ~ line 74 ~ harvest ~ resource`, resource)
+            console.log(`🚀🎯🎯 ${creep.name} ~ file: role.salvager.js ~ line 74 ~ harvest ~ resource`, resource)
             let x = creep.withdraw(resource, RESOURCE_ENERGY)
             if (x == ERR_NOT_IN_RANGE) {
                 // console.log("🚀 ~ file: role.salvager.js ~ line 59 ~ harvest ~ x", x)
