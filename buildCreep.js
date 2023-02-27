@@ -1,5 +1,5 @@
 let buildCreep = (energyCapacity) => {
-console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity:`, energyCapacity)
+// console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity:`, energyCapacity)
 
     /* 
     parts costs for reference:
@@ -86,7 +86,7 @@ console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildC
             type: 'worker',
             role: 'repairer',
             has: 0,
-            wants: 2,
+            wants: 1,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
@@ -101,7 +101,7 @@ console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildC
             type: 'worker',
             role: 'salvager',
             has: 0,
-            wants: 8,
+            wants: 3,
             priorities: {
                 'WORK': 35,
                 'CARRY': 40,

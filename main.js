@@ -54,10 +54,10 @@ if (hostiles[0]) {
 }
 
 // roleTower.run(home)
-for (let creepType in creepGroups) {
-    let c = creepGroups[creepType]
-    console.log(`${creepType} costs: ${c.cost}`)
-}
+// for (let creepType in creepGroups) {
+//     let c = creepGroups[creepType]
+//     console.log(`${creepType} costs: ${c.cost}`)
+// }
 let everyHundredCounter = 100
 let everyFiveCounter = 5
 let renewCreepTimer = 0
@@ -82,7 +82,7 @@ module.exports.loop = function () {
 
     // // some logs to look at what's in the room
     let allMyStructures = spawn.room.find(FIND_MY_STRUCTURES)
-    console.log(`🚀 ~ file: main.js:83 ~ allMyStructures:`, allMyStructures)
+    // console.log(`🚀 ~ file: main.js:83 ~ allMyStructures:`, allMyStructures)
     // let allHostileStructures = spawn.room.find(FIND_HOSTILE_STRUCTURES)
     // console.log(`🚀 ~ file: main.js:86 ~ allHostileStructures:`, allHostileStructures)
     // let allStructures = spawn.room.find(FIND_STRUCTURES)
@@ -258,7 +258,7 @@ module.exports.loop = function () {
         }
         if (creep.memory.role == 'salvager') {
             if (creepGroups['Dynamic-Harvester-Miner'].has < 2 && creepGroups['Static-Harvester-Miner'].has < 2) {
-                console.log(`salvager => harvest role`)
+                // console.log(`salvager => harvest role`)
                 roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
             } else {
                 roleSalvager.run(creep, creepTaskPriority);
@@ -269,12 +269,12 @@ module.exports.loop = function () {
         if (creep.memory.role == 'miner') {
             if (mineralsAmount && storageExists.length) {
                 roleMiner.run(creep);
-                console.log(`a miner ${creep} is assigned miner role`)
+                // console.log(`a miner ${creep} is assigned miner role`)
             } else if (unusedEnergyCapacity > 0) {
                 roleHarvester.run(creep)
-                console.log(`a miner ${creep} is assigned harvester role`)
+                // console.log(`a miner ${creep} is assigned harvester role`)
             } else {
-                console.log(`a miner ${creep} is assigned salvager role`)
+                // console.log(`a miner ${creep} is assigned salvager role`)
                 roleSalvager.run(creep)
             }
 
@@ -297,12 +297,12 @@ module.exports.loop = function () {
             // TODO NOTE remove this when refactoring. This is for game start when I don't need repairers
             if (mineralsAmount && storageExists.length) {
                 roleMiner.run(creep);
-                console.log(`a miner ${creep} is assigned miner role`)
+                // console.log(`a miner ${creep} is assigned miner role`)
             } else if (unusedEnergyCapacity > 0) {
                 roleHarvester.run(creep)
-                console.log(`a miner ${creep} is assigned harvester role`)
+                // console.log(`a miner ${creep} is assigned harvester role`)
             } else {
-                console.log(`a miner ${creep} is assigned salvager role`)
+                // console.log(`a miner ${creep} is assigned salvager role`)
                 roleSalvager.run(creep)
             }
             roleRepairer.run(creep)

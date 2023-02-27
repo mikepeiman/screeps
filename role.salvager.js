@@ -9,7 +9,7 @@ module.exports = {
         taskPriority = "upgradeController"
 
         creep.memory.currentRole = 'salvager'
-        let moveOpts = { visualizePathStyle: { stroke: '#aa00ff' }, reusePath: 5 }
+        let moveOpts = { visualizePathStyle: { stroke: '#ff00ff' }, reusePath: 5 }
 
         let energy = creep.room.energyAvailable;
         let energyCapacity = creep.room.energyCapacityAvailable;
@@ -53,7 +53,7 @@ module.exports = {
                 let res = tombstone.store[i]
                 let t = res.resourceType
                 let a = res.amount
-                console.log(`🚀 ~ item ${i}: role.salvager.js ~ line 35 ~ res ${res} type ${t} amount ${a}`)
+                // console.log(`🚀 ~ item ${i}: role.salvager.js ~ line 35 ~ res ${res} type ${t} amount ${a}`)
             }
         });
 
@@ -66,7 +66,7 @@ module.exports = {
         let droppedResourcesEnergy = creep.room.find(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY)
         let droppedResourcesMinerals = creep.room.find(FIND_DROPPED_RESOURCES, mineralType)
         let takeEnergyRuins = creep.room.find(FIND_RUINS, {
-            filter: ruin => ruin.store.energy > 20
+            filter: ruin => ruin.store.energy > 0
         })
         // console.log(`🚀 ~ file: role.salvager.js:71 ~ takeEnergyRuins:`, takeEnergyRuins)
         let targetSource
@@ -77,9 +77,9 @@ module.exports = {
         } else if (takeEnergyTombstones.length) {
             targetSource = creep.pos.findClosestByPath(takeEnergyTombstones)
         } else if (takeEnergyRuins.length) {
-            console.log(`🚀 ~ file: role.salvager.js:80 ~ takeEnergyRuins is TRUE:`, takeEnergyRuins.length)
+            // console.log(`🚀 ~ file: role.salvager.js:80 ~ takeEnergyRuins is TRUE:`, takeEnergyRuins.length)
             targetSource = creep.pos.findClosestByPath(takeEnergyRuins)
-            console.log(`🚀 ~ file: role.salvager.js:82 ~ targetSource:`, targetSource)
+            // console.log(`🚀 ~ file: role.salvager.js:82 ~ targetSource:`, targetSource)
         } else {
             sources = creep.room.find(FIND_SOURCES_ACTIVE)
             targetSource = creep.pos.findClosestByPath(sources)
