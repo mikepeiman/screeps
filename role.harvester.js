@@ -6,6 +6,7 @@ let getEnergyFromStorage = require('task.get.energy.from.storage')
 const taskGiveEnergyToUpgradeController = require('./task.give.energy.to.upgrade.controller')
 const taskGiveEnergyToTowers = require('./task.give.energy.to.towers')
 const taskGetEnergyFromStorage = require('./task.get.energy.from.storage')
+const taskGiveEnergyToBuild = require('./task.give.energy.to.construction')
 
 module.exports = {
     run: function (creep, spawnEmergency, hostilesInRoom) {
@@ -24,6 +25,7 @@ module.exports = {
 
         // energy transfer TO targets
         let transferTarget, harvestTarget
+        let buildTargets = Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES);
         let spawnAndExtensions = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_SPAWN
                 || s.structureType == STRUCTURE_EXTENSION)
@@ -53,6 +55,8 @@ module.exports = {
             transferTarget = creep.pos.findClosestByPath(spawnAndExtensions)
         } else if (towers.length && lowestEnergyTowerCapacity > 400) {
             transferTarget = lowestEnergyTower
+        } else if(buildTargets.length) {
+            transferTarget = "constructionSite"
         } else {
             transferTarget = "upgradeController"
         }
@@ -156,7 +160,7 @@ module.exports = {
                 taskFillRoomEnergy.run(creep)
             } else if (towers.length) {
                 taskGiveEnergyToTowers.run(creep)
-            } else {
+            }  else {
                 taskGiveEnergyToUpgradeController.run(creep)
             }
             // else, no spawnEmergency, do regular source harvesting
@@ -175,6 +179,9 @@ module.exports = {
                 if (transferTarget == "upgradeController") {
                     // console.log(`🚀🔥🔥🔥 ~ file: role.harvester.js ~ line 148 ~ transferTarget upgradeController`, transferTarget)
                     taskUpgradeController.run(creep)
+                } else if(buildTargets.length) {
+                    console.log(`🚀🔧🔧🔧 ~ file: role.harvester.js:165 ~ ${creep.name} taskGiveEnergyToBuild: ${buildTargets[0]}`, )
+                    taskGiveEnergyToBuild.run(creep, buildTargets)
                 } else {
                     creep.memory.currentTask = '⚡ transfer energy'
                     // taskUpgradeController.run(creep)

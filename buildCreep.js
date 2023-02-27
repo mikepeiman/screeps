@@ -56,7 +56,7 @@ console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildC
             type: 'worker',
             role: 'harvester',
             has: 0,
-            wants: 4,
+            wants: 0,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
@@ -71,7 +71,7 @@ console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildC
             type: 'worker',
             role: 'miner',
             has: 0,
-            wants: 1,
+            wants: 0,
             priorities: {
                 'WORK': 90,
                 'CARRY': 10,
@@ -86,7 +86,7 @@ console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildC
             type: 'worker',
             role: 'repairer',
             has: 0,
-            wants: 1,
+            wants: 2,
             priorities: {
                 'WORK': 50,
                 'CARRY': 25,
