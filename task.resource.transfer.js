@@ -4,14 +4,9 @@ module.exports = {
         let moveOpts = { visualizePathStyle: { stroke: '#00ff00' }, ignoreCreeps: false, reusePath: 3 }
         let energy = creep.room.energyAvailable;
         let energyCapacity = creep.room.energyCapacityAvailable;
-        // console.log(`🚀 ~ file: role.harvester.js ~ line 11 ~ energyCapacity`, energyCapacity)
         let unusedEnergyCapacity = energyCapacity - energy
         let roomEnergyFull = unusedEnergyCapacity == 0
-        // console.log(`🚀 ~ file: role.harvester.js ~ line 13 ~ unusedEnergyCapacity`, unusedEnergyCapacity)
-        creep.memory.currentRole = 'resource-mover'
-        let hostiles = creep.room.find(FIND_HOSTILE_CREEPS, {
-            filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
-        });
+        creep.memory.task = 'resource-transfer'
         let energySource = false
         let harvestResourceType = `${RESOURCE_ENERGY}`
 

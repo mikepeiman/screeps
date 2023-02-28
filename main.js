@@ -98,9 +98,10 @@ module.exports.loop = function () {
     rc = home.controller
     rcl = rc.level
 
-    let hostiles = home.find(FIND_HOSTILE_CREEPS, {
-        filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
-    });
+    let hostiles = home.find(FIND_HOSTILE_CREEPS);
+    // let hostiles = home.find(FIND_HOSTILE_CREEPS, {
+    //     filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
+    // });
 
 
     let energy = spawn.room.energyAvailable;
@@ -114,15 +115,7 @@ module.exports.loop = function () {
     let unusedEnergyCapacity = roomEnergyCapacity - energy
     console.log(`🚀 ~ file: main.js:113 ~ unusedEnergyCapacity ${unusedEnergyCapacity} = roomEnergyCapacity ${roomEnergyCapacity} - energy ${energy}`)
     let RCLprogressRemains = home.controller.progressTotal - home.controller.progress
-    let takeEnergySources = home.find(FIND_SOURCES_ACTIVE)
-    let takeEnergyTombstones = home.find(FIND_TOMBSTONES, {
-        filter: tombstone => tombstone.store.energy > 0
-    })
-    let takeEnergyDroppedResources = home.find(FIND_DROPPED_RESOURCES)
-    let takeEnergyRuins = home.find(FIND_RUINS, {
-        filter: ruin => ruin.store.energy > 0
-    })
-    const takeEnergyTargets = [...takeEnergyTombstones, ...takeEnergyDroppedResources, ...takeEnergyRuins]
+
     let minerals = home.find(FIND_MINERALS)
     let mineralsAmount = minerals[0].mineralAmount
     let mineralRegen = minerals[0].ticksToRegeneration
