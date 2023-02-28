@@ -85,11 +85,11 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'resources',
             has: 0,
-            wants: 1,
+            wants: 0,
             priorities: {
-                'WORK': 10,
-                'CARRY': 80,
-                'MOVE': 10,
+                'WORK': 1,
+                'CARRY': 78,
+                'MOVE': 21,
             },
             composition: {},
             blueprint: []
@@ -115,7 +115,7 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'salvager',
             has: 0,
-            wants: 4,
+            wants: 5,
             priorities: {
                 'WORK': 35,
                 'CARRY': 40,
