@@ -114,6 +114,7 @@ module.exports = {
             // } else {
 
             harvestTarget = creep.pos.findClosestByPath(sources)
+            console.log(`🚀 CREEP ${creep} 🥓🥓🥓~ file: role.harvester.js:117 ~ harvestTarget for energy sources:`, harvestTarget)
             // console.log(`🚀 ~ file: role.harvester.js:84 ~ harvestTarget:`, harvestTarget)
             energySource = "source"
 
@@ -127,7 +128,7 @@ module.exports = {
                 x = creep.harvest(resource, RESOURCE_ENERGY)
                 creep.moveTo(resource, moveOpts);
                 console.log(`🚀 ~ file: role.harvester.js:128 ~ harvest ~ x:`, x)
-                if(x == -7){
+                if (x == -7) {
                     x = creep.pickup(resource, RESOURCE_ENERGY)
                     console.log(`🚀 ~ file: role.harvester.js:132 ~ harvest ~ x:`, x)
                     creep.moveTo(resource, moveOpts);
@@ -138,7 +139,7 @@ module.exports = {
                 // console.log(`🚀 ~ file: role.harvester.js:98 ~ harvest ~ !energySource:`, energySource)
                 x = creep.withdraw(resource, RESOURCE_ENERGY)
                 console.log(`🚀 ~ file: role.harvester.js:134 ~ harvest resource ${resource} loc ${resource.pos} ~ x:`, x)
-                if(x == -7){
+                if (x == -7) {
                     x = creep.pickup(resource, RESOURCE_ENERGY)
                     console.log(`🚀 ~ file: role.harvester.js:141 ~ harvest ~ x:`, x)
                     creep.moveTo(resource, moveOpts);
@@ -159,6 +160,7 @@ module.exports = {
         }
 
         function transfer(toTarget) {
+            console.log(`🚀 ~ file: role.harvester.js:162 ~ transfer ~ toTarget:`, toTarget)
             if (creep.transfer(toTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(toTarget, moveOpts);
             }
@@ -210,7 +212,7 @@ module.exports = {
                 // console.log('!creep.memory.transferring: NOT XFER XFER XFER',);
                 creep.memory.currentTask = '➕⚡ gather energy'
                 if (harvestTarget) {
-                    console.log(`🚀 ~ file: role.harvester.js:200 ~ ${creep} harvestTarget:`, harvestTarget)
+                    console.log(`🚜🚜🚜🚜🚜 ~ file: role.harvester.js:200 ~ ${creep} harvestTarget:`, harvestTarget)
                     harvest(harvestTarget)
                 } else {
                     // creep.memory.idle = true
@@ -222,7 +224,10 @@ module.exports = {
                 if (transferTarget == "upgradeController") {
                     // console.log(`🚀🔥🔥🔥 ~ file: role.harvester.js ~ line 148 ~ transferTarget upgradeController`, transferTarget)
                     taskUpgradeController.run(creep)
-                }  else if (spawnAndExtensions.length) {
+                } else if (transferTarget.structureType == STRUCTURE_TOWER) {
+                    console.log(`🚀 ~ file: role.harvester.js:226 ~ transferTarget.structureType == STRUCTURE_TOWER:`, transferTarget.structureType == STRUCTURE_TOWER)
+                    transfer(transferTarget)
+                } else if (spawnAndExtensions.length) {
                     creep.memory.currentTask = '⚡ transfer energy'
                     // taskUpgradeController.run(creep)
                     transfer(transferTarget)

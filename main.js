@@ -206,13 +206,27 @@ module.exports.loop = function () {
             && s.energy < s.roomEnergyCapacity
     });
 
-    // let takeEnergyRuins = creep.room.find(FIND_RUINS, {
-    //     filter: ruin => ruin.store.energy > 20
-    // })
 
     for (let name in Game.creeps) {
-        // console.log('name: ', name);
         let creep = Game.creeps[name];
+
+
+        // explore actions with a single creep
+        // console.log(`🚀 ~ file: main.js:216 ~ Game.creeps:`, Game.creeps)
+        // let names = Object.keys(Game.creeps)
+        // let specialCreep = Game.creeps[names[0]]
+        // specialCreep.special = true
+        // specialCreep.memory.role = "harvester"
+        // specialCreep.memory.currentRole = "harvester"
+        // console.log(`🚀 ~ file: main.js:219 ~ specialCreep:`, specialCreep)
+        // console.log(`🚀 ~ file: main.js:218 ~ names:`, names)
+        // if(creep.special){
+        //     console.log(`🚀 ~ file: main.js:225 ~ ${creep} creep.special:`, creep.special)
+        //     creep.moveTo(14,35)
+        // }
+
+
+        
         // console.log(`creep: , ${creep}, HOME: ${creep.memory.home}, XFER: ${creep.memory.transferring}, ROLE: ${creep.memory.role}`);
         // if(creep.memory.nextTask == "renew") {
         //     renewCreep(creep,spawn)
@@ -228,10 +242,7 @@ module.exports.loop = function () {
                     console.log(`🚀 ~ file: main.js:233 ~ buildTargets.length:`, buildTargets.length)
                     // console.log('buildTargets: ', buildTargets);
                     roleBuilder.run(creep);
-                } else if (takeEnergyRuins.length > 0){
-                    console.log(`🚀 ~ file: main.js:233 ~ CREEP ROLE HARVESTER: takeEnergyRuins.length > 0:`, takeEnergyRuins.length > 0)
-                    roleSalvager.run(creep);
-                } else {
+                }  else {
                     console.log(`roleHarvester run on harvester creep ${creep}`);
                     roleSalvager.run(creep);
                     // roleHarvester.run(creep, emergencySpawn, hostilesInRoom);

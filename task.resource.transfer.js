@@ -30,7 +30,7 @@ module.exports = {
         let ruinsWithResources = creep.room.find(FIND_RUINS, {
             filter: r => r.store.getUsedCapacity() > 0
         })
-        console.log(`🚀 ~ file: role.resource.mover.js:17 ~ ruinsWithResources:`, ruinsWithResources.length)
+        // console.log(`🚀 ~ file: role.resource.mover.js:17 ~ ruinsWithResources:`, ruinsWithResources.length)
 
         if (ruinsWithResources.length > 0) {
 
@@ -38,17 +38,17 @@ module.exports = {
             let richestRuin = ruinsWithResources[0]
             harvestTarget = richestRuin
 
-            console.log(`🚀 ~ file: task.resource.transfer.js:41 ~ richestRuin:`, richestRuin)
+            // console.log(`🚀 ~ file: task.resource.transfer.js:41 ~ richestRuin:`, richestRuin)
             let store = richestRuin.store
             let ruinResources = Object.keys(store)
-            console.log(`🚀 ~ file: task.resource.transfer.js:44 ~ ruinResources:`, ruinResources)
+            // console.log(`🚀 ~ file: task.resource.transfer.js:44 ~ ruinResources:`, ruinResources)
             if (ruinResources.length > 1) {
                 ruinResources.forEach(resource => {
                     currentResource = resource
                     currentResources.push(currentResource)
-                    console.log(`🚀 ~ file: task.resource.transfer.js:44 ~ resource:`, resource)
+                    // console.log(`🚀 ~ file: task.resource.transfer.js:44 ~ resource:`, resource)
                     let amount = richestRuin.store[resource]
-                    console.log(`🚀 ~ file: task.resource.transfer.js:46 ~ amount:`, amount)
+                    // console.log(`🚀 ~ file: task.resource.transfer.js:46 ~ amount:`, amount)
                 })
             } else {
                 currentResources = currentResource = ruinResources
@@ -74,7 +74,7 @@ module.exports = {
         }
 
         function harvest(resource, harvestResourceType) {
-            console.log(`🚀 ~ file: task.resource.transfer.js:78 ~ harvest ~ resource, harvestResourceType:`, resource, harvestResourceType)
+            console.log(`🚀 ~ file: task.resource.transfer.js:78 ~ creep ${creep} harvest ~ resource ${resource}, harvestResourceType: ${harvestResourceType}`)
             let x = creep.withdraw(resource, `${harvestResourceType}`)
             console.log(`🚀 ~ file: task.resource.transfer.js:80 ~ harvest ~ x:`, x)
 
@@ -95,23 +95,23 @@ module.exports = {
 
         function transfer(toTarget, resourceTypes) {
             creep.store
-            console.log(`🚀 ~ file: task.resource.transfer.js:102 ~ transfer ~ creep.store:`, creep.store)
+            // console.log(`🚀 ~ file: task.resource.transfer.js:102 ~ transfer ~ creep.store:`, creep.store)
             let keys = Object.keys(creep.store)
-            console.log(`🚀 ~ file: task.resource.transfer.js:105 ~ transfer ~ keys:`, keys)
-            console.log(`🚀 ~ file: role.resource.mover.js:147 ~ transfer ~ toTarget ${toTarget}, resourceTypes ${resourceTypes}`)
+            // console.log(`🚀 ~ file: task.resource.transfer.js:105 ~ transfer ~ keys:`, keys)
+            // console.log(`🚀 ~ file: role.resource.mover.js:147 ~ transfer ~ toTarget ${toTarget}, resourceTypes ${resourceTypes}`)
             if (keys.length > 0) {
                 keys.forEach(resourceType => {
                     let v = creep.store[resourceType]
                     if(v < 1){
-                        console.log(`🚀 ~ file: task.resource.transfer.js:99 ~ transfer ~ v < 1:`, v < 1)
+                        // console.log(`🚀 ~ file: task.resource.transfer.js:99 ~ transfer ~ v < 1:`, v < 1)
                         resourceTypes.pop()
-                        console.log(`🚀 ~ file: task.resource.transfer.js:101 ~ transfer ~ resourceTypes:`, resourceTypes)
-                        console.log(`🚀 ~ file: task.resource.transfer.js:101 ~ transfer ~ resourceTypes length ${resourceTypes.length}`)
+                        // console.log(`🚀 ~ file: task.resource.transfer.js:101 ~ transfer ~ resourceTypes:`, resourceTypes)
+                        // console.log(`🚀 ~ file: task.resource.transfer.js:101 ~ transfer ~ resourceTypes length ${resourceTypes.length}`)
                         return
                     }
                     let x = creep.transfer(toTarget, `${resourceType}`)
-                    console.log(`🚀 ~ file: task.resource.transfer.js:98 ~ transfer ~ resourceType ${resourceType} amount ${v}`)
-                    console.log(`🚀 ~ file: task.resource.transfer.js:99 ~ transfer ~ transfer code result ${x}`)
+                    // console.log(`🚀 ~ file: task.resource.transfer.js:98 ~ transfer ~ resourceType ${resourceType} amount ${v}`)
+                    // console.log(`🚀 ~ file: task.resource.transfer.js:99 ~ transfer ~ transfer code result ${x}`)
                     creep.moveTo(toTarget, moveOpts);
                 })
             } else {
@@ -128,15 +128,15 @@ module.exports = {
 
         // core logic: if creep full, transfer. If not full, harvest
         let creepFull = creep.store.getFreeCapacity() < 1
-        console.log(`🚀 ~ file: task.resource.transfer.js:135 ~ creepFull:`, creepFull)
-        console.log(`🚀 ~ file: task.resource.transfer.js:137 ~ creep.memory.transferring:`, creep.memory.transferring)
+        // console.log(`🚀 ~ file: task.resource.transfer.js:135 ~ creepFull:`, creepFull)
+        // console.log(`🚀 ~ file: task.resource.transfer.js:137 ~ creep.memory.transferring:`, creep.memory.transferring)
         if (creepFull || creep.memory.transferring === true) {
             creep.memory.transferring = true
             creep.memory.idle = false
             creep.memory.currentTask = '⚡ find transfer target'
             
-            console.log(`🚀 ~ file: task.resource.transfer.js:132 ~ carriedResources:`, carriedResources)
-            console.log(`🚀 ~ file: task.resource.transfer.js:135 ~ currentResources:`, currentResources)
+            // console.log(`🚀 ~ file: task.resource.transfer.js:132 ~ carriedResources:`, carriedResources)
+            // console.log(`🚀 ~ file: task.resource.transfer.js:135 ~ currentResources:`, currentResources)
             transfer(transferTarget, carriedResources)
         } else {
             harvest(harvestTarget, currentResource)
@@ -151,7 +151,7 @@ module.exports = {
                 harvest(harvestTarget, currentResource)
             } else {
                 creep.memory.idle = true
-                console.log(`🚀 ~ file: task.resource.transfer.js:154 ~ creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+                // console.log(`🚀 ~ file: task.resource.transfer.js:154 ~ creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
             }
         }
     }
