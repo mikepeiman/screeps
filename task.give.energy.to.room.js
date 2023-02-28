@@ -1,6 +1,6 @@
 module.exports = {
     run: (creep) => {
-        console.log(`🚀 ~ file: task.fill.room.energy.js ~ line 18 ~ creep`, creep)
+        console.log(`🚀 ~ file: task.give.energy.to.room.js:17 ~ creep:`, creep)
         let moveOpts = { visualizePathStyle: { stroke: '#aaffff' }, reusePath: 5 }
         let spawnAndExtensions = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_SPAWN

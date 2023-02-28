@@ -151,7 +151,7 @@ module.exports = {
                 harvest(harvestTarget, currentResource)
             } else {
                 creep.memory.idle = true
-                console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+                console.log(`🚀 ~ file: task.resource.transfer.js:154 ~ creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
             }
         }
     }

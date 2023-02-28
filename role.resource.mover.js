@@ -189,22 +189,8 @@ module.exports = {
                     harvest(harvestTarget, harvestResourceType)
                 } else {
                     creep.memory.idle = true
-                    console.log(`creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+                    console.log(`🚀 ~ file: role.resource.mover.js:192 ~ creep ${creep} idle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
                 }
-            } else {
-                console.log(`${creep.name} 🚚🚛🚚🚀 ~ file: role.resource.mover.js:169 ~ transferTarget:`, transferTarget)
-                if (transferTarget == "upgradeController") {
-                    taskUpgradeController.run(creep)
-                } else if (buildTargets.length) {
-                    console.log(`🚀🔧🔧🔧 ~ file: role.harvester.js:165 ~ ${creep.name} taskGiveEnergyToBuild: ${buildTargets[0]}`,)
-                    taskGiveEnergyToBuild.run(creep, buildTargets)
-                } else {
-                    creep.memory.currentTask = '⚡ transfer energy'
-                    // taskUpgradeController.run(creep)
-                    console.log(`🚀 ~ file: role.resource.mover.js:178 ~ transferTarget:`, transferTarget)
-                    transfer(transferTarget, `${RESOURCE_ENERGY}`)
-                }
-
             }
         }
     }
