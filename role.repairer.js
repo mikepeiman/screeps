@@ -10,13 +10,17 @@ var roleRepairer = {
 		// }
         let moveOpts = { visualizePathStyle: { stroke: '#00ffaa' }, reusePath: 3 }
 		creep.memory.currentRole = 'repairer'
+
+		let creepEnergyLoadPercentage = (creep.store.getFreeCapacity() / creep.store[RESOURCE_ENERGY]) 
+		console.log(`🚀 ~ file: role.repairer.js:15 ~ creep.store.getFreeCapacity() ${creep.store.getFreeCapacity()} / creep.store[RESOURCE_ENERGY] ${creep.store[RESOURCE_ENERGY]}:`)
+		console.log(`⚡⚡⚡ ~ file: role.repairer.js:15 ~ creepEnergyLoadPercentage:`, creepEnergyLoadPercentage)
 		if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
 			creep.memory.repairing = false;
-			// creep.say('🔄 harvest');
+			creep.say('🔄 harvest');
 		}
 		if (!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
 			creep.memory.repairing = true;
-			// creep.say('🔨 repair');
+			creep.say('🔨 repair');
 		}
 
 		let structureToRepair = creep.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -39,12 +43,18 @@ var roleRepairer = {
 		}
 		else {
 			var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+			console.log(`🚀 ~ file: role.repairer.js:42 ~ source:`, source)
+			let x = creep.harvest(source)
+			console.log(`🚀👓👓👓 ~ file: role.repairer.js:44 ~ harvest() intent x:`, x)
 			if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
 				// move towards the source
 				// creep.say('🔄 harvest');
 				creep.moveTo(source, moveOpts)
+			} else if(creep.harvest(source) == 0) {
+				creep.say('💘⚡')
 			} else {
-				// creep.say('⚡🍓');
+				creep.say('⚡?');
+				// if(){}
 			}
 		}
 	}

@@ -144,7 +144,6 @@ module.exports.loop = function () {
     for (let creepType in creepGroups) {
         // console.log(`🚀 ~ file: main.js ~ line 131 ~ creepType`, creepType)
         let creep = creepGroups[creepType]
-        // console.log(`🚀 ~ file: main.js ~ line 133 ~ creep`, creep.name, creep.role)
         creep.has = _.sum(Game.creeps, { memory: { role: creep.role } })
         // let harvester = creepGroups["harvester"] || ''
         // let salvager = creepGroups["salvager"] || ''
@@ -209,6 +208,7 @@ module.exports.loop = function () {
 
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
+        console.log(`🧧🧧🧧 ~ file: main.js:211 ~ creep: ${creep} type ${creep.type} role ${creep.memory.role} currentRole ${creep.memory.currentRole}`)
 
 
         // explore actions with a single creep
@@ -329,7 +329,7 @@ module.exports.loop = function () {
                 // console.log(`a miner ${creep} is assigned salvager role`)
                 roleSalvager.run(creep)
             }
-            // roleRepairer.run(creep)
+            roleRepairer.run(creep)
             // roleHarvester.run(creep)
         }
         if (creep.memory.role == 'scout') {
