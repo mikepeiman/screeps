@@ -117,9 +117,9 @@ let buildCreep = (energyCapacity) => {
             has: 0,
             wants: 5,
             priorities: {
-                'WORK': 35,
+                'WORK': 40,
                 'CARRY': 40,
-                'MOVE': 25,
+                'MOVE': 20,
             },
             composition: {},
             blueprint: []

@@ -1,13 +1,3 @@
-let taskUpgradeController = require('task.give.energy.to.upgrade.controller')
-let taskPowerTowers = require('task.transfer.energy.to.towers')
-let taskFillStorageEnergy = require('task.transfer.energy.to.storage')
-let taskFillRoomEnergy = require('task.give.energy.to.room')
-let getEnergyFromStorage = require('task.get.energy.from.storage')
-const taskGiveEnergyToUpgradeController = require('./task.give.energy.to.upgrade.controller')
-const taskGiveEnergyToTowers = require('./task.give.energy.to.towers')
-const taskGetEnergyFromStorage = require('./task.get.energy.from.storage')
-const taskGiveEnergyToBuild = require('./task.give.energy.to.construction')
-
 module.exports = {
     run: function (creep) {
 

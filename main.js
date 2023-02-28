@@ -65,21 +65,9 @@ let renewCreepTimer = 0
 require('prototype.tower')
 
 module.exports.loop = function () {
-    
-    let ruinsWithResources = home.find(FIND_RUINS, {
-        filter: r => r.store.getUsedCapacity() > 0
-    })
-    console.log(`🚀 ~ file: main.js:70 ~ ruins:`, ruinsWithResources.length)
-    for(let i = 0; i < ruinsWithResources.length; i++) {
-        let ruin = ruinsWithResources[i]
-        console.log(`🚀 ~ file: main.js:73 ~ ruin ${ruin}:`, ruin.store.getUsedCapacity())
-        console.log(`🚀 ~ file: main.js:73 ~ ruin ${ruin}:`, ruin.resourceType)
-        Object.keys(ruin).forEach((key, i) => {
-            
-            console.log(`🚀 ~ file: main.js:80 ~ Object.keys ~ key:`, key)
-        })
-    }
-    console.log(`RESOURCES_ALL: `, RESOURCES_ALL)
+
+    spawn = Game.spawns['Spawn1']
+    home = spawn.room
 
     let towers = home.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
     for (let i in towers) {
@@ -93,8 +81,6 @@ module.exports.loop = function () {
         }
     }
 
-    spawn = Game.spawns['Spawn1']
-    home = spawn.room
 
     // // some logs to look at what's in the room
     let allMyStructures = spawn.room.find(FIND_MY_STRUCTURES)
