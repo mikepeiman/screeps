@@ -85,7 +85,7 @@ let buildCreep = (energyCapacity) => {
             type: 'worker',
             role: 'resources',
             has: 0,
-            wants: 0,
+            wants: 1,
             priorities: {
                 'WORK': 1,
                 'CARRY': 78,

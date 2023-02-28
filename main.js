@@ -18,6 +18,8 @@ const renewCheck = require('renew.check')
 let roleClaimer = require('role.claimer')
 let creepsFullPopulation = false
 
+let taskTransferResources = require('task.resource.transfer');
+
 // explore Traveler.js
 // let pos = Game.creeps['harvester-sameroom-level-3-26228040'].pos
 
@@ -80,8 +82,6 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
-
-
     // // some logs to look at what's in the room
     let allMyStructures = spawn.room.find(FIND_MY_STRUCTURES)
     // console.log(`🚀 ~ file: main.js:83 ~ allMyStructures:`, allMyStructures)
@@ -244,6 +244,7 @@ module.exports.loop = function () {
 
         
         if (creep.memory.role == 'resources') {
+            console.log(`🚀 ~ file: main.js:247 ~ RESOURCES creep:`, creep)
             // if (unusedEnergyCapacity < 1 && tally > 3) {
             //     if (buildTargets.length) {
             //         roleBuilder.run(creep);
@@ -251,7 +252,8 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-            roleResourceMover.run(creep);
+                taskTransferResources.run(creep)
+            // roleResourceMover.run(creep);
             // }
         }
     

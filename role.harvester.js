@@ -74,27 +74,27 @@ module.exports = {
         let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES, {
             filter: resource => resource.resourceType == RESOURCE_ENERGY
         })
-        console.log(`🚀 ~ file: role.harvester.js:77 ~ droppedEnergy:`, droppedEnergy, droppedEnergy.length)
+        // console.log(`🚀 ~ file: role.harvester.js:77 ~ droppedEnergy:`, droppedEnergy, droppedEnergy.length)
         let tombstoneEnergy = creep.room.find(FIND_TOMBSTONES, {
             filter: tombstone => tombstone.store.energy > 0
         })
-        console.log(`🚀 ~ file: role.harvester.js:81 ~ tombstoneEnergy:`, tombstoneEnergy, tombstoneEnergy.length)
+        // console.log(`🚀 ~ file: role.harvester.js:81 ~ tombstoneEnergy:`, tombstoneEnergy, tombstoneEnergy.length)
         let ruinsEnergy = creep.room.find(FIND_RUINS, {
             filter: ruin => ruin.store.energy > 0
         })
-        console.log(`🚀 ~ file: role.harvester.js:85 ~ ruinsEnergy:`, ruinsEnergy, ruinsEnergy.length)
+        // console.log(`🚀 ~ file: role.harvester.js:85 ~ ruinsEnergy:`, ruinsEnergy, ruinsEnergy.length)
         let collectEnergyTargets = []
         ruinsEnergy.length ? collectEnergyTargets.push(ruinsEnergy) : false
         tombstoneEnergy.length ? collectEnergyTargets.push(tombstoneEnergy) : false
         droppedEnergy.length ? collectEnergyTargets.push(droppedEnergy) : false
-        console.log(`🚀♻▶🔳💎 ~ file: role.harvester.js:90 ~ collectEnergyTargets:`, collectEnergyTargets, collectEnergyTargets.length)
+        // console.log(`🚀♻▶🔳💎 ~ file: role.harvester.js:90 ~ collectEnergyTargets:`, collectEnergyTargets, collectEnergyTargets.length)
         collectEnergyTargets.filter(t => {
             console.log(`🚀 ~ file: role.harvester.js:94 ~ t:`, t)
             return t.length > 0 ? t : null
         })
         // energy harvest FROM logic
 
-        console.log(`🚉 ~ file: role.harvester.js:75 ~ creep.name:`, creep.name)
+        // console.log(`🚉 ~ file: role.harvester.js:75 ~ creep.name:`, creep.name)
         if (collectEnergyTargets.length > 0) {
             console.log(`🚀 ~ file: role.harvester.js:89 ~ collectEnergyTargets.length > 0:`, collectEnergyTargets.length > 0)
             collectEnergyTargets.forEach(target => {
