@@ -8,7 +8,6 @@ module.exports = {
         let roomEnergyFull = unusedEnergyCapacity == 0
         creep.memory.task = 'resource-transfer'
         let energySource = false
-        let harvestResourceType = `${RESOURCE_ENERGY}`
         let currentResource = ""
 
 
@@ -75,7 +74,9 @@ module.exports = {
         }
 
         function harvest(resource, harvestResourceType) {
-            let x = creep.withdraw(resource, harvestResourceType)
+            console.log(`🚀 ~ file: task.resource.transfer.js:78 ~ harvest ~ resource, harvestResourceType:`, resource, harvestResourceType)
+            let x = creep.withdraw(resource, `${harvestResourceType}`)
+            console.log(`🚀 ~ file: task.resource.transfer.js:80 ~ harvest ~ x:`, x)
 
             if (x == ERR_NOT_IN_RANGE) {
                 // console.log(`🚦⛵ ~ file: role.harvester.js:101 ~ harvest ~ x == ERR_NOT_IN_RANGE:`, x == ERR_NOT_IN_RANGE)
@@ -86,15 +87,10 @@ module.exports = {
                 console.log(`🚩 ~ file: role.harvester.js:107 ~ harvest ~ x:`, x)
             } else {
                 x
+                carriedResources.push(harvestResourceType)
+                console.log(`🚀 ~ file: task.resource.transfer.js:93 ~ harvest ~ carriedResources:`, carriedResources)
                 console.log(`✅✨ ~ file: role.harvester.js:110 ~ harvest ~ x:`, x)
             }
-            let amount = resource.store[harvestResourceType]
-            creep.store
-            console.log(`🚀 ~ file: task.resource.transfer.js:93 ~ harvest ~ creep.store:`, creep.store)
-            let keys = Object.keys(creep.store)
-            console.log(`🚀 ~ file: task.resource.transfer.js:95 ~ harvest ~ keys:`, keys)
-            carriedResources.push(harvestResourceType)
-            console.log(`🚀 ~ file: task.resource.transfer.js:93 ~ harvest ~ carriedResources:`, carriedResources)
         }
 
         function transfer(toTarget, resourceTypes) {
@@ -113,7 +109,7 @@ module.exports = {
                         console.log(`🚀 ~ file: task.resource.transfer.js:101 ~ transfer ~ resourceTypes length ${resourceTypes.length}`)
                         return
                     }
-                    let x = creep.transfer(toTarget, resourceType)
+                    let x = creep.transfer(toTarget, `${resourceType}`)
                     console.log(`🚀 ~ file: task.resource.transfer.js:98 ~ transfer ~ resourceType ${resourceType} amount ${v}`)
                     console.log(`🚀 ~ file: task.resource.transfer.js:99 ~ transfer ~ transfer code result ${x}`)
                     creep.moveTo(toTarget, moveOpts);
@@ -121,7 +117,7 @@ module.exports = {
             } else {
                 creep.memory.transferring = false
                 console.log(`🚀 ~ file: task.resource.transfer.js:124 ~ transfer ~ keys:`, keys)
-                let x = creep.transfer(toTarget, keys)
+                let x = creep.transfer(toTarget, `${keys}`)
                 console.log(`🚀 ~ file: role.resource.mover.js:149 ~ transfer ~  x:`, x)
                 creep.moveTo(toTarget, moveOpts);
                 // if (creep.transfer(toTarget, resourceType) == ERR_NOT_IN_RANGE) {
@@ -132,7 +128,8 @@ module.exports = {
 
         // core logic: if creep full, transfer. If not full, harvest
         let creepFull = creep.store.getFreeCapacity() < 1
-        console.log(`🚀 ~ file: task.resource.transfer.js:104 ~ creepFull:`, creepFull)
+        console.log(`🚀 ~ file: task.resource.transfer.js:135 ~ creepFull:`, creepFull)
+        console.log(`🚀 ~ file: task.resource.transfer.js:137 ~ creep.memory.transferring:`, creep.memory.transferring)
         if (creepFull || creep.memory.transferring === true) {
             creep.memory.transferring = true
             creep.memory.idle = false
@@ -141,11 +138,8 @@ module.exports = {
             console.log(`🚀 ~ file: task.resource.transfer.js:132 ~ carriedResources:`, carriedResources)
             console.log(`🚀 ~ file: task.resource.transfer.js:135 ~ currentResources:`, currentResources)
             transfer(transferTarget, carriedResources)
-        } else if (creep.carry.energy > 0 && creep.memory.transferring) {
-            creep.memory.energyFull = false
-        } else if (creep.carry.energy == 0) {
-            creep.memory.idle = false
-            creep.memory.transferring = false
+        } else {
+            harvest(harvestTarget, currentResource)
         }
         // if there is are hostiles, get storage energy
 
