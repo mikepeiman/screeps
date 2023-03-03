@@ -10,6 +10,7 @@ const taskGiveEnergyToBuild = require('./task.give.energy.to.construction')
 
 module.exports = {
     run: function (creep, spawnEmergency, hostilesInRoom) {
+        
         let moveOpts = { visualizePathStyle: { stroke: '#ffaa00' }, ignoreCreeps: false, reusePath: 3 }
         let energy = creep.room.energyAvailable;
         let energyCapacity = creep.room.energyCapacityAvailable;
@@ -69,7 +70,7 @@ module.exports = {
         let sources = creep.room.find(FIND_SOURCES_ACTIVE)
         let containerSources = creep.room.find(FIND_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE)
-                && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+                && s.store.getUsedCapacity(RESOURCE_ENERGY) > 50000
         });
         console.log(`🚀 ~ file: role.harvester.js:73 ~ containerSources:`, containerSources)
 
