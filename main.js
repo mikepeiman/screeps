@@ -104,7 +104,7 @@ module.exports.loop = function () {
     let currentEnergyAvailable = spawn.room.energyAvailable
     let creepLevelGroups = buildCreep(roomEnergyCapacity)
     let roomCreeps = Game.creeps
-    let creepGroups = buildCreep(roomEnergyCapacity)
+    let creepGroups = buildCreep(roomEnergyCapacity, currentEnergyAvailable, Game.creeps.length || 0)
     // console.log(`🚀 ~ file: main.js ~ line 94 ~ creepGroups`, Object.keys(creepGroups))
 
     let unusedEnergyCapacity = roomEnergyCapacity - energy
@@ -357,10 +357,11 @@ module.exports.loop = function () {
 
     }
     console.log(`***ENERGY TALLY*** available now ${currentEnergyAvailable} and maximum capacity ${roomEnergyCapacity}, leaving ${unusedEnergyCapacity} unfilled`)
+    console.log(`🚀 ~ file: main.js:364 ~ roomEnergyCapacity, currentEnergyAvailable, Game.creeps.length:`, roomEnergyCapacity, currentEnergyAvailable, Game.creeps.length)
     if (spawnPriority != "false") {
         creepType = spawnPriority
         console.log('creepType: ', creepType);
-        c = buildCreep(roomEnergyCapacity)
+        c = buildCreep(roomEnergyCapacity, currentEnergyAvailable, Game.creeps.length)
         console.log(`🚀 ~ file: main.js ~ line 292 ~ c`, c)
         console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${roomEnergyCapacity}`)
         let comp = c.composition

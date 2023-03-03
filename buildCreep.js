@@ -1,4 +1,5 @@
-let buildCreep = (energyCapacity) => {
+let buildCreep = (energyCapacity, energyNow, numCreeps) => {
+console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyNow, numCreeps:`, energyCapacity, energyNow, numCreeps)
 // console.log(`🚀⛲⛲⛲⛲⛲⛲⛲⛲⛲⛲ ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity:`, energyCapacity)
 
     /* 
@@ -179,6 +180,9 @@ let buildCreep = (energyCapacity) => {
         // console.log(`🚀 ~ file: buildCreep.js ~ line 95 ~ calculateCreepPartsList ~ creepName: ${creepName}, energyCapacity: ${energyCapacity}`, creepName)
         let creep = CREEP_TYPES[creepName]
         let type = creep.type
+        if(numCreeps < 1){
+            energyCapacity = energyNow
+        }
         let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
         generateCreepComposition(creepName, energyBudget)
     }
