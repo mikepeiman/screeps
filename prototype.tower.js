@@ -10,9 +10,10 @@ StructureTower.prototype.defend = function () {
     // make a function to gradually increase the level of all walls and ramparts automatically.
 
     // DEFENSE code
-    let hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
-        filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
-    });
+    let hostiles = this.room.find(FIND_HOSTILE_CREEPS);
+    // let hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
+    //     filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
+    // });
     let hostileHealers = []
     hostiles.forEach(hostile => {
         let healer
@@ -90,11 +91,12 @@ StructureTower.prototype.defend = function () {
         let username = hostiles[0].owner.username;
         Game.notify(`User ${username} spotted in room ${this.room}`);
         console.log(`👿👿👿 prototype.tower.jsUser ${username} spotted in room ${this.room}`)
-        if (hostileHealers[0]) {
-            this.attack(hostileHealers[0])
-        } else {
-            this.attack(hostiles[0])
-        }
+        // if (hostileHealers[0]) {
+        //     this.attack(hostileHealers[0])
+        // } else {
+        //     this.attack(hostiles[0])
+        // }
+        this.attack(this.pos.findClosestByRange(hostiles))
 
 
     } else if (wounded[0]) {

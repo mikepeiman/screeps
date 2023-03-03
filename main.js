@@ -48,9 +48,10 @@ let creepGroups = creepLevelGroups[rcl - 1].specs
 let energyHarvesterCreepsPriorities = ["fillStorage", "fillRoomEnergy", "powerTowers", "upgradeController"]
 let emergencySpawn = false
 let creepTaskPriority
-let hostiles = home.find(FIND_HOSTILE_CREEPS, {
-    filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
-});
+let hostiles = home.find(FIND_HOSTILE_CREEPS);
+// let hostiles = home.find(FIND_HOSTILE_CREEPS, {
+//     filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
+// });
 let hostilesInRoom
 if (hostiles[0]) {
     hostilesInRoom = true
@@ -97,12 +98,6 @@ module.exports.loop = function () {
 
     rc = home.controller
     rcl = rc.level
-
-    let hostiles = home.find(FIND_HOSTILE_CREEPS);
-    // let hostiles = home.find(FIND_HOSTILE_CREEPS, {
-    //     filter: (c) => c.owner.username != "cplive" && c.owner.username != "Brun1L" && c.owner.username != "mrmartinstreet"
-    // });
-
 
     let energy = spawn.room.energyAvailable;
     let roomEnergyCapacity = spawn.room.energyCapacityAvailable;
