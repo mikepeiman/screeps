@@ -182,8 +182,15 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
         let type = creep.type
         if(numCreeps < 1){
             energyCapacity = energyNow
+        } else if (numCreeps == 2) {
+            energyCapacity = energyCapacity / 2
         }
+        
         let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
+        console.log(`🚀 ~ file: buildCreep.js:184 ~ calculateCreepPartsList ~ numCreeps:`, numCreeps)
+        // console.log(`🚀 ~ file: buildCreep.js:185 ~ calculateCreepPartsList ~ energyNow:`, energyNow)
+        // console.log(`🚀 ~ file: buildCreep.js:187 ~ calculateCreepPartsList ~ energyCapacity:`, energyCapacity)
+        // console.log(`🚀 ~ file: buildCreep.js:187 ~ calculateCreepPartsList ~ energyBudget:`, energyBudget)
         generateCreepComposition(creepName, energyBudget)
     }
 

@@ -17,9 +17,13 @@ const renewCheck = require('renew.check')
 // let idleCreep = require('idleCreep')
 let roleClaimer = require('role.claimer')
 let creepsFullPopulation = false
-
+let numCreeps = 0
 let taskTransferResources = require('task.resource.transfer');
+for (let name in Game.creeps) {
+    console.log(`🚀 ~ file: main.js:23 ~ name:`, name)
+    numCreeps++
 
+}
 // explore Traveler.js
 // let pos = Game.creeps['harvester-sameroom-level-3-26228040'].pos
 
@@ -102,9 +106,9 @@ module.exports.loop = function () {
     let energy = spawn.room.energyAvailable;
     let roomEnergyCapacity = spawn.room.energyCapacityAvailable;
     let currentEnergyAvailable = spawn.room.energyAvailable
-    let creepLevelGroups = buildCreep(roomEnergyCapacity)
+    // let creepLevelGroups = buildCreep(roomEnergyCapacity)
     let roomCreeps = Game.creeps
-    let creepGroups = buildCreep(roomEnergyCapacity, currentEnergyAvailable, Game.creeps.length || 0)
+    let creepGroups = buildCreep(roomEnergyCapacity, currentEnergyAvailable, numCreeps)
     // console.log(`🚀 ~ file: main.js ~ line 94 ~ creepGroups`, Object.keys(creepGroups))
 
     let unusedEnergyCapacity = roomEnergyCapacity - energy
@@ -221,7 +225,7 @@ module.exports.loop = function () {
         // }
 
 
-        
+
         // console.log(`creep: , ${creep}, HOME: ${creep.memory.home}, XFER: ${creep.memory.transferring}, ROLE: ${creep.memory.role}`);
         // if(creep.memory.nextTask == "renew") {
         //     renewCreep(creep,spawn)
@@ -237,7 +241,7 @@ module.exports.loop = function () {
                     console.log(`🚀 ~ file: main.js:233 ~ buildTargets.length:`, buildTargets.length)
                     // console.log('buildTargets: ', buildTargets);
                     roleBuilder.run(creep);
-                }  else {
+                } else {
                     console.log(`roleHarvester run on harvester creep ${creep}`);
                     roleSalvager.run(creep);
                     // roleHarvester.run(creep, emergencySpawn, hostilesInRoom);
@@ -248,7 +252,7 @@ module.exports.loop = function () {
             }
         }
 
-        
+
         if (creep.memory.role == 'resources') {
             console.log(`🚀 ~ file: main.js:247 ~ RESOURCES creep:`, creep)
             // if (unusedEnergyCapacity < 1 && tally > 3) {
@@ -258,11 +262,11 @@ module.exports.loop = function () {
             //         roleUpgrader.run(creep);
             //     }
             // } else {
-                taskTransferResources.run(creep)
+            taskTransferResources.run(creep)
             // roleResourceMover.run(creep);
             // }
         }
-    
+
         if (creep.memory.role == 'hauler') {
             // if (unusedEnergyCapacity < 1 && tally > 3) {
             //     if (buildTargets.length) {
@@ -317,7 +321,7 @@ module.exports.loop = function () {
             //     roleMiner.run(creep);
             //     // console.log(`a miner ${creep} is assigned miner role`)
             // } else
-             if (unusedEnergyCapacity > 0) {
+            if (unusedEnergyCapacity > 0) {
                 roleHarvester.run(creep)
                 // console.log(`a miner ${creep} is assigned harvester role`)
             } else {
@@ -361,7 +365,7 @@ module.exports.loop = function () {
     if (spawnPriority != "false") {
         creepType = spawnPriority
         console.log('creepType: ', creepType);
-        c = buildCreep(roomEnergyCapacity, currentEnergyAvailable, Game.creeps.length)
+        c = buildCreep(roomEnergyCapacity, currentEnergyAvailable, numCreeps)
         console.log(`🚀 ~ file: main.js ~ line 292 ~ c`, c)
         console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${roomEnergyCapacity}`)
         let comp = c.composition

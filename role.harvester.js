@@ -99,9 +99,9 @@ module.exports = {
 
         // console.log(`🚉 ~ file: role.harvester.js:75 ~ creep.name:`, creep.name)
         if (collectEnergyTargets.length > 0) {
-            console.log(`🚀 ~ file: role.harvester.js:89 ~ collectEnergyTargets.length > 0:`, collectEnergyTargets.length > 0)
+            // console.log(`🚀 ~ file: role.harvester.js:89 ~ collectEnergyTargets.length > 0:`, collectEnergyTargets.length > 0)
             collectEnergyTargets.forEach(target => {
-                console.log(`🚀 ~ file: role.harvester.js:90 ${creep.name} ~ target ${target} pos ${target.pos} length ${target.length}`)
+                // console.log(`🚀 ~ file: role.harvester.js:90 ${creep.name} ~ target ${target} pos ${target.pos} length ${target.length}`)
             })
 
             harvestTarget = creep.pos.findClosestByPath(collectEnergyTargets[0])
@@ -115,34 +115,34 @@ module.exports = {
             // } else {
 
             harvestTarget = creep.pos.findClosestByPath(sources)
-            console.log(`🚀 CREEP ${creep} 🥓🥓🥓~ file: role.harvester.js:117 ~ harvestTarget for energy sources:`, harvestTarget)
+            // console.log(`🚀 CREEP ${creep} 🥓🥓🥓~ file: role.harvester.js:117 ~ harvestTarget for energy sources:`, harvestTarget)
             // console.log(`🚀 ~ file: role.harvester.js:84 ~ harvestTarget:`, harvestTarget)
             energySource = "source"
 
         }
 
         function harvest(resource) {
-            console.log(`🚀 ~ file: role.harvester.js:92 ~ harvest ~ resource:`, resource)
+            // console.log(`🚀 ~ file: role.harvester.js:92 ~ harvest ~ resource:`, resource)
             let x
             if (energySource == "source") {
                 // console.log(`🚀 ~ file: role.harvester.js:95 ~ harvest ~ !energySource:`, !energySource)
                 x = creep.harvest(resource, RESOURCE_ENERGY)
                 creep.moveTo(resource, moveOpts);
-                console.log(`🚀 ~ file: role.harvester.js:128 ~ harvest ~ x:`, x)
+                // console.log(`🚀 ~ file: role.harvester.js:128 ~ harvest ~ x:`, x)
                 if (x == -7) {
                     x = creep.pickup(resource, RESOURCE_ENERGY)
-                    console.log(`🚀 ~ file: role.harvester.js:132 ~ harvest ~ x:`, x)
+                    // console.log(`🚀 ~ file: role.harvester.js:132 ~ harvest ~ x:`, x)
                     creep.moveTo(resource, moveOpts);
                     x = creep.withdraw(resource, RESOURCE_ENERGY)
-                    console.log(`🚀 ~ file: role.harvester.js:135 ~ harvest ~ withdraw x:`, x)
+                    // console.log(`🚀 ~ file: role.harvester.js:135 ~ harvest ~ withdraw x:`, x)
                 }
             } else {
                 // console.log(`🚀 ~ file: role.harvester.js:98 ~ harvest ~ !energySource:`, energySource)
                 x = creep.withdraw(resource, RESOURCE_ENERGY)
-                console.log(`🚀 ~ file: role.harvester.js:134 ~ harvest resource ${resource} loc ${resource.pos} ~ x:`, x)
+                // console.log(`🚀 ~ file: role.harvester.js:134 ~ harvest resource ${resource} loc ${resource.pos} ~ x:`, x)
                 if (x == -7) {
                     x = creep.pickup(resource, RESOURCE_ENERGY)
-                    console.log(`🚀 ~ file: role.harvester.js:141 ~ harvest ~ x:`, x)
+                    // console.log(`🚀 ~ file: role.harvester.js:141 ~ harvest ~ x:`, x)
                     creep.moveTo(resource, moveOpts);
                 }
             }
@@ -161,7 +161,7 @@ module.exports = {
         }
 
         function transfer(toTarget) {
-            console.log(`🚀 ~ file: role.harvester.js:162 ~ transfer ~ toTarget:`, toTarget)
+            // console.log(`🚀 ~ file: role.harvester.js:162 ~ transfer ~ toTarget:`, toTarget)
             if (creep.transfer(toTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(toTarget, moveOpts);
             }
