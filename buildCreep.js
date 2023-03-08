@@ -36,6 +36,8 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
 
 
     // I should probably start using class-based inheritance for these guys...
+
+    // I can set the "wants" value based on available room energy #todo
     let CREEP_TYPES = {
         // Resource-Hauler maximizes carry capacity, moderate to low movement, minimal work capacity
         'Resource-Hauler': {

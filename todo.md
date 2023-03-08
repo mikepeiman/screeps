@@ -3,6 +3,7 @@ TASKS
 <!-- * Add level 4 creep models to creepGroups, change RCL calculation (from -2 to -1 for array) -->
 <!-- * Refactor creepGroups construction properties (composition) to use # of body parts and algorithmic construction -->
 <!-- * code for every level 2 and up, to determine maximum energy capacity and build creeps accordingly - either have different creep versions within creep.specs, or generate creeps dynamically -->
+* can add calculations function to determine number of creeps wanted based on available room energy, and therefore the work capacity of each creep
 * I lost all my creeps to hostiles, as my towers targeted a mega-healing creep that stayed at room border while the attacked came in and did his damage. I need to target closest hostile
 * Task queue! I'm being so inefficient having ALL creeps move to refuel tower, leaving controller upgrading. Make a task queue.capacity and renew timing?
 * if there is only one salvager, check time to death, and set a spawn priority to generate creep in advance
