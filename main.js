@@ -366,23 +366,42 @@ module.exports.loop = function () {
         creepType = spawnPriority
         console.log('creepType: ', creepType);
         c = buildCreep(roomEnergyCapacity, currentEnergyAvailable, numCreeps)
-        console.log(`🚀 ~ file: main.js ~ line 292 ~ c`, c)
+        // console.log(`🚀 ~ file: main.js ~ line 292 ~ c`, c)
         console.log(`Time to spawn a ${creepType}, ***${spawnPriority.toUpperCase()} priority***. Tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${roomEnergyCapacity}`)
         let comp = c.composition
+        // console.log(`🚀 ~ file: main.js:372 ~ c.composition:`, c.composition)
         let name = `${creepType}-level-${rcl}-${Game.time}`
         let mem = { memory: { role: creepType, home: home.name, level: rcl, working: false } }
         let x = spawn.spawnCreep(comp, name, mem)
+        // console.log(`🚀 ~ file: main.js:375 ~ x:`, x)
     } else {
         for (let creepType in creepGroups) {
             let c = creepGroups[creepType]
+            // Object.keys(c).forEach(key => {
+            //     key
+            //     console.log(`🚀 ~ file: main.js:382 ~ Object.keys ~ key:`, key)
+            //     c[key]
+            //     console.log(`🚀 ~ file: main.js:385 ~ Object.keys ~ c[key]:`, c[key])
+            //     if(typeof c[key] == 'object' && c['name'] == 'Engineer-Salvager'){
+            //         Object.keys(c[key]).forEach(key2 => {
+            //             key2
+            //             console.log(`🚀 ~ file: main.js:388 ~ Object.keys ~ key2:`, key2)
+            //             c[key][key2]
+            //             console.log(`🚀 ~ file: main.js:391 ~ Object.keys ~ c[key][key2]:`, c[key][key2])
+            //         })
+            //     }
+            // })
+            // console.log(`🚀 ~ file: main.js:380 ~ c:`, c)
             // console.log(`🚀 ~ file: main.js ~ line 301 ~ c`, c.name)
             //  && creepType == 'hauler'
             if (c.has < c.wants) {
                 console.log(`Time to spawn a ${creepType}, tally is ${c.has}. Energy cost will be ${c.cost}, available now ${energy}/${roomEnergyCapacity}`)
                 let comp = c.blueprint
+                // console.log(`🚀 ~ file: main.js:384 ~ c.blueprint:`, c.blueprint)
                 let name = `${creepType}-${c.cost}-${Game.time}`
                 let mem = { memory: { role: c.role, home: home.name, level: rcl, working: false } }
-                let x = Game.spawns['Spawn1'].spawnCreep(comp, name, mem)
+                let x = spawn.spawnCreep(comp, name, mem)
+                // console.log(`🚀 ~ file: main.js:387 ~ x:`, x)
                 if (x == 0) {
                     console.log(`Spawning a ${creepType}`)
                 } else {

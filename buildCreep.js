@@ -189,7 +189,7 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
         }
         
         let energyBudget = subtractMandatoryPartsCosts(creep, energyCapacity)
-        console.log(`🚀 ~ file: buildCreep.js:184 ~ calculateCreepPartsList ~ numCreeps:`, numCreeps)
+        // console.log(`🚀 ~ file: buildCreep.js:184 ~ calculateCreepPartsList ~ numCreeps:`, numCreeps)
         // console.log(`🚀 ~ file: buildCreep.js:185 ~ calculateCreepPartsList ~ energyNow:`, energyNow)
         // console.log(`🚀 ~ file: buildCreep.js:187 ~ calculateCreepPartsList ~ energyCapacity:`, energyCapacity)
         // console.log(`🚀 ~ file: buildCreep.js:187 ~ calculateCreepPartsList ~ energyBudget:`, energyBudget)
@@ -238,9 +238,9 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
 
     function generateCreepBlueprintFromComposition(creep) {
         // console.log(`starting generateCreepBlueprintFromComposition()`)
-        for (let component in creep.composition) {
-        }
+
         let blueprint = []
+        let bodyParts = 0
         for (let component in creep.composition) {
             let counter = 0
 
@@ -248,6 +248,7 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
             if (creep.composition['TOUGH'] > 0) {
                 for (let iterator = 0; iterator < creep.composition['TOUGH']; iterator++) {
                     blueprint.push('tough')
+                    bodyParts++
                 }
             }
             while (counter < creep.composition[component]) {
@@ -256,15 +257,63 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
                     blueprint.push(componentLowercase)
                 }
                 ++counter
+                bodyParts++
                 // creep.blueprint = blueprint
             }
             if (creep.composition['HEAL'] > 0) {
                 for (let z = 0; z < creep.composition['HEAL']; z++) {
                     blueprint.push('heal')
+                    bodyParts++
                 }
             }
-
+            
         }
+        // console.log(`🚀 ~ file: buildCreep.js:268 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ bodyParts:`, bodyParts)
+
+        // if bodyParts > 50, then we need to remove some parts proportionally
+        if(bodyParts > 50){
+            let excess = bodyParts - 50
+            let excessPercentage = excess / bodyParts
+            // console.log(`🚀 ~ file: buildCreep.js:275 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessPercentage:`, excessPercentage)
+            let excessTough = Math.ceil(excessPercentage * creep.composition['TOUGH'])
+            let excessMove = Math.ceil(excessPercentage * creep.composition['MOVE'])
+            let excessWork = Math.ceil(excessPercentage * creep.composition['WORK'])
+            let excessCarry = Math.ceil(excessPercentage * creep.composition['CARRY'])
+            let excessAttack = Math.ceil(excessPercentage * creep.composition['ATTACK'])
+            let excessRangedAttack = Math.ceil(excessPercentage * creep.composition['RANGED_ATTACK'])
+            let excessHeal = Math.ceil(excessPercentage * creep.composition['HEAL'])
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessTough:`, excessTough)
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessMove:`, excessMove)
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessWork:`, excessWork)
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessCarry:`, excessCarry)
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessAttack:`, excessAttack)
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessRangedAttack:`, excessRangedAttack)
+            // console.log(`🚀 ~ file: buildCreep.js:283 ~ ${creep.name} 🎅🎅🎅🎅🎅🎅 generateCreepBlueprintFromComposition ~ excessHeal:`, excessHeal)
+            let newBlueprint = []
+            for (let i = 0; i < blueprint.length; i++) {
+                if(blueprint[i] == 'tough' && excessTough > 0){
+                    excessTough--
+                } else if(blueprint[i] == 'move' && excessMove > 0){
+                    excessMove--
+                } else if(blueprint[i] == 'work' && excessWork > 0){
+                    excessWork--
+                } else if(blueprint[i] == 'carry' && excessCarry > 0){
+                    excessCarry--
+                } else if(blueprint[i] == 'attack' && excessAttack > 0){
+                    excessAttack--
+                } else if(blueprint[i] == 'ranged_attack' && excessRangedAttack > 0){
+                    excessRangedAttack--
+                } else if(blueprint[i] == 'heal' && excessHeal > 0){
+                    excessHeal--
+                } else {
+                    newBlueprint.push(blueprint[i])
+                }
+            }
+            blueprint = newBlueprint
+            // console.log(`🚀 ~ file: buildCreep.js:313 ~ 😀😀😀😀😀😀 generateCreepBlueprintFromComposition ~ blueprint:`, blueprint)
+        }
+
+
         // energyCapacity
         // console.log(`🚀 ~ file: buildCreep.js ~ line 237 ~ generateCreepBlueprintFromComposition ~ energyCapacity`, energyCapacity)
         creep.blueprint = blueprint
@@ -277,11 +326,21 @@ console.log(`🚀 ~ file: buildCreep.js:2 ~ buildCreep ~ energyCapacity, energyN
     function getNumberOfPartsOfType(creep, partType, energyBudget) {
         let cost = COSTS[partType]
         let buildComponentPercentageAllocation = creep.priorities[partType] || 0
+        // console.log(`🚀 ~ file: buildCreep.js:279 ~ getNumberOfPartsOfType ~ partType:`, partType)
         let result = Math.ceil((energyBudget * (buildComponentPercentageAllocation / 100)) / cost)
+        // result > 0 ? console.log(`🚀 ~ ${creep.name} ||| file: buildCreep.js:280 ~ getNumberOfPartsOfType ~ result:`, result) : false
         if (creep.priorities[partType] == 1) {
             return 1
         }
         return result = isFinite(result) ? result : 0
+    }
+
+    function limitMaximumBodyParts(creep, partType, partCount) {
+        let max = MAXIMUM_PARTS[partType]
+        if (partCount > max) {
+            return max
+        }
+        return partCount
     }
 
     function determineCreepPrioritiesBasedOnCurrentSituation(creepName, energyHarvestStrategy, resourceInventory, hostilesInventory) {
